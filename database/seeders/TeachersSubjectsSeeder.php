@@ -17,26 +17,31 @@ class TeachersSubjectsSeeder extends Seeder
         //faozia
         DB::table('teacher_subject')->insert([
            'teacher_id'=>10,
-            'subject_id'=>2
+            'subject_id'=>2,
+            'created_at'=>now()
         ]);
         //sami
         DB::table('teacher_subject')->insert([
             'teacher_id'=>11,
-            'subject_id'=>3
+            'subject_id'=>3,
+            'created_at'=>now()
         ]);
         //mohsen
         DB::table('teacher_subject')->insert([
             'teacher_id'=>12,
-            'subject_id'=>1
+            'subject_id'=>1,
+            'created_at'=>now()
         ]);
         DB::table('teacher_subject')->insert([
             'teacher_id'=>12,
-            'subject_id'=>5
+            'subject_id'=>5,
+            'created_at'=>now()
         ]);
         //salwa
         DB::table('teacher_subject')->insert([
             'teacher_id'=>13,
-            'subject_id'=>4
+            'subject_id'=>4,
+            'created_at'=>now()
         ]);
 
     }

@@ -15,19 +15,24 @@ class SubjectsSeeder extends Seeder
     {
         //
         DB::table('subjects')->insert([
-            'name'=>'Algebra'
+            'name'=>'Algebra',
+            'created_at'=>now()
         ]);
         DB::table('subjects')->insert([
-            'name'=>'Physics'
+            'name'=>'Physics',
+            'created_at'=>now()
         ]);
         DB::table('subjects')->insert([
-            'name'=>'Sport'
+            'name'=>'Sport',
+            'created_at'=>now()
         ]);
         DB::table('subjects')->insert([
-            'name'=>'Science'
+            'name'=>'Science',
+            'created_at'=>now()
         ]);
         DB::table('subjects')->insert([
-            'name'=>'analysis'
+            'name'=>'analysis',
+            'created_at'=>now()
         ]);
 
             }

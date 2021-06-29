@@ -17,27 +17,33 @@ class ClassesSubjectsSeeder extends Seeder
         //
         DB::table('class_subject')->insert([
             'class_id'=>1,
-            'subject_id'=>1
+            'subject_id'=>1,
+            'created_at'=>now()
         ]);
         DB::table('class_subject')->insert([
             'class_id'=>1,
-            'subject_id'=>2
+            'subject_id'=>2,
+            'created_at'=>now()
         ]);
         DB::table('class_subject')->insert([
             'class_id'=>1,
-            'subject_id'=>3
+            'subject_id'=>3,
+            'created_at'=>now()
         ]);
         DB::table('class_subject')->insert([
             'class_id'=>2,
-            'subject_id'=>3
+            'subject_id'=>3,
+            'created_at'=>now()
         ]);
         DB::table('class_subject')->insert([
             'class_id'=>2,
-            'subject_id'=>4
+            'subject_id'=>4,
+            'created_at'=>now()
         ]);
         DB::table('class_subject')->insert([
             'class_id'=>2,
-            'subject_id'=>5
+            'subject_id'=>5,
+            'created_at'=>now()
         ]);
     }
 }

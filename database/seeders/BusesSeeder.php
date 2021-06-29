@@ -21,6 +21,7 @@ class BusesSeeder extends Seeder
             'supervisor'=>'Ammar',
             'supervisor_num'=>'12345',
             'supervisor_address'=>'shalaan',
+            'created_at'=>now()
         ]);
         DB::table('buses')->insert([
             'name'=>'H',
@@ -28,6 +29,7 @@ class BusesSeeder extends Seeder
             'supervisor'=>'Samia',
             'supervisor_num'=>'12345',
             'supervisor_address'=>'shalaan',
+            'created_at'=>now()
         ]);
     }
 }

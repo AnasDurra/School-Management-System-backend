@@ -21,14 +21,16 @@ class StudentsSeeder extends Seeder
             'address'=>'ruken aldeen',
             'role'=>4,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('students')->insert([
             'user_id'=>6,
             'parent_id'=>2,
             'class_id'=>1,
             'classroom_id'=>1,
-            'bus_id'=>1
+            'bus_id'=>1,
+            'created_at'=>now()
 
         ]);
         DB::table('users')->insert([
@@ -37,14 +39,16 @@ class StudentsSeeder extends Seeder
             'address'=>'mazzeh',
             'role'=>4,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('students')->insert([
             'user_id'=>7,
             'parent_id'=>3,
             'class_id'=>1,
             'classroom_id'=>1,
-            'bus_id'=>1
+            'bus_id'=>1,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'Anas Durra',
@@ -52,14 +56,16 @@ class StudentsSeeder extends Seeder
             'address'=>'qudsia',
             'role'=>4,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('students')->insert([
             'user_id'=>8,
             'parent_id'=>4,
             'class_id'=>2,
             'classroom_id'=>2,
-            'bus_id'=>2
+            'bus_id'=>2,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'Juman Dukmak',
@@ -67,14 +73,16 @@ class StudentsSeeder extends Seeder
             'address'=>'mashroua dummar',
             'role'=>4,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('students')->insert([
             'user_id'=>9,
             'parent_id'=>5,
             'class_id'=>2,
             'classroom_id'=>2,
-            'bus_id'=>2
+            'bus_id'=>2,
+            'created_at'=>now()
         ]);
 
     }
