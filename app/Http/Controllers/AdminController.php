@@ -49,7 +49,8 @@ class AdminController extends Controller
         ]);
 
         return response()->json([
-            'message' => 'added'
+            'message' => 'added',
+            'data'=>$user
         ]);
 
     }
@@ -80,7 +81,8 @@ class AdminController extends Controller
         $user->save();
 
         return response()->json([
-            'message' => 'updated'
+            'message' => 'updated',
+            'data'=>$user
         ]);
     }
 

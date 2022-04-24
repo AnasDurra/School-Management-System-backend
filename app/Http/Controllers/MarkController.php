@@ -23,14 +23,15 @@ class MarkController extends Controller
             ], 400);
         }
 
-        Mark::query()->create([
+        $mark =Mark::query()->create([
             'student_id' => $request->student_id,
             'subject_id' => $request->subject_id,
             'subfield_id' => $request->subfield_id,
             'value' => $request->value,
         ]);
         return response()->json([
-            'message' => 'added'
+            'message' => 'added',
+            'data'=>$mark
         ]);
     }
 
@@ -76,11 +77,11 @@ class MarkController extends Controller
             ]);
         }
 
-        $mark->update([
-            'value'=>$request->value
-        ]);
+        $mark->value =$request->value;
+        $mark->save();
         return response()->json([
-            'message' => 'updated'
+            'message' => 'updated',
+            'data'=>$mark
         ]);
     }
 

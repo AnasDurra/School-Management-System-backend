@@ -42,7 +42,7 @@ class ParentController extends Controller
 
 
         return response()->json([
-            'message' => 'added'
+            'message' => 'added',
         ]);
 
     }

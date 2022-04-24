@@ -90,10 +90,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weekly_scheduleController::class, 'add_subjects_to_schedules']);
     Route::post('/weekly_schedule/get', [\App\Http\Controllers\weekly_scheduleController::class, 'get_weekly_schedule']);
 
-
-
-
-
 });
 
 
