@@ -74,6 +74,20 @@ class ClassController extends Controller
         ]);
     }
 
+    public function all(Request $request){
+        $classes =Classes::query()->get();
+
+        if(!$classes){
+            return response()->json([
+                'message' => 'No classes'
+            ]);
+        }
+        return response()->json([
+            'data' => $classes
+        ]);
+
+    }
+
     public function show_classrooms(Request $request){
         $validator = Validator::make($request->all(), [
             'id'=>'required'
@@ -86,6 +100,9 @@ class ClassController extends Controller
         }
         $class = Classes::query()->where('id','=',$request->id)->first();
         if(!$class){return response()->json(['message'=>'NotFound']);}
-        return $class->classrooms;
+
+        return response()->json([
+            'data'=> $class->classrooms
+        ]);
     }
 }

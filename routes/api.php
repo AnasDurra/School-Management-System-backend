@@ -74,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/classes/add', [\App\Http\Controllers\ClassController::class, 'add']);
     Route::post('/classes/update', [\App\Http\Controllers\ClassController::class, 'update']);
     Route::post('/classes/delete', [\App\Http\Controllers\ClassController::class, 'delete']);
+    Route::get('/classes/all', [\App\Http\Controllers\ClassController::class, 'all']);
     Route::post('/classes/show_classrooms', [\App\Http\Controllers\ClassController::class, 'show_classrooms']);
     //still add subject and .. etc
 
