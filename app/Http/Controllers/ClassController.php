@@ -13,6 +13,7 @@ class ClassController extends Controller
     public function add(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'subjects_id'
             ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -25,9 +26,17 @@ class ClassController extends Controller
         $class->name = $request->name;
         $class->save();
 
+        for($i=0;$i<count($request->subjects_id);$i++){
+            $class_subjects = new Class_Subject();
+            $class_subjects->subject_id =$request->subjects_id[$i];
+            $class_subjects->class_id = $class->id;
+            $class_subjects->save();
+        }
+
+        $classWithSubjects =Classes::query()->where('id','=',$class->id)->with('subjects')->get();
         return response()->json([
             'message' => 'added',
-            'data'=>$class
+            'data'=>$classWithSubjects
         ]);
     }
 
@@ -77,7 +86,7 @@ class ClassController extends Controller
     }
 
     public function all(Request $request){
-        $classes =Classes::query()->with('subjects')->get();
+        $classes =Classes::query()->with('subjects')->with('subfields')->get();
 
         if(!$classes){
             return response()->json([

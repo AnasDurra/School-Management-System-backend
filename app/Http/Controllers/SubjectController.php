@@ -16,7 +16,7 @@ class SubjectController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            "subfields_name" //this is a array
+            "subfields_name" //this is an array
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -28,7 +28,7 @@ class SubjectController extends Controller
         $subject = new Subject();
         $subject->name = $request->name;
         $subject->save();
-
+    if($request->subfields_name)
         for($i=0;$i<count($request->subfields_name);$i++){
             $subfield[$i] = new Subfield();
             $subfield[$i]->name = $request->subfields_name[$i];

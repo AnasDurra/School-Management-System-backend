@@ -27,6 +27,7 @@ class SubfieldController extends Controller
             return response()->json(['message' => 'Not Found']);
         }
         $subfield->name = $request->name;
+        if($request->subject_id)
         $subfield->subject_id = $request->subject_id;
         $subfield->save();
 

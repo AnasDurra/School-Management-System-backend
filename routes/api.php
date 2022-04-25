@@ -26,13 +26,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-Route::middleware('auth:sanctum')->group(function () {
+//Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
 
-    Route::group(['middleware' => 'isAdmin'], function () {
+   // Route::group(['middleware' => 'isAdmin'], function () {
         //student
         Route::post('/students/add', [StudentController::class, 'add']);
         Route::post('/students/delete', [StudentController::class, 'delete']);
@@ -75,7 +75,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/subfields/update', [\App\Http\Controllers\SubfieldController::class, 'update']);
 
 
-    });
+   // });
 
     //marks
     Route::post('/marks/add', [\App\Http\Controllers\MarkController::class, 'add']);
@@ -116,7 +116,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weekly_scheduleController::class, 'add_subjects_to_schedules']);
     Route::post('/weekly_schedule/get', [\App\Http\Controllers\weekly_scheduleController::class, 'get_weekly_schedule']);
 
-});
+//});
 
 
 
