@@ -37,7 +37,7 @@ Route::post('/register', [AuthController::class, 'register']);
         Route::post('/students/add', [StudentController::class, 'add']);
         Route::post('/students/delete', [StudentController::class, 'delete']);
         Route::post('/students/update', [StudentController::class, 'update']);
-        Route::post('/students/all', [StudentController::class, 'all']);
+        Route::get('/students/all', [StudentController::class, 'all']);
         Route::post('/student',[StudentController::class,'one']);
 
         //teachers

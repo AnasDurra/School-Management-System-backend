@@ -20,7 +20,7 @@ class User extends Authenticatable
     protected $primaryKey='id';
     protected $table = 'users';
     protected $fillable = [
-
+    'name',
         'username',
         'password',
         'role'
@@ -35,6 +35,10 @@ class User extends Authenticatable
         'password',
         'remember_token',
     ];
+
+    public function  student(){
+        return $this->hasOne(Student::class);
+    }
 
     /**
      * The attributes that should be cast.

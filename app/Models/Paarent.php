@@ -15,7 +15,7 @@ class Paarent extends Model
     protected $primaryKey='id';
 
 
-    public function studentsa(){
+    public function students(){
         return $this->hasMany('App\Models\Student','parent_id','id');
     }
 }

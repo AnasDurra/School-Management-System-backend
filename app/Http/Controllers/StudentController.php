@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Paarent;
 use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class StudentController extends Controller
 {
@@ -15,13 +17,15 @@ class StudentController extends Controller
     public function add(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255',
-            'password'=> 'required',
+            'name' => 'required',
+            'parent_name',
+            'Parent_phone_num',
             'phone_num' => 'required',
-            'address' => 'required',
-            'classroom_id'=>'required',
-            'parent_id'=>'required'
-            ]);
+            'address',
+            'classroom_id', // optional
+            "class_id" => 'required',
+            'parent_username', // if parent already existing
+        ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json([
@@ -30,21 +34,45 @@ class StudentController extends Controller
         }
 
         $user = new User();
-        $user->username = $request->username;
-        $user->password = $request->password;
+        $user->name = $request->name;
+        $user->username = strtolower(Str::random(10));
+        $user->password = strtolower(Str::random(6));
         $user->phone_num = $request->phone_num;
-        $user->address = $request->address;
+        if ($request->address)
+            $user->address = $request->address;
         $user->role = 4;
         $user->save();
-
-        $student=new Student();
-        $student['classroom_id'] = $request->classroom_id;
-        $student['parent_id'] = $request->parent_id;
-        $student['user_id'] = $user->user_id;
+        $has_parents_in_system = false;
+        $student = new Student();
+        if ($request->classroom_id)
+            $student['classroom_id'] = $request->classroom_id;
+        if ($request->parent_username) {
+            $student_parent = $user::query()->where('username', '=', $request->parent_username)->first();
+            $student['parent_id'] = $student_parent->id;
+            $has_parents_in_system=true;
+        }
+        if(!$has_parents_in_system){
+            $user2 = new User();
+            $user2->name = $request->parent_name;
+            $user2->address = $request->address;
+            $user2->username = strtolower(Str::random(10));
+            $user2->password = strtolower(Str::random(6));
+            $user2->phone_num = $request->parent_phone_num;
+            $user2->role =3;
+            $user2->save();
+            $student['parent_id'] = $user2->id;
+            $new_parent = new Paarent();
+            $new_parent->user_id =$user2->id;
+            $new_parent->save();
+        }
+        $student['user_id'] = $user->id;
+        $student['class_id'] = $request->class_id;
 
         $student->save();
         return response()->json([
-            'message' => 'added'
+            'message' => 'added',
+            'data' => $user,
+            'additional' => $student
         ]);
 
     }
@@ -53,13 +81,13 @@ class StudentController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id'=>'required',
+            'id' => 'required',
             'username' => 'required',
-            'password'=> 'required',
+            'password' => 'required',
             'phone_num' => 'required',
             'address' => 'required',
-            'classroom_id'=>'required',
-            'parent_id'=>'required',
+            'classroom_id' => 'required',
+            'parent_id' => 'required',
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -70,7 +98,7 @@ class StudentController extends Controller
 
         $student = Student::query()->where('id', '=', $request->id)->first();
 
-        if(!$student){
+        if (!$student) {
             return response()->json([
                 'error' => 'not found'
             ], 404);
@@ -118,35 +146,38 @@ class StudentController extends Controller
 
 
     //
-    //Return all student in a specific class
-    public function all(Request $request){
-        $validator = Validator::make($request->all(), [
-            'classroom_id' => 'required'
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json([
-                'error' => $errors
-            ], 400);
-        }
-        $students= Student::query()->where('classroom_id','=',$request->classroom_id)->get();
+    //Return all student
+    public function all(Request $request)
+    {
+//        $validator = Validator::make($request->all(), [
+//            'classroom_id' => 'required'
+//        ]);
+//        if ($validator->fails()) {
+//            $errors = $validator->errors();
+//            return response()->json([
+//                'error' => $errors
+//            ], 400);
+//        }
+        $students = User::query()->where('role', '=', 4)->with('student')->get();
 
-        if(!$students){
+
+        if (!$students) {
             return response()->json([
                 'error' => 'no students yet'
             ], 404);
         }
 
-        for($i=0;$i<count($students);$i++) {
-            $users[] = ['STUDENT_ID'=>$students[$i]->id ,User::query()->where('id', '=', $students[$i]->user_id)->first()];
-        }
+//        for ($i = 0; $i < count($students); $i++) {
+//            $users[] = ['STUDENT_ID' => $students[$i]->id, User::query()->where('id', '=', $students[$i]->user_id)->first()];
+//        }
         return response()->json(
-            $users
+            $students
         );
     }
 
 
-    public function one(Request $request){
+    public function one(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'id' => 'required'
         ]);
@@ -156,13 +187,13 @@ class StudentController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $student = Student::query()->where('id','=',$request->id)->first() ;
-        if(!$student){
+        $student = Student::query()->where('id', '=', $request->id)->first();
+        if (!$student) {
             return response()->json([
                 'error' => 'NotFound'
             ], 404);
         }
-        $user =['STUDENT_ID'=>$student->id,User::query()->where('id','=',$student->user_id)->first()];
+        $user = ['STUDENT_ID' => $student->id, User::query()->where('id', '=', $student->user_id)->first()];
         return response()->json(
             $user
         );

@@ -11,13 +11,16 @@ class Student extends Model
     use HasFactory;
     protected $table='students';
     protected $fillable = [
+        'class_id',
         'classroom_id',
         'parent_id',
         'user_id'
     ];
-protected $primaryKey='id';
+//protected $primaryKey='id';
 
-
+    public function  user(){
+        return $this->belongsTo(User::class);
+    }
     public function parent(){
         return $this->belongsTo('App\Models\Paarent',"parent_id",'id');
     }
