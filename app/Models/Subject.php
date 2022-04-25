@@ -12,4 +12,22 @@ class Subject extends Model
     protected $fillable = [
         'name'
     ];
-    protected $primaryKey='id';}
+    protected $primaryKey='id';
+
+    protected $hidden =[
+        'pivot'
+    ];
+
+    public function teachers(){
+        return $this->hasMany('App\Models\Teacher',"subject_id",'id');
+    }
+
+    public function classes(){
+        return $this->belongsToMany('App\Models\Classes','class_subject','subject_id','class_id','id','id');
+    }
+
+    public function subfields(){
+        return $this->hasMany('App\Models\Subfield',"subject_id",'id');
+    }
+
+}

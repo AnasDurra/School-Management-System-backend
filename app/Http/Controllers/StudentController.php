@@ -20,9 +20,8 @@ class StudentController extends Controller
             'phone_num' => 'required',
             'address' => 'required',
             'classroom_id'=>'required',
-            'parent_id'=>'required',
-            'user_id'=>'parent_id',
-        ]);
+            'parent_id'=>'required'
+            ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json([
@@ -41,7 +40,7 @@ class StudentController extends Controller
         $student=new Student();
         $student['classroom_id'] = $request->classroom_id;
         $student['parent_id'] = $request->parent_id;
-        $student['user_id'] = $request->user_id;
+        $student['user_id'] = $user->user_id;
 
         $student->save();
         return response()->json([
@@ -55,7 +54,7 @@ class StudentController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id'=>'required',
-            'username' => 'required|string|max:255',
+            'username' => 'required',
             'password'=> 'required',
             'phone_num' => 'required',
             'address' => 'required',
@@ -69,7 +68,7 @@ class StudentController extends Controller
             ], 400);
         }
 
-        $student = student::query()->where('id', '=', $request->id)->first();
+        $student = Student::query()->where('id', '=', $request->id)->first();
 
         if(!$student){
             return response()->json([
@@ -108,7 +107,7 @@ class StudentController extends Controller
             ], 400);
         }
 
-        $student = student::query()->where('id', '=', $request->id)->first();
+        $student = Student::query()->where('id', '=', $request->id)->first();
         $user = User::query()->where('id', '=', $student->user_id)->first();
         $user->delete();
 
@@ -121,7 +120,16 @@ class StudentController extends Controller
     //
     //Return all student in a specific class
     public function all(Request $request){
-        $students= Student::query()->where('classroom_id','=',$request->id)->get();
+        $validator = Validator::make($request->all(), [
+            'classroom_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+        $students= Student::query()->where('classroom_id','=',$request->classroom_id)->get();
 
         if(!$students){
             return response()->json([
@@ -148,7 +156,7 @@ class StudentController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $student = student::query()->where('id','=',$request->id)->first() ;
+        $student = Student::query()->where('id','=',$request->id)->first() ;
         if(!$student){
             return response()->json([
                 'error' => 'NotFound'

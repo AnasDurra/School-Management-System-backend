@@ -16,7 +16,7 @@ class Classroom extends Model
     ];
     protected $primaryKey='id';
 
-    public function students(){
+    public function student(){
         return $this->hasMany('App\Models\Student','classroom_id','id');
     }
 

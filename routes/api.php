@@ -33,15 +33,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     Route::group(['middleware' => 'isAdmin'], function () {
-        //class
-        Route::get('classes/all', [SchoolClassController::class, 'all']);
-        Route::post('classes/add', [SchoolClassController::class, 'add']);
-        Route::post('/class/edit', [SchoolClassController::class, 'edit']);
-        Route::post('/class/delete', [SchoolClassController::class, 'delete']);
-        Route::post('/class/students',[classStudentsController::class,'all']);
-        Route::post('/class',[SchoolClassController::class,'one']);
-
-
         //student
         Route::post('/students/add', [StudentController::class, 'add']);
         Route::post('/students/delete', [StudentController::class, 'delete']);
@@ -49,12 +40,40 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/students/all', [StudentController::class, 'all']);
         Route::post('/student',[StudentController::class,'one']);
 
+        //teachers
+        Route::post('/teachers/add', [\App\Http\Controllers\TeacherController::class, 'add']);
+        Route::post('/teachers/delete', [\App\Http\Controllers\TeacherController::class, 'delete']);
+        Route::post('/teachers/update', [\App\Http\Controllers\TeacherController::class, 'update']);
+        Route::get('/teachers/all', [\App\Http\Controllers\TeacherController::class, 'all']);
+        Route::post('/teachers/teacher_subject', [\App\Http\Controllers\TeacherController::class, 'teacher_subject']);//show teacher subjects
+        Route::post('/teachers',[\App\Http\Controllers\TeacherController::class,'one']);
+
+
+        ##delete subfield
+        Route::post('/teachers/delete_subfield', [\App\Http\Controllers\TeacherController::class, 'deleteSubfield']); //delete subfield from a teacher
+        ##get teacher subfields
+        Route::post('/teachers/get_subfields', [\App\Http\Controllers\TeacherController::class, 'getSubfields']);
+
+
         //parents
         Route::post('/parents/add', [\App\Http\Controllers\ParentController::class, 'add']);
         Route::post('/parents/delete', [\App\Http\Controllers\ParentController::class, 'delete']);
         Route::post('/parents/update', [\App\Http\Controllers\ParentController::class, 'update']);
         Route::get('/parents/all', [\App\Http\Controllers\ParentController::class, 'all']);
         Route::post('/parents',[\App\Http\Controllers\ParentController::class,'one']);
+
+        //subjects
+        Route::post('/subjects/add', [\App\Http\Controllers\SubjectController::class, 'add']);
+        Route::get('/subjects/all', [\App\Http\Controllers\SubjectController::class, 'all']);
+        Route::post('/subjects/delete', [\App\Http\Controllers\SubjectController::class, 'delete']);
+        Route::post('/subjects/update', [\App\Http\Controllers\SubjectController::class, 'update']);
+        Route::post('/subjects/subject_teachers', [\App\Http\Controllers\SubjectController::class, 'subject_teachers']); //Subject Teachers
+
+
+        //subfields
+        Route::post('/subfields/delete', [\App\Http\Controllers\SubfieldController::class, 'delete']);
+        Route::post('/subfields/update', [\App\Http\Controllers\SubfieldController::class, 'update']);
+
 
     });
 
@@ -76,7 +95,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/classes/delete', [\App\Http\Controllers\ClassController::class, 'delete']);
     Route::get('/classes/all', [\App\Http\Controllers\ClassController::class, 'all']);
     Route::post('/classes/show_classrooms', [\App\Http\Controllers\ClassController::class, 'show_classrooms']);
-    //still add subject and .. etc
+
+    ##add subjects to a class
+    Route::post('/classes/add_subjects_to_class', [\App\Http\Controllers\ClassController::class, 'add_subjects_to_class']);
+    ##delete subject from a class
+    Route::post('/classes/delete_subject_from_class', [\App\Http\Controllers\ClassController::class, 'delete_subject_from_class']);
+    ##get subjects of a class
+    Route::post('/classes/get_subjects_of_class', [\App\Http\Controllers\ClassController::class, 'get_subjects_of_class']);
 
     //classrooms
     Route::post('/classrooms/add', [\App\Http\Controllers\ClassroomController::class, 'add']);

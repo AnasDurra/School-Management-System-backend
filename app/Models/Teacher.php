@@ -14,4 +14,12 @@ class Teacher extends Model
         'user_id',
     ];
     protected $primaryKey='id';
+
+    public function subject(){
+        return $this->belongsTo('App\Models\Subject',"subject_id",'id');
+    }
+
+    public function subfields(){
+        return $this->belongsToMany('App\Models\Subfield','teacher_subfiled','teacher_id','subfield_id','id','id');
+    }
 }

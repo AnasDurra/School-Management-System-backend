@@ -18,4 +18,8 @@ class Classes extends Model
         return $this->hasMany('App\Models\Classroom',"class_id",'id');
     }
 
+
+    public function subjects(){
+        return $this->belongsToMany('App\Models\Subject','class_subject','class_id','subject_id','id','id');
+    }
 }
