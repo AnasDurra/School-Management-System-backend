@@ -13,9 +13,9 @@ class CreateTeacherSubfiledTable extends Migration
      */
     public function up()
     {
-        Schema::create('teacher_subfiled', function (Blueprint $table) {
+        Schema::create('teacher_subfield', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('teacher_id')->constrained('teachers')->cascadeOnDelete();
+            $table->foreignId('teacher_id')->references('user_id')->on('teachers')->cascadeOnDelete();
             $table->foreignId('subfield_id')->constrained('subfields')->cascadeOnDelete();
             $table->timestamps();
         });

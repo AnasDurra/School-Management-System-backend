@@ -49,20 +49,20 @@ class StudentController extends Controller
         if ($request->parent_username) {
             $student_parent = $user::query()->where('username', '=', $request->parent_username)->first();
             $student['parent_id'] = $student_parent->id;
-            $has_parents_in_system=true;
+            $has_parents_in_system = true;
         }
-        if(!$has_parents_in_system){
+        if (!$has_parents_in_system) {
             $user2 = new User();
             $user2->name = $request->parent_name;
             $user2->address = $request->address;
             $user2->username = strtolower(Str::random(10));
             $user2->password = strtolower(Str::random(6));
             $user2->phone_num = $request->parent_phone_num;
-            $user2->role =3;
+            $user2->role = 3;
             $user2->save();
             $student['parent_id'] = $user2->id;
             $new_parent = new Paarent();
-            $new_parent->user_id =$user2->id;
+            $new_parent->user_id = $user2->id;
             $new_parent->save();
         }
         $student['user_id'] = $user->id;
@@ -81,13 +81,15 @@ class StudentController extends Controller
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'id' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-            'phone_num' => 'required',
-            'address' => 'required',
-            'classroom_id' => 'required',
-            'parent_id' => 'required',
+            'id' => 'required', //for user
+            'name',
+            'username',
+            'password',
+            'phone_num',
+            'address',
+            'classroom_id',
+            'parent_id',
+            'class_id'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -96,28 +98,41 @@ class StudentController extends Controller
             ], 400);
         }
 
-        $student = Student::query()->where('id', '=', $request->id)->first();
 
-        if (!$student) {
-            return response()->json([
-                'error' => 'not found'
-            ], 404);
-        }
+//
+//        if (!$student) {
+//            return response()->json([
+//                'error' => 'not found'
+//            ], 404);
+//        }
 
-        $user = User::query()->where('id', '=', $student->user_id)->first();
-        $user['username'] = $request->username;
-        $user['password'] = $request->password;
-        $user['phone_num'] = $request->phone_num;
-        $user['address'] = $request->address;
+        $user = User::query()->where('id', '=', $request->id)->with('student')->first();
+        $student = Student::query()->where('user_id', '=', $user->id)->first();
+        if ($request->name)
+            $user['name'] = $request->name;
+        if ($request->username)
+            $user['username'] = $request->username;
+        if ($request->password)
+            $user['password'] = $request->password;
+        if ($request->phone_num)
+            $user['phone_num'] = $request->phone_num;
+        if ($request->address)
+            $user['address'] = $request->address;
 
-        $student['classroom_id'] = $request->classroom_id;
-        $student['parent_id'] = $request->parent_id;
+        if ($request->classroom_id)
+            $student['classroom_id'] = $request->classroom_id;
+        if ($request->parent_id)
+            $student['parent_id'] = $request->parent_id;
+        if ($request->class_id)
+            $student['class_id'] = $request->class_id;
 
-        $student->save();
         $user->save();
+        $student->save();
+
 
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
+            'data' => $user
         ]);
 
     }
