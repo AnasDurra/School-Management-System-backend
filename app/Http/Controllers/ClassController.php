@@ -86,12 +86,17 @@ class ClassController extends Controller
     }
 
     public function all(Request $request){
-        $classes =Classes::query()->with('subjects')->with('subfields')->get();
+        $classes =Classes::query()->with('subjects')->get();
 
         if(!$classes){
             return response()->json([
                 'message' => 'No classes'
             ]);
+        }
+        for($i=0;$i<count($classes);$i++){
+            for($j=0;$j<count($classes[$i]->subjects);$j++){
+                $classes[$i]->subjects[$j]->subfields;
+            }
         }
         return response()->json([
             'data' => $classes
