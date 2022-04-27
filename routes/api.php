@@ -97,9 +97,9 @@ Route::post('/register', [AuthController::class, 'register']);
     Route::post('/classes/show_classrooms', [\App\Http\Controllers\ClassController::class, 'show_classrooms']);
 
     ##add subjects to a class
-    Route::post('/classes/add_subjects_to_class', [\App\Http\Controllers\ClassController::class, 'add_subjects_to_class']);
+    Route::post('/classes/subjects/add', [\App\Http\Controllers\ClassController::class, 'addSubjectsToClass']);
     ##delete subject from a class
-    Route::post('/classes/delete_subject_from_class', [\App\Http\Controllers\ClassController::class, 'delete_subject_from_class']);
+    Route::post('/classes/subjects/delete', [\App\Http\Controllers\ClassController::class, 'deleteSubjectsFromClass']);
     ##get subjects of a class
     Route::post('/classes/get_subjects_of_class', [\App\Http\Controllers\ClassController::class, 'get_subjects_of_class']);
 

@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\Validator;
 
 class ClassController extends Controller
 {
-    public function add(Request $request){
+    public function add(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'subjects_id'
-            ]);
+        ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
             return response()->json([
@@ -26,23 +27,27 @@ class ClassController extends Controller
         $class->name = $request->name;
         $class->save();
 
-        for($i=0;$i<count($request->subjects_id);$i++){
+        for ($i = 0; $i < count($request->subjects_id); $i++) {
             $class_subjects = new Class_Subject();
-            $class_subjects->subject_id =$request->subjects_id[$i];
+            $class_subjects->subject_id = $request->subjects_id[$i];
             $class_subjects->class_id = $class->id;
             $class_subjects->save();
         }
 
-        $classWithSubjects =Classes::query()->where('id','=',$class->id)->with('subjects')->get();
+        $classWithSubjects = Classes::query()->where('id', '=', $class->id)->with('subjects')->first();
+        if ($classWithSubjects->subjects)
+            for ($i = 0; $i < count($classWithSubjects->subjects); $i++)
+                $classWithSubjects->subjects[$i]->subfields;
         return response()->json([
             'message' => 'added',
-            'data'=>$classWithSubjects
+            'data' => $classWithSubjects
         ]);
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'id'=>'required',
+            'id' => 'required',
             'name' => 'required',
         ]);
         if ($validator->fails()) {
@@ -52,21 +57,24 @@ class ClassController extends Controller
             ], 400);
         }
 
-        $class = Classes::query()->where('id','=',$request->id)->first();
-        if(!$class){return response()->json(['message'=>'NotFound']);}
+        $class = Classes::query()->where('id', '=', $request->id)->first();
+        if (!$class) {
+            return response()->json(['message' => 'NotFound']);
+        }
 
-        $class->name =$request->name;
+        $class->name = $request->name;
         $class->save();
 
         return response()->json([
             'message' => 'updated',
-            'data'=>$class
+            'data' => $class
         ]);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'id'=>'required'
+            'id' => 'required'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -75,8 +83,10 @@ class ClassController extends Controller
             ], 400);
         }
 
-        $class = Classes::query()->where('id','=',$request->id)->first();
-        if(!$class){return response()->json(['message'=>'NotFound']);}
+        $class = Classes::query()->where('id', '=', $request->id)->first();
+        if (!$class) {
+            return response()->json(['message' => 'NotFound']);
+        }
 
         $class->delete();
 
@@ -85,16 +95,17 @@ class ClassController extends Controller
         ]);
     }
 
-    public function all(Request $request){
-        $classes =Classes::query()->with('subjects')->get();
+    public function all(Request $request)
+    {
+        $classes = Classes::query()->with('subjects')->get();
 
-        if(!$classes){
+        if (!$classes) {
             return response()->json([
                 'message' => 'No classes'
             ]);
         }
-        for($i=0;$i<count($classes);$i++){
-            for($j=0;$j<count($classes[$i]->subjects);$j++){
+        for ($i = 0; $i < count($classes); $i++) {
+            for ($j = 0; $j < count($classes[$i]->subjects); $j++) {
                 $classes[$i]->subjects[$j]->subfields;
             }
         }
@@ -104,9 +115,10 @@ class ClassController extends Controller
 
     }
 
-    public function show_classrooms(Request $request){
+    public function show_classrooms(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'id'=>'required'
+            'id' => 'required'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -114,16 +126,18 @@ class ClassController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $class = Classes::query()->where('id','=',$request->id)->first();
-        if(!$class){return response()->json(['message'=>'NotFound']);}
+        $class = Classes::query()->where('id', '=', $request->id)->first();
+        if (!$class) {
+            return response()->json(['message' => 'NotFound']);
+        }
 
         return response()->json([
-            'data'=> $class->classrooms
+            'data' => $class->classrooms
         ]);
     }
 
     ##add subjects to a class
-    public function add_subjects_to_class(Request $request)
+    public function addSubjectsToClass(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'subject_ids' => 'required',  //array of ids of subjects
@@ -136,24 +150,24 @@ class ClassController extends Controller
             ], 400);
         }
 
-        for($i=0;$i<count($request->subject_ids);$i++){
-            $class_subject[$i] =new Class_Subject();
-            $class_subject[$i]->subject_id=$request->subject_ids[$i];
-            $class_subject[$i]->class_id=$request->class_id;
-            $class_subject[$i]->save();
+        for ($i = 0; $i < count($request->subject_ids); $i++) {
+            $class_subject = new Class_Subject();
+            $class_subject->subject_id = $request->subject_ids[$i];
+            $class_subject->class_id = $request->class_id;
+            $class_subject->save();
 
         }
 
         return response()->json([
-            'message' => 'added',
-            'data'=>$class_subject
+            'message' => 'success'
+
         ]);
     }
 
-    public function delete_subject_from_class(Request $request)
+    public function deleteSubjectsFromClass(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'subject_id' => 'required',
+            'subject_ids' => 'required',//array
             'class_id' => 'required'
         ]);
         if ($validator->fails()) {
@@ -162,20 +176,19 @@ class ClassController extends Controller
                 'error' => $errors
             ], 400);
         }
+        for ($i = 0; $i < count($request->subject_ids); $i++)
+            Class_Subject::query()->where('subject_id', '=', $request->subject_ids[$i])->
+            where('class_id', '=', $request->class_id)->delete();
 
-        $class_subject = Class_Subject::query()->where('subject_id','=',$request->subject_id)->
-        where('class_id','=',$request->class_id)->delete();
 
-        if (!$class_subject) {
-            return response()->json(['message' => 'Not Found']);
-        }
         return response()->json([
-            'message' => 'deleted'
+            'message' => 'success'
         ]);
     }
 
     //aaa
-    public function get_subjects_of_class(Request $request){
+    public function get_subjects_of_class(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'class_id' => 'required'
         ]);
@@ -186,16 +199,16 @@ class ClassController extends Controller
             ], 400);
         }
 
-        $class=Classes::query()->where('id','=',$request->class_id)->first();
+        $class = Classes::query()->where('id', '=', $request->class_id)->first();
         if (!$class) {
             return response()->json(['message' => 'Not Found']);
         }
 
-        $class_subjects =$class->subjects;
+        $class_subjects = $class->subjects;
 
-        for($i=0;$i<count($class_subjects);$i++) {
+        for ($i = 0; $i < count($class_subjects); $i++) {
             $class_subjects[$i] = Subject::query()->where('id', '=', $class_subjects[$i]->id)->with('subfields')->first();
-            }
+        }
         return response()->json([
             'data' => $class->subjects
         ]);
