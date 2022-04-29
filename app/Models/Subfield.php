@@ -17,7 +17,7 @@ class Subfield extends Model
 
 
     public function teachers(){
-        return $this->belongsToMany('App\Models\Teacher','teacher_subfiled','subfield_id','teacher_id','id','id');
+        return $this->belongsToMany('App\Models\Teacher','teacher_subfield','subfield_id','teacher_id','id','id');
     }
     public function subject(){
         return $this->belongsTo('App\Models\Subject','subject_id','id');

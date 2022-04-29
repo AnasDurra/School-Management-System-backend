@@ -23,6 +23,6 @@ class Teacher extends Model
     }
 
     public function subfields(){
-        return $this->belongsToMany('App\Models\Subfield','teacher_subfiled','teacher_id','subfield_id','user_id','id');
+        return $this->belongsToMany('App\Models\Subfield','teacher_subfield','teacher_id','subfield_id','user_id','id');
     }
 }

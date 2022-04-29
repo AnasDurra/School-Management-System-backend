@@ -28,6 +28,6 @@ class CreateTeacherSubfiledTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teacher_subfiled');
+        Schema::dropIfExists('teacher_subfield');
     }
 }

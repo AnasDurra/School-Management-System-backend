@@ -22,14 +22,14 @@ class Student extends Model
         return $this->belongsTo(User::class);
     }
     public function parent(){
-        return $this->belongsTo('App\Models\Paarent',"parent_id",'id');
+        return $this->belongsTo('App\Models\Paarent',"parent_id","user_id");
     }
 
     public function marks(){
-        return $this->hasMany('App\Models\Mark','student_id','id');
+        return $this->hasMany('App\Models\Mark','user_id','user_id');
     }
     public function classroom(){
-        return $this->belongsTo('App\Models\Classroom','class_id','id');
+        return $this->belongsTo('App\Models\Classroom','class_id','user_id');
     }
 
 }

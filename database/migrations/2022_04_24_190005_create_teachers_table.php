@@ -14,8 +14,7 @@ class CreateTeachersTable extends Migration
     public function up()
     {
         Schema::create('teachers', function (Blueprint $table) {
-
-            $table->foreignId('subject_id')->nullable()->constrained();
+            $table->foreignId('subject_id')->nullable();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });

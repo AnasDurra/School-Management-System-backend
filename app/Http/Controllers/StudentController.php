@@ -19,7 +19,7 @@ class StudentController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'parent_name',
-            'Parent_phone_num',
+            'parent_phone_num',
             'phone_num' => 'required',
             'address',
             'classroom_id', // optional
@@ -67,12 +67,14 @@ class StudentController extends Controller
         }
         $student['user_id'] = $user->id;
         $student['class_id'] = $request->class_id;
-
         $student->save();
+      $student=Student::query()->where('user_id',"=",$student->user_id)->with('parent')->first();
         return response()->json([
-            'message' => 'added',
-            'data' => $user,
-            'additional' => $student
+            'message' => 'success',
+            'user' => $user,
+            'student' => $student,
+            'parent_was_in_system'=>$has_parents_in_system
+
         ]);
 
     }

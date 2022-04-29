@@ -18,7 +18,7 @@ class CreateMarksTable extends Migration
             $table->integer('value');
             $table->integer('subfield_id');
             $table->integer('subject_id');
-            $table->foreignId('student_id');
+            $table->foreignId('user_id');
 
             $table->timestamps();
         });

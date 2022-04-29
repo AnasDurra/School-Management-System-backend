@@ -36,7 +36,7 @@ class ParentController extends Controller
         $user->save();
 
 
-        $parent = new Paarent();
+        $parent = new Parent();
         $parent->user_id = $user->id;
         $parent->save();
 
@@ -63,7 +63,7 @@ class ParentController extends Controller
             ], 400);
         }
 
-        $parent = Paarent::query()->where('id', '=', $request->id)->firstOrFail();
+        $parent = Parent::query()->where('id', '=', $request->id)->firstOrFail();
         $user = User::query()->where('id', '=', $parent->user_id)->first();
         $user['username'] = $request->username;
         $user['password'] = $request->password;
@@ -87,7 +87,7 @@ class ParentController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $parent = Paarent::query()->where('id', '=', $request->id)->firstOrFail();
+        $parent = Parent::query()->where('id', '=', $request->id)->firstOrFail();
         $user = User::query()->where('id', '=', $parent->user_id)->firstOrFail();
         $user->delete();
         return response()->json([
@@ -97,7 +97,7 @@ class ParentController extends Controller
 
     public function all()
     {
-        $parent = Paarent::all();
+        $parent = Parent::all();
         $parent->toArray();
         for($i=0;$i<count($parent);$i++){
 
@@ -120,7 +120,7 @@ class ParentController extends Controller
             ], 400);
         }
 
-        $parent = Paarent::query()->where('id','=',$request->id)->firstOrFail();
+        $parent = Parent::query()->where('id','=',$request->id)->firstOrFail();
         if(!$parent) {
             return response()->json([
                 'message' => 'Not found'

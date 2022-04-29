@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Models\teacher_subfiled;
+use App\Models\teacher_subfield;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -44,15 +44,16 @@ class TeacherController extends Controller
         $teacher->save();
         if (!$request->subject_id)
             for ($i = 0; $i < count($request->subfield_ids); $i++) {
-                $teacher_subfield = new teacher_subfiled();
+                $teacher_subfield = new teacher_subfield();
                 $teacher_subfield->teacher_id = $user->id;
                 $teacher_subfield->subfield_id = $request->subfield_ids[$i];
                 $teacher_subfield->save();
             }
         if ($request->subject_id) {
             $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
+            if($subject)
             for ($i = 0; $i < count($subject->subfields); $i++) {
-                $teacher_subfield = new teacher_subfiled();
+                $teacher_subfield = new teacher_subfield();
                 $teacher_subfield->teacher_id = $user->id;
                 $teacher_subfield->subfield_id = $subject->subfields[$i]->id;
                 $teacher_subfield->save();
@@ -65,7 +66,6 @@ class TeacherController extends Controller
         return response()->json([
             'message' => 'added',
             'user' => $user,
-
         ]);
     }
 
@@ -110,14 +110,14 @@ class TeacherController extends Controller
             $user['teacher']['subject_id'] = $request->subject_id;
 
             //delete all existing teacher subfields
-            $teacher_subfields = teacher_subfiled::query()->where('teacher_id', '=', $user->id)->get();
+            $teacher_subfields = teacher_subfield::query()->where('teacher_id', '=', $user->id)->get();
             if ($teacher_subfields)
                 for ($i = 0; $i < count($teacher_subfields); $i++) $teacher_subfields[$i]->delete();
 
             //add all subject subfields to the teacher
             $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
             for ($i = 0; $i < count($subject->subfields); $i++) {
-                $teacher_subfield = new teacher_subfiled();
+                $teacher_subfield = new teacher_subfield();
                 $teacher_subfield->teacher_id = $user->id;
                 $teacher_subfield->subfield_id = $subject->subfields[$i]->id;
                 $teacher_subfield->save();
@@ -127,12 +127,12 @@ class TeacherController extends Controller
 
 
             //delete all existing teacher subfields
-            $teacher_subfields = teacher_subfiled::query()->where('teacher_id', '=', $user->id)->get();
+            $teacher_subfields = teacher_subfield::query()->where('teacher_id', '=', $user->id)->get();
             if ($teacher_subfields)
                 for ($i = 0; $i < count($teacher_subfields); $i++) $teacher_subfields[$i]->delete();
             //assign new subfields from request
             for ($i = 0; $i < count($request->subfields_id); $i++) {
-                $teacher_subfield = new teacher_subfiled();
+                $teacher_subfield = new teacher_subfield();
                 $teacher_subfield->teacher_id = $user->id;
                 $teacher_subfield->subfield_id = $request->subfields_id[$i];
                 $teacher_subfield->save();
@@ -258,15 +258,15 @@ class TeacherController extends Controller
 ////        }
 ////
 ////        for ($i = 0; $i < count($request->subfield_ids); $i++) {
-////            $teacher_subfiled[$i] = new teacher_subfiled();
-////            $teacher_subfiled[$i]->teacher_id = $request->teacher_id;
-////            $teacher_subfiled[$i]->subfield_id = $request->subfield_ids[$i];
-////            $teacher_subfiled[$i]->save();
+////            $teacher_subfield[$i] = new teacher_subfield();
+////            $teacher_subfield[$i]->teacher_id = $request->teacher_id;
+////            $teacher_subfield[$i]->subfield_id = $request->subfield_ids[$i];
+////            $teacher_subfield[$i]->save();
 ////        }
 //
 //        return response()->json([
 //            'message' => 'added',
-//            'data' => $teacher_subfiled
+//            'data' => $teacher_subfield
 //        ]);
 //    }
 
@@ -284,7 +284,7 @@ class TeacherController extends Controller
             ], 400);
         }
 
-        $teacher_subfield = teacher_subfiled::query()->where('teacher_id', '=', $request->teacher_id)->
+        $teacher_subfield = teacher_subfield::query()->where('teacher_id', '=', $request->teacher_id)->
         where('subfield_id', '=', $request->subfield_id)->delete();
         if (!$teacher_subfield) {
             return response()->json([

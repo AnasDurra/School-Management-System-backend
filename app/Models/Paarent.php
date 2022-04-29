@@ -12,10 +12,10 @@ class Paarent extends Model
     protected $table='paarents';
     protected $fillable = ['user_id'
     ];
-    protected $primaryKey='id';
+
 
 
     public function students(){
-        return $this->hasMany('App\Models\Student','parent_id','id');
+        return $this->hasMany('App\Models\Student','parent_id','user_id');
     }
 }
