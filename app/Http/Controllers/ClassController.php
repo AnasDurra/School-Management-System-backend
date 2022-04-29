@@ -157,9 +157,13 @@ class ClassController extends Controller
             $class_subject->save();
 
         }
+        $class = Classes::query()->where('id', '=', $request->class_id)->first();
+        if($class)
+        $class->subjects;
 
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
+            'data' => $class
 
         ]);
     }
@@ -180,9 +184,12 @@ class ClassController extends Controller
             Class_Subject::query()->where('subject_id', '=', $request->subject_ids[$i])->
             where('class_id', '=', $request->class_id)->delete();
 
-
+        $class = Classes::query()->where('id', '=', $request->class_id)->first();
+        if($class)
+        $class->subjects;
         return response()->json([
-            'message' => 'success'
+            'message' => 'success',
+            'data'=>$class
         ]);
     }
 
