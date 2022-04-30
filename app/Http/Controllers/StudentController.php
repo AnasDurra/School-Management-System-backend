@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Classes;
 use App\Models\Paarent;
 use App\Models\SchoolClass;
 use App\Models\Student;
@@ -176,8 +177,11 @@ class StudentController extends Controller
 //            ], 400);
 //        }
         $students = User::query()->where('role', '=', 4)->with('student')->get();
-
-
+if($students)
+for($i=0;$i<count($students);$i++){
+    $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
+    $students[$i]->class =$class;
+}
         if (!$students) {
             return response()->json([
                 'error' => 'no students yet'
