@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classes;
+use App\Models\Classroom;
 use App\Models\Paarent;
 use App\Models\SchoolClass;
 use App\Models\Student;
@@ -70,6 +71,12 @@ class StudentController extends Controller
         $student['class_id'] = $request->class_id;
         $student->save();
       $student=Student::query()->where('user_id',"=",$student->user_id)->with('parent')->first();
+        $class = Classes::query()->where('id', '=', $student->class_id)->first();
+        $class_room = Classroom::query()->where('id','=',$student->classroom_id)->first();
+        $parent = Paarent::query()->where('user_id','=',$student->parent_id)->first();
+        $student->class =$class;
+        $student->parent =$parent;
+        $student->classroom =$class_room;
         return response()->json([
             'message' => 'success',
             'user' => $user,
@@ -180,7 +187,11 @@ class StudentController extends Controller
 if($students)
 for($i=0;$i<count($students);$i++){
     $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
+    $class_room = Classroom::query()->where('id','=',$students[$i]['student']->classroom_id)->first();
+    $parent = Paarent::query()->where('user_id','=',$students[$i]['student']->parent_id)->first();
     $students[$i]->class =$class;
+    $students[$i]->parent =$parent;
+    $students[$i]->classroom =$class_room;
 }
         if (!$students) {
             return response()->json([
