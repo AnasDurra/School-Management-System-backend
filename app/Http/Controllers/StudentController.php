@@ -70,18 +70,18 @@ class StudentController extends Controller
         $student['user_id'] = $user->id;
         $student['class_id'] = $request->class_id;
         $student->save();
-      $student=Student::query()->where('user_id',"=",$student->user_id)->with('parent')->first();
+        $student = Student::query()->where('user_id', "=", $student->user_id)->with('parent')->first();
         $class = Classes::query()->where('id', '=', $student->class_id)->first();
-        $class_room = Classroom::query()->where('id','=',$student->classroom_id)->first();
-        $parent = Paarent::query()->where('user_id','=',$student->parent_id)->first();
-        $student->class =$class;
-        $student->parent =$parent;
-        $student->classroom =$class_room;
+        $class_room = Classroom::query()->where('id', '=', $student->classroom_id)->first();
+        $parent = Paarent::query()->where('user_id', '=', $student->parent_id)->first();
+        $student->class = $class;
+        $student->parent = $parent;
+        $student->classroom = $class_room;
         return response()->json([
             'message' => 'success',
             'user' => $user,
             'student' => $student,
-            'parent_was_in_system'=>$has_parents_in_system
+            'parent_was_in_system' => $has_parents_in_system
 
         ]);
 
@@ -138,7 +138,13 @@ class StudentController extends Controller
 
         $user->save();
         $student->save();
-
+        $user = User::query()->where('id', '=', $student->user_id)->with('student')->first();
+        $class = Classes::query()->where('id', '=', $user['student']->class_id)->first();
+        $class_room = Classroom::query()->where('id', '=', $user['student']->classroom_id)->first();
+        $parent = Paarent::query()->where('user_id', '=', $user['student']->parent_id)->first();
+        $user['student']->class = $class;
+        $user['student']->parent = $parent;
+        $user['student']->classroom = $class_room;
 
         return response()->json([
             'message' => 'success',
@@ -160,12 +166,25 @@ class StudentController extends Controller
             ], 400);
         }
 
-        $student = Student::query()->where('id', '=', $request->id)->first();
-        $user = User::query()->where('id', '=', $student->user_id)->first();
+
+        $user = User::query()->where('id', '=', $request->id)->with('student')->first();
+        $class = Classes::query()->where('id', '=', $user['student']->class_id)->first();
+        $class_room = Classroom::query()->where('id', '=', $user['student']->classroom_id)->first();
+        $parent = Paarent::query()->where('user_id', '=', $user['student']->parent_id)->first();
+        $user['student']->class = $class;
+        $user['student']->parent = $parent;
+        $user['student']->classroom = $class_room;
+        $hold = $user;
         $user->delete();
 
-        return response()->json([
-            'message' => 'deleted'
+        //delete parent if he has no more children in school
+        $isParent = Student::query()->where('parent_id', '=', $parent->user_id)->first();
+        if (!$isParent) Paarent::where('user_id',$parent->user_id)->delete();
+
+return response()->json([
+            'message' => 'success',
+            "data" => $hold,
+
         ]);
     }
 
@@ -184,15 +203,15 @@ class StudentController extends Controller
 //            ], 400);
 //        }
         $students = User::query()->where('role', '=', 4)->with('student')->get();
-if($students)
-for($i=0;$i<count($students);$i++){
-    $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
-    $class_room = Classroom::query()->where('id','=',$students[$i]['student']->classroom_id)->first();
-    $parent = Paarent::query()->where('user_id','=',$students[$i]['student']->parent_id)->first();
-    $students[$i]->class =$class;
-    $students[$i]->parent =$parent;
-    $students[$i]->classroom =$class_room;
-}
+        if ($students)
+            for ($i = 0; $i < count($students); $i++) {
+                $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
+                $class_room = Classroom::query()->where('id', '=', $students[$i]['student']->classroom_id)->first();
+                $parent = Paarent::query()->where('user_id', '=', $students[$i]['student']->parent_id)->first();
+                $students[$i]->class = $class;
+                $students[$i]->parent = $parent;
+                $students[$i]->classroom = $class_room;
+            }
         if (!$students) {
             return response()->json([
                 'error' => 'no students yet'
@@ -219,13 +238,14 @@ for($i=0;$i<count($students);$i++){
                 'error' => $errors
             ], 400);
         }
-        $student = Student::query()->where('id', '=', $request->id)->first();
-        if (!$student) {
-            return response()->json([
-                'error' => 'NotFound'
-            ], 404);
-        }
-        $user = ['STUDENT_ID' => $student->id, User::query()->where('id', '=', $student->user_id)->first()];
+
+        $user = User::query()->where('id', '=', $request->id)->with('student')->first();
+        $class = Classes::query()->where('id', '=', $user['student']->class_id)->first();
+        $class_room = Classroom::query()->where('id', '=', $user['student']->classroom_id)->first();
+        $parent = Paarent::query()->where('user_id', '=', $user['student']->parent_id)->first();
+        $user['student']->class = $class;
+        $user['student']->parent = $parent;
+        $user['student']->classroom = $class_room;
         return response()->json(
             $user
         );

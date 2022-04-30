@@ -29,7 +29,7 @@ class Student extends Model
         return $this->hasMany('App\Models\Mark','user_id','user_id');
     }
     public function classroom(){
-        return $this->belongsTo('App\Models\Classroom','class_id','user_id');
+        return $this->belongsTo('App\Models\Classroom','classroom_id','id');
     }
 
 }

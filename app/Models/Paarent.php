@@ -14,8 +14,11 @@ class Paarent extends Model
     ];
 
 
-
+    public function  user(){
+        return $this->belongsTo(User::class);
+    }
     public function students(){
         return $this->hasMany('App\Models\Student','parent_id','user_id');
     }
+
 }
