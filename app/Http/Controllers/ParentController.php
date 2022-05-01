@@ -56,6 +56,7 @@ class ParentController extends Controller
             'password', //Passowrd is not required for update
             'phone_num',
             'address',
+            'name'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -66,6 +67,8 @@ class ParentController extends Controller
 
 
         $user = User::query()->where('id', '=', $request->id)->with('parent')->first();
+        if ($request->name)
+            $user['name'] = $request->name;
         if ($request->username)
             $user['username'] = $request->username;
         if ($request->password)

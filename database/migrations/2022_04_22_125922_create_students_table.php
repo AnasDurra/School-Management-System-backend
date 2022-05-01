@@ -17,7 +17,7 @@ class CreateStudentsTable extends Migration
             $table->integer('class_id');
             $table->foreignId('classroom_id')->nullable();
             $table->foreignId('parent_id');
-            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
             $table->timestamps();
         });
     }
