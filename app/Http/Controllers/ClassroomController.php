@@ -8,6 +8,19 @@ use Illuminate\Support\Facades\Validator;
 
 class ClassroomController extends Controller
 {
+    public function all(Request $request){
+        $classrooms = Classroom::all();
+        if($classrooms) {
+            $classrooms->toArray();
+            for($i =0;$i<count($classrooms);$i++){
+                $classrooms[$i]->students;
+            }
+        }
+        return response()->json(
+            $classrooms
+        );
+
+    }
     public function add(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -30,7 +43,7 @@ class ClassroomController extends Controller
         $classroom->save();
 
         return response()->json([
-            'message' => 'added',
+            'message' => 'success',
             'data' => $classroom
         ]);
     }
@@ -38,9 +51,9 @@ class ClassroomController extends Controller
     public function update(Request $request){
         $validator = Validator::make($request->all(), [
             'id'=>'required',
-            'name' => 'required',
-            'capacity' => 'required',
-            'class_id' => 'required'
+            'name',
+            'capacity' ,
+            'class_id'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -50,15 +63,18 @@ class ClassroomController extends Controller
         }
 
         $classroom = Classroom::query()->where('id','=',$request->id)->first();
+        if($request->name)
         $classroom->name = $request->name;
+        if($request->capacity)
         $classroom->capacity = $request->capacity;
+        if($request->class_id)
         $classroom->class_id = $request->class_id;
         $classroom->save();
 
         if(!$classroom){return response()->json(['message'=>'NotFound']);}
 
         return response()->json([
-            'message' => 'updated',
+            'message' => 'success',
             'data' => $classroom
         ]);
     }
@@ -74,12 +90,16 @@ class ClassroomController extends Controller
             ], 400);
         }
 
-        $classroom = Classroom::query()->where('id','=',$request->id)->delete();
-        if(!$classroom){return response()->json(['message'=>'NotFound']);}
+        $classroom = Classroom::query()->where('id','=',$request->id)->first();
 
-        return response()->json([
-            'message' => 'deleted'
-        ]);
+        if(!$classroom){return response()->json(['message'=>'NotFound']);}
+        
+            $classroom->students;
+            $classroom->delete();
+
+        return response()->json(
+            $classroom
+        );
     }
 
     public function show_my_class(Request $request){

@@ -104,6 +104,7 @@ Route::post('/register', [AuthController::class, 'register']);
     Route::post('/classes/get_subjects_of_class', [\App\Http\Controllers\ClassController::class, 'get_subjects_of_class']);
 
     //classrooms
+    Route::get('/classrooms/all', [\App\Http\Controllers\ClassroomController::class, 'all']);
     Route::post('/classrooms/add', [\App\Http\Controllers\ClassroomController::class, 'add']);
     Route::post('/classrooms/update', [\App\Http\Controllers\ClassroomController::class, 'update']);
     Route::post('/classrooms/delete', [\App\Http\Controllers\ClassroomController::class, 'delete']);
