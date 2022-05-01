@@ -130,21 +130,24 @@ class StudentController extends Controller
             $user['address'] = $request->address;
 
         if ($request->classroom_id)
-            $student['classroom_id'] = $request->classroom_id;
+          //  $student['classroom_id'] = $request->classroom_id;
+            Student::query()->where('user_id','=',$request->id)->update(["classroom_id"=>$request->classroom_id]);
         if ($request->parent_id)
-            $student['parent_id'] = $request->parent_id;
+           // $student['parent_id'] = $request->parent_id;
+            Student::query()->where('user_id','=',$request->id)->update(["parent_id"=>$request->parent_id]);
         if ($request->class_id)
-            $student['class_id'] = $request->class_id;
+           // $student['class_id'] = $request->class_id;
+            Student::query()->where('user_id','=',$request->id)->update(["class_id"=>$request->class_id]);
 
         $user->save();
-        $student->save();
+       // $student->save();
         $user = User::query()->where('id', '=', $student->user_id)->with('student')->first();
         $class = Classes::query()->where('id', '=', $user['student']->class_id)->first();
         $class_room = Classroom::query()->where('id', '=', $user['student']->classroom_id)->first();
         $parent = Paarent::query()->where('user_id', '=', $user['student']->parent_id)->first();
-        $user['student']->class = $class;
-        $user['student']->parent = $parent;
-        $user['student']->classroom = $class_room;
+        $user->class = $class;
+        $user->parent = $parent;
+        $user->classroom = $class_room;
 
         return response()->json([
             'message' => 'success',
