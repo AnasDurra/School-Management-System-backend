@@ -15,8 +15,8 @@ class Week_day extends Model
     ];
     protected $primaryKey='id';
 
-    public function weekly_schedule(){
-        return $this->belongsTo('App\Models\Weekly_schedule','weekly_schedule_id','id');
+    public function classroom(){
+        return $this->belongsTo('App\Models\Classroom','classroom_id','id');
     }
 
     public function week_day_subject(){

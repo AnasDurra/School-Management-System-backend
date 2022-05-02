@@ -93,7 +93,7 @@ class ClassroomController extends Controller
         $classroom = Classroom::query()->where('id','=',$request->id)->first();
 
         if(!$classroom){return response()->json(['message'=>'NotFound']);}
-        
+
             $classroom->students;
             $classroom->delete();
 

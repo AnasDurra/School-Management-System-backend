@@ -23,8 +23,9 @@ class Classroom extends Model
     public function class(){
         return $this->belongsTo('App\Models\Classes',"class_id",'id');
     }
-
-    public function weekly_schedule(){
-        return $this->hasOne('App\Models\Weekly_schedule','classroom_id');
+    public function weekDay(){
+        return $this->hasMany('App\Models\Week_day','classroom_id','id');
     }
+
+
 }
