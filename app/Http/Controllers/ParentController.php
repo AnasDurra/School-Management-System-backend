@@ -115,15 +115,16 @@ class ParentController extends Controller
     {
         $parents = User::query()->where('role', '=', '3')->with('parent')->get();
         $parents->toArray();
-        if($parents)
-        for ($i = 0; $i < count($parents); $i++) {
-         if( $parents[$i]['parent']['students'])
-            for ($j = 0; $j < count($parents[$i]['parent']['students']); $j++) {
-                $parents[$i]['parent']->students[$j]->classroom;
-                $class = Classes::query()->where('id', '=', $parents[$i]['parent']['students'][$j]->class_id)->first();
-                $parents[$i]['parent']['students'][$j]->class = $class;
+        if ($parents)
+            for ($i = 0; $i < count($parents); $i++) {
+                if ($parents[$i]['parent'])
+                    if ($parents[$i]['parent']['students'])
+                        for ($j = 0; $j < count($parents[$i]['parent']['students']); $j++) {
+                            $parents[$i]['parent']->students[$j]->classroom;
+                            $class = Classes::query()->where('id', '=', $parents[$i]['parent']['students'][$j]->class_id)->first();
+                            $parents[$i]['parent']['students'][$j]->class = $class;
+                        }
             }
-        }
         //        for($i=0;$i<count($parent);$i++){
 //
 //            $user= ['PARENT_ID'=>$parent[$i]->id,User::query()->where('id','=',$parent[$i]->user_id)->firstOrFail() ];
