@@ -11,7 +11,6 @@ class Week_day extends Model
     protected $table='week_days';
     protected $fillable = [
         'day',
-        'weekly_schedule_id'
     ];
     protected $primaryKey='id';
 

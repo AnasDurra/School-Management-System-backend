@@ -23,6 +23,6 @@ class CreateSubfieldsTable extends Migration
 
     public function down()
     {
-        Schema::dropIfExists('subfield');
+        Schema::dropIfExists('subfields');
     }
 }

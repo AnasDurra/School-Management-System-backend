@@ -60,7 +60,7 @@ Route::post('/register', [AuthController::class, 'register']);
         Route::post('/parents/delete', [\App\Http\Controllers\ParentController::class, 'delete']);
         Route::post('/parents/update', [\App\Http\Controllers\ParentController::class, 'update']);
         Route::get('/parents/all', [\App\Http\Controllers\ParentController::class, 'all']);
-        Route::post('/parents',[\App\Http\Controllers\ParentController::class,'one']);
+        Route::post('/parent',[\App\Http\Controllers\ParentController::class,'one']);
 
         //subjects
         Route::post('/subjects/add', [\App\Http\Controllers\SubjectController::class, 'add']);

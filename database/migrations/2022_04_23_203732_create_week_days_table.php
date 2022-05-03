@@ -16,7 +16,7 @@ class CreateWeekDaysTable extends Migration
         Schema::create('week_days', function (Blueprint $table) {
             $table->id();
             $table->integer('day');
-            $table->foreignId('classroom_id')->constrained('classroom')->cascadeOnDelete();
+            $table->foreignId('classroom_id')->constrained('classrooms')->cascadeOnDelete();
             $table->timestamps();
         });
     }

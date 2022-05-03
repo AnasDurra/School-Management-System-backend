@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\admin;
 use App\Models\Classes;
+use App\Models\Classroom;
 use App\Models\Paarent;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -114,7 +115,6 @@ class ParentController extends Controller
     public function all()
     {
         $parents = User::query()->where('role', '=', '3')->with('parent')->get();
-        $parents->toArray();
         if ($parents)
             for ($i = 0; $i < count($parents); $i++) {
                 if ($parents[$i]['parent'])
@@ -125,11 +125,6 @@ class ParentController extends Controller
                             $parents[$i]['parent']['students'][$j]->class = $class;
                         }
             }
-        //        for($i=0;$i<count($parent);$i++){
-//
-//            $user= ['PARENT_ID'=>$parent[$i]->id,User::query()->where('id','=',$parent[$i]->user_id)->firstOrFail() ];
-//        }
-
         return response()->json(
             $parents
         );
@@ -147,14 +142,19 @@ class ParentController extends Controller
             ], 400);
         }
 
-        $parent = Parent::query()->where('id', '=', $request->id)->firstOrFail();
-        if (!$parent) {
-            return response()->json([
-                'message' => 'Not found'
-            ]);
+        $user = User::query()->where('id', '=', $request->id)->with('parent')->first();
+        if ($user) {
+            if ($user['parent'])
+                for ($i = 0; $i < count($user['parent']['students']); $i++) {
+                   // $user['parent']['students'][$i]->class;
+                    $class = Classes::query()->where('id', '=', $user['parent']['students'][$i]->class_id)->first();
+                    $class_room = Classroom::query()->where('id', '=', $user['parent']['students'][$i]->classroom_id)->first();
+                    $student_user = User::query()->where('id', '=', $user['parent']['students'][$i]->user_id)->first();
+                    $user['parent']['students'][$i]=$student_user;
+                    $user['parent']['students'][$i]->class = $class;
+                    $user['parent']['students'][$i]->classroom = $class_room;
+                }
         }
-        $user = User::query()->where('id', '=', $parent->user_id)->firstOrFail();
-        $user['parent_id'] = $parent->id;
         return response()->json([
             $user
         ]);

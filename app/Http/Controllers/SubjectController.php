@@ -103,7 +103,7 @@ class SubjectController extends Controller
         return response()->json([
             'message' => 'success',
             'subject'=>$clone,
-            
+
         ]);
     }
 
