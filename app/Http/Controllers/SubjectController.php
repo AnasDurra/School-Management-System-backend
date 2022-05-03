@@ -96,10 +96,14 @@ class SubjectController extends Controller
         if (!$subject) {
             return response()->json(['message' => 'Not Found']);
         }
+        if($subject) $subject->subfields;
+        $clone = $subject;
         $subject->delete();
 
         return response()->json([
-            'message' => 'deleted'
+            'message' => 'success',
+            'subject'=>$clone,
+            
         ]);
     }
 
