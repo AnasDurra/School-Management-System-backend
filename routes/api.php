@@ -31,46 +31,39 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
 
 
+    // Route::group(['middleware' => 'isAdmin'], function () {
+    //student
+    Route::post('/students/add', [StudentController::class, 'add']);
+    Route::post('/students/delete', [StudentController::class, 'delete']);
+    Route::post('/students/update', [StudentController::class, 'update']);
+    Route::get('/students/all', [StudentController::class, 'all']);
+    Route::post('/student', [StudentController::class, 'one']);
 
-   // Route::group(['middleware' => 'isAdmin'], function () {
-        //student
-        Route::post('/students/add', [StudentController::class, 'add']);
-        Route::post('/students/delete', [StudentController::class, 'delete']);
-        Route::post('/students/update', [StudentController::class, 'update']);
-        Route::get('/students/all', [StudentController::class, 'all']);
-        Route::post('/student',[StudentController::class,'one']);
-
-        //teachers
-        Route::post('/teachers/add', [\App\Http\Controllers\TeacherController::class, 'add']);
-        Route::post('/teachers/delete', [\App\Http\Controllers\TeacherController::class, 'delete']);
-        Route::post('/teachers/update', [\App\Http\Controllers\TeacherController::class, 'update']);
-        Route::get('/teachers/all', [\App\Http\Controllers\TeacherController::class, 'all']);
-        Route::post('/teachers/teacher_subject', [\App\Http\Controllers\TeacherController::class, 'teacher_subject']);//show teacher subjects
-        Route::post('/teachers',[\App\Http\Controllers\TeacherController::class,'one']);
-
+    //teachers
+    Route::post('/teachers/add', [\App\Http\Controllers\TeacherController::class, 'add']);
+    Route::post('/teachers/delete', [\App\Http\Controllers\TeacherController::class, 'delete']);
+    Route::post('/teachers/update', [\App\Http\Controllers\TeacherController::class, 'update']);
+    Route::get('/teachers/all', [\App\Http\Controllers\TeacherController::class, 'all']);
+    Route::post('/teachers/teacher_subject', [\App\Http\Controllers\TeacherController::class, 'teacher_subject']);//show teacher subjects
+    Route::post('/teachers', [\App\Http\Controllers\TeacherController::class, 'one']);
 
 
+    //parents
+    Route::post('/parents/add', [\App\Http\Controllers\ParentController::class, 'add']);
+    Route::post('/parents/delete', [\App\Http\Controllers\ParentController::class, 'delete']);
+    Route::post('/parents/update', [\App\Http\Controllers\ParentController::class, 'update']);
+    Route::get('/parents/all', [\App\Http\Controllers\ParentController::class, 'all']);
+    Route::post('/parent', [\App\Http\Controllers\ParentController::class, 'one']);
+
+    //subjects
+    Route::post('/subjects/add', [\App\Http\Controllers\SubjectController::class, 'add']);
+    Route::get('/subjects/all', [\App\Http\Controllers\SubjectController::class, 'all']);
+    Route::post('/subjects/delete', [\App\Http\Controllers\SubjectController::class, 'delete']);
+    Route::post('/subjects/update', [\App\Http\Controllers\SubjectController::class, 'update']);
+    Route::post('/subjects/subject_teachers', [\App\Http\Controllers\SubjectController::class, 'subject_teachers']); //Subject Teachers
 
 
-        //parents
-        Route::post('/parents/add', [\App\Http\Controllers\ParentController::class, 'add']);
-        Route::post('/parents/delete', [\App\Http\Controllers\ParentController::class, 'delete']);
-        Route::post('/parents/update', [\App\Http\Controllers\ParentController::class, 'update']);
-        Route::get('/parents/all', [\App\Http\Controllers\ParentController::class, 'all']);
-        Route::post('/parent',[\App\Http\Controllers\ParentController::class,'one']);
-
-        //subjects
-        Route::post('/subjects/add', [\App\Http\Controllers\SubjectController::class, 'add']);
-        Route::get('/subjects/all', [\App\Http\Controllers\SubjectController::class, 'all']);
-        Route::post('/subjects/delete', [\App\Http\Controllers\SubjectController::class, 'delete']);
-        Route::post('/subjects/update', [\App\Http\Controllers\SubjectController::class, 'update']);
-        Route::post('/subjects/subject_teachers', [\App\Http\Controllers\SubjectController::class, 'subject_teachers']); //Subject Teachers
-
-
-
-
-
-   // });
+    // });
 
     //marks
     Route::post('/marks/add', [\App\Http\Controllers\MarkController::class, 'add']);
@@ -104,7 +97,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/classrooms/update', [\App\Http\Controllers\ClassroomController::class, 'update']);
     Route::post('/classrooms/delete', [\App\Http\Controllers\ClassroomController::class, 'delete']);
     Route::post('/classrooms/show_my_class', [\App\Http\Controllers\ClassroomController::class, 'show_my_class']);
-
+    // add/delete teachers of classroom
+    Route::post('/classroom/teachers/update', [\App\Http\Controllers\teacherClassroomController::class, 'update']);
 
 
     //weekly_schedules

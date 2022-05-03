@@ -35,9 +35,6 @@ class ClassController extends Controller
         }
 
         $classWithSubjects = Classes::query()->where('id', '=', $class->id)->with('subjects')->first();
-        if ($classWithSubjects->subjects)
-            for ($i = 0; $i < count($classWithSubjects->subjects); $i++)
-                $classWithSubjects->subjects[$i]->subfields;
         return response()->json([
             'message' => 'added',
             'data' => $classWithSubjects
@@ -48,7 +45,7 @@ class ClassController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'name' => 'required',
+            'name'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -104,11 +101,7 @@ class ClassController extends Controller
                 'message' => 'No classes'
             ]);
         }
-        for ($i = 0; $i < count($classes); $i++) {
-            for ($j = 0; $j < count($classes[$i]->subjects); $j++) {
-                $classes[$i]->subjects[$j]->subfields;
-            }
-        }
+
         return response()->json([
             'data' => $classes
         ]);

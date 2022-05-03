@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Subject;
 use App\Models\Teacher;
-use App\Models\teacher_subfield;
+
 use App\Models\teacher_subject;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -41,17 +41,17 @@ class TeacherController extends Controller
         $teacher->user_id = $user->id;
         $teacher->save();
         if ($request->subjects_id)
-           for($i=0;$i<count($request->subjects_id);$i++){
-               $teacher_subject = new teacher_subject();
-               $teacher_subject->teacher_id =$user->id;
-               $teacher_subject->subject_id = $request->subjects_id[$i];
-               $teacher_subject->save();
-           }
+            for ($i = 0; $i < count($request->subjects_id); $i++) {
+                $teacher_subject = new teacher_subject();
+                $teacher_subject->teacher_id = $user->id;
+                $teacher_subject->subject_id = $request->subjects_id[$i];
+                $teacher_subject->save();
+            }
 
 
         $user = User::query()->where('id', '=', $user->id)->with('teacher')->first();
 
-        //access subfields so they became visible in user'
+        //access subjects so they became visible in user'
         $user['teacher']->subjects;
         return response()->json([
             'message' => 'added',
@@ -67,8 +67,7 @@ class TeacherController extends Controller
             'password',
             'phone_num',
             'address',
-            'subject_id',
-            'subfields_id' //array
+            'subjects_id',
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -77,16 +76,8 @@ class TeacherController extends Controller
             ], 400);
         }
 
-        // $teacher = Teacher::query()->where('id', '=', $request->id)->first();
-
-//        if (!$teacher) {
-//            return response()->json([
-//                'error' => 'Not Found'
-//            ], 404);
-//        }
         $user = User::query()->where('id', '=', $request->id)->with('teacher')->first();
 
-        //  $user = User::query()->where('id', '=', $teacher->user_id)->first();
         if ($request->username)
             $user['username'] = $request->username;
         if ($request->password)
@@ -96,42 +87,29 @@ class TeacherController extends Controller
         if ($request->address)
             $user['address'] = $request->address;
 
-        if ($request->subject_id) {
-            $user['teacher']['subject_id'] = $request->subject_id;
-
-            //delete all existing teacher subfields
-            $teacher_subfields = teacher_subfield::query()->where('teacher_id', '=', $user->id)->get();
-            if ($teacher_subfields)
-                for ($i = 0; $i < count($teacher_subfields); $i++) $teacher_subfields[$i]->delete();
-
-            //add all subject subfields to the teacher
-            $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
-            for ($i = 0; $i < count($subject->subfields); $i++) {
-                $teacher_subfield = new teacher_subfield();
-                $teacher_subfield->teacher_id = $user->id;
-                $teacher_subfield->subfield_id = $subject->subfields[$i]->id;
-                $teacher_subfield->save();
+        if ($request->subjects_id) {
+            //checking if subjects id are legit
+            for ($i = 0; $i < count($request->subjects_id); $i++) {
+                $subject = Subject::query()->where('id', '=', $request->subjects_id[$i])->first();
+                if (!$subject) {
+                    return response()->json([
+                        'id ' . $request->subjects_id[$i] . ' is not an id for existing subject'
+                    ], 404);
+                }
             }
-        } else if ($request->subfields_id) {
-            //no subject but there are subfields
-
-
-            //delete all existing teacher subfields
-            $teacher_subfields = teacher_subfield::query()->where('teacher_id', '=', $user->id)->get();
-            if ($teacher_subfields)
-                for ($i = 0; $i < count($teacher_subfields); $i++) $teacher_subfields[$i]->delete();
-            //assign new subfields from request
-            for ($i = 0; $i < count($request->subfields_id); $i++) {
-                $teacher_subfield = new teacher_subfield();
-                $teacher_subfield->teacher_id = $user->id;
-                $teacher_subfield->subfield_id = $request->subfields_id[$i];
-                $teacher_subfield->save();
+            //delete all existing subjects for this teacher
+            teacher_subject::query()->where('teacher_id', '=', $user->id)->delete();
+            for ($i = 0; $i < count($request->subjects_id); $i++) {
+                $teacher_subject = new teacher_subject();
+                $teacher_subject->subject_id = $request->subjects_id[$i];
+                $teacher_subject->teacher_id = $request->id;
+                $teacher_subject->save();
             }
         }
 
         $user->save();
-        //access subfields so the became visible in the returned JSON
-        $user->teacher->subfields;
+        $user = User::query()->where('id', '=', $request->id)->with('teacher')->first();
+        $user['teacher']->subjects;
         return response()->json([
             'message' => 'success',
             'data' => $user,
@@ -151,34 +129,38 @@ class TeacherController extends Controller
             ], 400);
         }
 
-        $teacher = Teacher::query()->where('id', '=', $request->id)->first();
-        $user = User::query()->where('id', '=', $teacher->user_id)->first();
-        $user->delete();
+        $user = User::query()->where('id', '=', $request->id)->with('teacher')->first();
+        if($user->role !=2){
+            return response()->json([
+                'message' => 'invalid id'
+            ], 404);
+        }
+        if ($user) {
+            $clone = $user;
+            if ($clone['teacher'])
+                $clone['teacher']->subjects;
+            $user->delete();
+        } else {
+            return response()->json([
+                'message' => 'invalid id'
+            ], 404);
+        }
 
         return response()->json([
-            'message' => 'deleted'
+            'message' => 'success',
+            'data'=>$clone
         ]);
     }
 
     public function all(Request $request)
     {
-//        $teacher = Teacher::query()->with('subject')->with('subfields')->get();
-//        if (!$teacher) {
-//            return response()->json([
-//                'error' => 'no teachers yet'
-//            ], 404);
-//        }
         $teachers = User::query()->where('role', '=', 2)->with('teacher')->get();
-
-//        for ($i = 0; $i < count($teacher); $i++) {
-//            $users[] = ['Teacher' => $teacher[$i], 'User' => User::query()->where('id', '=', $teacher[$i]->user_id)->first()];
-//        }
         if ($teachers)
             for ($i = 0; $i < count($teachers); $i++) {
-                //accessing subfields so they became visibile in the returned JSON
-                $teachers[$i]['teacher']->subfields;
+                //accessing subjects so they became visibile in the returned JSON
+                $teachers[$i]['teacher']->subjects;
+                $teachers[$i]['teacher']->classrooms;
             }
-
         return response()->json(
             $teachers
         );
@@ -196,19 +178,19 @@ class TeacherController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $teacher = Teacher::query()->where('id', '=', $request->id)->first();
-        if (!$teacher) {
+        $user = User::query()->where('id', '=', $request->id)->with('teacher')->first();
+        if (!$user) {
             return response()->json([
                 'error' => 'NotFound'
             ], 404);
         }
-        $user = ['Teacher' => $teacher, 'User' => User::query()->where('id', '=', $teacher->user_id)->first()];
+
         return response()->json(
             $user
         );
     }
 
-    public function teacher_subject(Request $request)
+    public function teacherSubjects(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'teacher_id' => 'required'
@@ -219,94 +201,16 @@ class TeacherController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $teacher = Teacher::query()->where('id', '=', $request->teacher_id)->first();
-        if (!$teacher) {
+        $user = User::query()->where('id', '=', $request->teacher_id)->with('teacher')->first();
+        if (!$user) {
             return response()->json([
                 'error' => 'NotFound'
             ], 404);
         }
-
+        if ($user['teacher'])
+            $user['teacher']->subjects;
         return response()->json([
-            'data' => $teacher->subject
-        ]);
-    }
-
-
-    //subfields
-
-////    public function addSubfields(Request $request)
-////    {
-////        $validator = Validator::make($request->all(), [
-////            'teacher_id' => 'required',
-////            'subfield_ids' => 'required', //this is a array
-////        ]);
-////        if ($validator->fails()) {
-////            $errors = $validator->errors();
-////            return response()->json([
-////                'error' => $errors
-////            ], 400);
-////        }
-////
-////        for ($i = 0; $i < count($request->subfield_ids); $i++) {
-////            $teacher_subfield[$i] = new teacher_subfield();
-////            $teacher_subfield[$i]->teacher_id = $request->teacher_id;
-////            $teacher_subfield[$i]->subfield_id = $request->subfield_ids[$i];
-////            $teacher_subfield[$i]->save();
-////        }
-//
-//        return response()->json([
-//            'message' => 'added',
-//            'data' => $teacher_subfield
-//        ]);
-//    }
-
-    //delete subfield from a teacher
-    public function deleteSubfield(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'teacher_id' => 'required',
-            'subfield_id' => 'required',
-        ]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json([
-                'error' => $errors
-            ], 400);
-        }
-
-        $teacher_subfield = teacher_subfield::query()->where('teacher_id', '=', $request->teacher_id)->
-        where('subfield_id', '=', $request->subfield_id)->delete();
-        if (!$teacher_subfield) {
-            return response()->json([
-                'error' => 'NotFound'
-            ], 404);
-        }
-
-        return response()->json([
-            'message' => 'deleted'
-        ]);
-    }
-
-    //getSubfields
-    public function getSubfields(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'teacher_id' => 'required',]);
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json([
-                'error' => $errors
-            ], 400);
-        }
-        $teacher = Teacher::query()->where('id', '=', $request->teacher_id)->first();
-        if (!$teacher) {
-            return response()->json([
-                'error' => 'NotFound'
-            ], 404);
-        }
-
-        return response()->json([
-            'data' => $teacher->subfields
+            'data' => $user
         ]);
     }
 }

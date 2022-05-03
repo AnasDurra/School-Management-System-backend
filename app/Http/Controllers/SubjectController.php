@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Class_Subject;
 use App\Models\Classes;
-use App\Models\Subfield;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
