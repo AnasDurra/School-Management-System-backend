@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\teacher_subfield;
+use App\Models\teacher_subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -18,8 +19,7 @@ class TeacherController extends Controller
             'name' => 'required',
             'phone_num' => 'required',
             'address' => 'required',
-            'subject_id',
-            'subfield_ids', //this is a array
+            'subjects_id',//array
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -38,31 +38,21 @@ class TeacherController extends Controller
         $user->save();
 
         $teacher = new Teacher();
-        if ($request->subject_id)
-            $teacher->subject_id = $request->subject_id;
         $teacher->user_id = $user->id;
         $teacher->save();
-        if (!$request->subject_id)
-            for ($i = 0; $i < count($request->subfield_ids); $i++) {
-                $teacher_subfield = new teacher_subfield();
-                $teacher_subfield->teacher_id = $user->id;
-                $teacher_subfield->subfield_id = $request->subfield_ids[$i];
-                $teacher_subfield->save();
-            }
-        if ($request->subject_id) {
-            $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
-            if($subject)
-            for ($i = 0; $i < count($subject->subfields); $i++) {
-                $teacher_subfield = new teacher_subfield();
-                $teacher_subfield->teacher_id = $user->id;
-                $teacher_subfield->subfield_id = $subject->subfields[$i]->id;
-                $teacher_subfield->save();
-            }
-        }
+        if ($request->subjects_id)
+           for($i=0;$i<count($request->subjects_id);$i++){
+               $teacher_subject = new teacher_subject();
+               $teacher_subject->teacher_id =$user->id;
+               $teacher_subject->subject_id = $request->subjects_id[$i];
+               $teacher_subject->save();
+           }
+
+
         $user = User::query()->where('id', '=', $user->id)->with('teacher')->first();
 
         //access subfields so they became visible in user'
-        $user['teacher']->subfields;
+        $user['teacher']->subjects;
         return response()->json([
             'message' => 'added',
             'user' => $user,

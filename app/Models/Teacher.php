@@ -18,11 +18,9 @@ class Teacher extends Model
     public function  user(){
         return $this->belongsTo(User::class);
     }
-    public function subject(){
-        return $this->belongsTo('App\Models\Subject',"subject_id",'id');
+    public function subjects(){
+        return $this->belongsToMany('App\Models\Subject',"teacher_subject",'teacher_id','subject_id','user_id','id');
     }
 
-    public function subfields(){
-        return $this->belongsToMany('App\Models\Subfield','teacher_subfield','teacher_id','subfield_id','user_id','id');
-    }
+
 }

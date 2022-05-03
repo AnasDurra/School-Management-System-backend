@@ -26,7 +26,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-//Route::middleware('auth:sanctum')->group(function () {
+Route::middleware('auth:sanctum')->group(function () {
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -49,10 +49,7 @@ Route::post('/register', [AuthController::class, 'register']);
         Route::post('/teachers',[\App\Http\Controllers\TeacherController::class,'one']);
 
 
-        ##delete subfield
-        Route::post('/teachers/delete_subfield', [\App\Http\Controllers\TeacherController::class, 'deleteSubfield']); //delete subfield from a teacher
-        ##get teacher subfields
-        Route::post('/teachers/get_subfields', [\App\Http\Controllers\TeacherController::class, 'getSubfields']);
+
 
 
         //parents
@@ -70,9 +67,7 @@ Route::post('/register', [AuthController::class, 'register']);
         Route::post('/subjects/subject_teachers', [\App\Http\Controllers\SubjectController::class, 'subject_teachers']); //Subject Teachers
 
 
-        //subfields
-        Route::post('/subfields/delete', [\App\Http\Controllers\SubfieldController::class, 'delete']);
-        Route::post('/subfields/update', [\App\Http\Controllers\SubfieldController::class, 'update']);
+
 
 
    // });
@@ -117,7 +112,7 @@ Route::post('/register', [AuthController::class, 'register']);
     Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weekly_scheduleController::class, 'add_subjects_to_schedules']);
     Route::post('/weekly_schedule/get', [\App\Http\Controllers\weekly_scheduleController::class, 'get_weekly_schedule']);
 
-//});
+});
 
 
 

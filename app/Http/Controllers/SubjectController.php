@@ -16,7 +16,6 @@ class SubjectController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
-            "subfields_name" //this is an array
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -28,15 +27,9 @@ class SubjectController extends Controller
         $subject = new Subject();
         $subject->name = $request->name;
         $subject->save();
-    if($request->subfields_name)
-        for($i=0;$i<count($request->subfields_name);$i++){
-            $subfield[$i] = new Subfield();
-            $subfield[$i]->name = $request->subfields_name[$i];
-            $subfield[$i]->subject_id = $subject->id;
-            $subfield[$i]->save();
-        }
 
-        $subject = Subject::query()->with('subfields')->find($subject->id);
+
+
         return response()->json([
             'message' => 'added',
             'data' => $subject,
@@ -44,7 +37,7 @@ class SubjectController extends Controller
     }
 
     public function all(Request $request){
-        $subjects = Subject::with('subfields')->get();
+        $subjects = Subject::all();
 
         if(!$subjects){
             return response()->json(['message'=>'No subjects']);
@@ -59,7 +52,7 @@ class SubjectController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'name' => 'required'
+            'name'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -96,7 +89,7 @@ class SubjectController extends Controller
         if (!$subject) {
             return response()->json(['message' => 'Not Found']);
         }
-        if($subject) $subject->subfields;
+
         $clone = $subject;
         $subject->delete();
 

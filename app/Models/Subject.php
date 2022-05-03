@@ -19,15 +19,13 @@ class Subject extends Model
     ];
 
     public function teachers(){
-        return $this->hasMany('App\Models\Teacher',"subject_id",'id');
+        return $this->belongsToMany('App\Models\Teacher',"teacher_subject",'subject_id','teacher_id','id','user_id');
     }
 
     public function classes(){
         return $this->belongsToMany('App\Models\Classes','class_subject','subject_id','class_id','id','id');
     }
 
-    public function subfields(){
-        return $this->hasMany('App\Models\Subfield',"subject_id",'id');
-    }
+
 
 }

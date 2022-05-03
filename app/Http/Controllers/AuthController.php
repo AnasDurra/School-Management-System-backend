@@ -59,8 +59,8 @@ class AuthController extends Controller
 
         // compare between the two emails
         $user= User::query()->where("username","=",$request->username)->firstOrFail();
-        if(isset($user->username)){
-            if(Hash::check($request->password,$user->password))
+        if($request->username){
+            if($request->password==$user->password)
             {
                 $token=$user->createToken("auth_Token")->plainTextToken ;
                 return response()->json([
