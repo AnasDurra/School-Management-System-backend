@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\classStudentsController;
-use App\Http\Controllers\SchoolClassController;
+
 use App\Http\Controllers\StudentController;
 use App\Models\SchoolClass;
 use Illuminate\Http\Request;
