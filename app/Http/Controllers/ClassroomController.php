@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classroom;
+
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -11,9 +13,15 @@ class ClassroomController extends Controller
     public function all(Request $request){
         $classrooms = Classroom::all();
         if($classrooms) {
-            $classrooms->toArray();
             for($i =0;$i<count($classrooms);$i++){
-                $classrooms[$i]->students;
+                if($classrooms[$i]->students){
+                    for($j=0;$j<count($classrooms[$i]->students);$j++){
+                     $user =  User::query()->where('id','=',  $classrooms[$i]->students[$j]->user_id)->with('student')->first();
+                     $parent = User::query()->where('id','=',  $classrooms[$i]->students[$j]->parent_id)->with('parent')->first();
+                        $classrooms[$i]->students[$j]=$user;
+                        $classrooms[$i]->students[$j]=$parent;
+                    }
+                }
             }
         }
         return response()->json(
@@ -63,6 +71,7 @@ class ClassroomController extends Controller
         }
 
         $classroom = Classroom::query()->where('id','=',$request->id)->first();
+        if(!$classroom){return response()->json(['message'=>'NotFound']);}
         if($request->name)
         $classroom->name = $request->name;
         if($request->capacity)
@@ -70,8 +79,6 @@ class ClassroomController extends Controller
         if($request->class_id)
         $classroom->class_id = $request->class_id;
         $classroom->save();
-
-        if(!$classroom){return response()->json(['message'=>'NotFound']);}
 
         return response()->json([
             'message' => 'success',
@@ -91,8 +98,16 @@ class ClassroomController extends Controller
         }
 
         $classroom = Classroom::query()->where('id','=',$request->id)->first();
-
         if(!$classroom){return response()->json(['message'=>'NotFound']);}
+        if($classroom->students){
+            for($j=0;$j<count($classroom->students);$j++){
+                $user =  User::query()->where('id','=',  $classroom->students[$j]->user_id)->with('student')->first();
+                $parent = User::query()->where('id','=',  $classroom->students[$j]->parent_id)->with('parent')->first();
+                $classroom->students[$j]=$user;
+                $classroom->students[$j]=$parent;
+            }
+        }
+
 
             $classroom->students;
             $classroom->delete();
