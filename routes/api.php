@@ -102,9 +102,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     //weekly_schedules
-    Route::post('/weekly_schedule/add', [\App\Http\Controllers\weekly_scheduleController::class, 'add_weekly_schedule']);
-    Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weekly_scheduleController::class, 'add_subjects_to_schedules']);
-    Route::post('/weekly_schedule/get', [\App\Http\Controllers\weekly_scheduleController::class, 'get_weekly_schedule']);
+    Route::post('/weekly_schedule/add', [\App\Http\Controllers\weeklyScheduleController::class, 'add_weekly_schedule']);
+    Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weeklyScheduleController::class, 'add_subjects_to_schedules']);
+    Route::post('/weekly_schedule/get', [\App\Http\Controllers\weeklyScheduleController::class, 'get_weekly_schedule']);
 
 });
 

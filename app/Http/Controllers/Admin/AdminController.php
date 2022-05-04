@@ -4,15 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use App\Models\User;
+use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
     public function add(Request $request){
         $validator = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:users',
-            'password' => 'required',
             'phone_num' => 'required',
             'address' => 'required'
         ]);
@@ -23,31 +23,15 @@ class AdminController extends Controller
             ], 400);
         }
         $user = new User();
-        $user->username = $request->username;
-        $user->password = $request->password;
+        $user->username = strtolower(Str::random(10));
+        $user->password = strtolower(Str::random(6));
         $user->phone_num = $request->phone_num;
         $user->address = $request->address;
         $user->role = 1;
         $user->save();
-
-
-        //##
-        //this not working !!
-//        $user =User::query()->create([
-//            'phone_num'=>$request->phone_num,
-//            'username'=>$request->username,
-//            'password'=>$request->password,
-//            'phone_num'=>$request->phone_num,
-//            'address'=>$request->address,
-//            'role' => 1
-//        ]);
-        //##
-
-
-        Admin::query()->create([
-            'user_id'=>$user->id
-        ]);
-
+        $admin = new Admin();
+        $admin->user_id = $user->id;
+        $user = User::query()->where('id','=',$admin->user_id)->with('admin')->first();
         return response()->json([
             'message' => 'added',
             'data'=>$user
@@ -70,7 +54,7 @@ class AdminController extends Controller
             ], 400);
         }
 
-        $user=Admin::query()->where('id','=',$request->id)->first();
+        $user=Admin::query()->where('id','=',$request->id)->firstOrFail();
         if(!$user){return response()->json(['message'=>'NotFound']);}
 
         $user=User::query()->where('id','=',$user->user_id)->first();

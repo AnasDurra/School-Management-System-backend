@@ -45,17 +45,17 @@ class StudentController extends Controller
         $user->role = 4;
         $student = new Student();
         $has_parents_in_system = false;
-        $user->save();
+
         if ($request->parent_username) {
             $student_parent = $user::query()->where('username', '=', $request->parent_username)->first();
             if ($student_parent) {
                 $student['parent_id'] = $student_parent->id;
                 $has_parents_in_system = true;
             } else {
-                return response()->json("username isn't in the system!", 552);
+                return response()->json("username isn't in the system!", 451);
             }
         }
-
+        $user->save();
 
         if ($request->classroom_id)
             $student['classroom_id'] = $request->classroom_id;

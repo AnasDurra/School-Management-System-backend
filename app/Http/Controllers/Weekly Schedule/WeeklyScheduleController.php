@@ -8,7 +8,7 @@ use App\Models\Weekly_schedule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class weekly_scheduleController extends Controller
+class weeklyScheduleController extends Controller
 {
     //add a weekly_schedule for a classroom (just 1 day)
     public function add_weekly_schedule(Request $request){
