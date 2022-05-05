@@ -68,10 +68,10 @@ class StudentController extends Controller
             $student_parent->phone_num = $request->parent_phone_num;
             $student_parent->role = 3;
             $student_parent->save();
-            $student['parent_id'] = $student_parent->id;
             $new_parent = new Paarent();
             $new_parent->user_id = $student_parent->id;
             $new_parent->save();
+            $student['parent_id'] = $student_parent->id;
         }
         $student['user_id'] = $user->id;
         $student['class_id'] = $request->class_id;

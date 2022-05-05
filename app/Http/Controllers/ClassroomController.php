@@ -26,8 +26,8 @@ class ClassroomController extends Controller
                     for ($j = 0; $j < count($classrooms[$i]->students); $j++) {
                         $user = User::query()->where('id', '=', $classrooms[$i]->students[$j]->user_id)->with('student')->first();
                         $parent = User::query()->where('id', '=', $classrooms[$i]->students[$j]->parent_id)->with('parent')->first();
-                        $classrooms[$i]->students[$j] = $user;
-                        $classrooms[$i]->students[$j] = $parent;
+                        $classrooms[$i]->students[$j]->student = $user;
+                        $classrooms[$i]->students[$j]->student->parent = $parent;
                     }
                 }
                 $classrooms[$i]->teacher_subject = $teachers_subjects;
@@ -112,8 +112,9 @@ class ClassroomController extends Controller
             for ($i = 0; $i < count($request->students_id); $i++) {
                 $student = Student::query()->where('user_id', '=', $request->students_id[$i])->first();
                 if ($student) {
-                    $student->classroom_id = $classroom->id;
-                    $student->save();
+                   // $student->classroom_id = $classroom->id;
+                    Student::query()->where('user_id', '=', $request->students_id[$i])->update(['classroom_id'=>$classroom->id]);
+                    //$student->save();
                 }
             }
         }
