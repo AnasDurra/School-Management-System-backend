@@ -261,14 +261,14 @@ class ClassroomController extends Controller
         if (!$classroom) {
             return response()->json(['message' => 'NotFound']);
         }
-        if ($classroom->students) {
-            for ($j = 0; $j < count($classroom->students); $j++) {
-                $user = User::query()->where('id', '=', $classroom->students[$j]->user_id)->with('student')->first();
-                $parent = User::query()->where('id', '=', $classroom->students[$j]->parent_id)->with('parent')->first();
-                $classroom->students[$j] = $user;
-                $classroom->students[$j] = $parent;
-            }
-        }
+//        if ($classroom->students) {
+//            for ($j = 0; $j < count($classroom->students); $j++) {
+//                $user = User::query()->where('id', '=', $classroom->students[$j]->user_id)->with('student')->first();
+//                $parent = User::query()->where('id', '=', $classroom->students[$j]->parent_id)->with('parent')->first();
+//                $classroom->students[$j] = $user;
+//                $classroom->students[$j] = $parent;
+//            }
+//        }
 
 
         $classroom->students;
@@ -279,6 +279,7 @@ class ClassroomController extends Controller
                 $parent = User::query()->where('id', '=', $classroom->students[$j]->parent_id)->with('parent')->first();
                 $classroom->students[$j]->student = $user;
                 $classroom->students[$j]->student->parent = $parent;
+                 Student::query()->where('user_id','=',$user->id)->update(['classroom_id'=>null]);
             }
         }
         if ($teachers_subjects)

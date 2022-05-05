@@ -74,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     //admins
+    Route::get('/admins/all', [\App\Http\Controllers\AdminController::class, 'all']);
     Route::post('/admins/add', [\App\Http\Controllers\AdminController::class, 'add']);
     Route::post('/admins/update', [\App\Http\Controllers\AdminController::class, 'update']);
     Route::post('/admins/delete', [\App\Http\Controllers\AdminController::class, 'delete']);

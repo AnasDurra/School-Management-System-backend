@@ -8,11 +8,22 @@ use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use function Symfony\Component\String\u;
 
 class AdminController extends Controller
 {
-    public function add(Request $request){
+    public function all(Request $request)
+    {
+        $admins = User::query()->where(
+            'role', '=', 1)->orWhere('role','=',0)->with('admin')->get();
+
+        return response()->json($admins);
+    }
+
+    public function add(Request $request)
+    {
         $validator = Validator::make($request->all(), [
+            'name' => 'required',
             'phone_num' => 'required',
             'address' => 'required'
         ]);
@@ -23,6 +34,7 @@ class AdminController extends Controller
             ], 400);
         }
         $user = new User();
+        $user->name = $request->name;
         $user->username = strtolower(Str::random(10));
         $user->password = strtolower(Str::random(6));
         $user->phone_num = $request->phone_num;
@@ -32,21 +44,23 @@ class AdminController extends Controller
         $admin = new Admin();
         $admin->user_id = $user->id;
         $admin->save();
-        $user = User::query()->where('id','=',$admin->user_id)->with('admin')->first();
+        $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
         return response()->json([
             'message' => 'added',
-            'data'=>$user
+            'data' => $user
         ]);
 
     }
 
-    public function update(Request $request){
+    public function update(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'id'=>'required',
+            'id' => 'required',
             'phone_num',
             'address',
             'username',
-            'password'
+            'password',
+            'name'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -55,38 +69,51 @@ class AdminController extends Controller
             ], 400);
         }
 
-        $user=User::query()->where('id','=',$request->id)->first();
-        if(!$user){return response()->json(['message'=>'NotFound']);}
-
-       $test = User::query()->where('username','=',$request->username)->first();
-        if($test){
-           return response
+        $user = User::query()->where('id', '=', $request->id)->with('admin')->first();
+        if (!$user || ($user->role != 1 && $user->id !=1 )) {
+            return response()->json(['message' => 'NotFound']);
         }
-        $user->username = $request->username;
-        $user->password = $request->password;
-        $user->phone_num = $request->phone_num;
-        $user->address = $request->address;
+
+        $test = User::query()->where('username', '=', $request->username)->first();
+        if ($test) {
+            return response()->json(['username is already taken !'], 404);
+        }
+        if ($request->name)
+            $user->name = $request->name;
+        if ($request->username)
+            $user->username = $request->username;
+        if ($request->password)
+            $user->password = $request->password;
+        if ($request->phone_num)
+            $user->phone_num = $request->phone_num;
+        if ($request->address)
+            $user->address = $request->address;
+
         $user->save();
 
         return response()->json([
-            'message' => 'updated',
-            'data'=>$user
+            'message' => 'success',
+            'data' => $user
         ]);
     }
 
-    public function delete(Request $request){
+    public function delete(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'id'=>'required'
+            'id' => 'required'
         ]);
 
-        $admin = Admin::query()->where('id','=',$request->id)->first();
-        if(!$admin){return response()->json(['message'=>'NotFound']);}
-        $user = User::query()->where('id','=',$admin->user_id)->delete();
+        $admin = User::query()->where('id', '=', $request->id)->with('admin')->first();
+        if (!$admin || ($admin->role != 1 && $admin->id !=1 )) {
+            return response()->json(['message' => 'NotFound']);
+        }
+        $admin->delete();
 
         return response()->json([
-            'message' => 'deleted'
+            'message' => 'success',
+            'data' => $admin
         ]);
 
     }
 
-    }
+}
