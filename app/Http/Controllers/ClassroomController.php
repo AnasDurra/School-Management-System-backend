@@ -126,6 +126,12 @@ class ClassroomController extends Controller
         $classroom->teachers;
         $teacher_subject = Teacher_classroom::query()->where('classroom_id', '=', $classroom->id)->get();
         $classroom->teacher_subject = $teacher_subject;
+        if ($teacher_subject) {
+            for ($i = 0; $i < count($teacher_subject); $i++) {
+                $subject = Subject::query()->where('id', '=', $teacher_subject[$i]->subject_id)->first();
+                $classroom->teacher_subject[$i]->subject_name = $subject->name;
+            }
+        }
         return response()->json([
             'message' => 'success',
             'data' => $classroom
@@ -225,6 +231,12 @@ class ClassroomController extends Controller
             $teacher_subject = Teacher_classroom::query()->where('classroom_id', '=', $classroom->id)->get();
             $classroom->teachers;
             $classroom->teacher_subject = $teacher_subject;
+            if ($teacher_subject) {
+                for ($i = 0; $i < count($teacher_subject); $i++) {
+                    $subject = Subject::query()->where('id', '=', $teacher_subject[$i]->subject_id)->first();
+                    $classroom->teacher_subject[$i]->subject_name = $subject->name;
+                }
+            }
             return response()->json([
                 'message' => 'success',
                 'data' => $classroom
