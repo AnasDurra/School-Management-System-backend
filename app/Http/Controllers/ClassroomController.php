@@ -108,7 +108,7 @@ class ClassroomController extends Controller
             for ($i = 0; $i < count($request->teachers_id); $i++) {
                 $teacher_classroom = new Teacher_classroom();
                 $teacher_classroom->teacher_id = $request->teachers_id[$i]['teacher_id'];
-                $teacher_classroom->subject_id = $request->teachers_id[$i]['subjects_id'];
+                $teacher_classroom->subject_id = $request->teachers_id[$i]['subject_id'];
                 $teacher_classroom->classroom_id = $classroom->id;
                 $teacher_classroom->save();
             }

@@ -31,6 +31,7 @@ class AdminController extends Controller
         $user->save();
         $admin = new Admin();
         $admin->user_id = $user->id;
+        $admin->save();
         $user = User::query()->where('id','=',$admin->user_id)->with('admin')->first();
         return response()->json([
             'message' => 'added',
@@ -42,10 +43,10 @@ class AdminController extends Controller
     public function update(Request $request){
         $validator = Validator::make($request->all(), [
             'id'=>'required',
-            'username' => 'required|string|max:255',
-            'password' => 'required',
-            'phone_num' => 'required',
-            'address' => 'required'
+            'phone_num',
+            'address',
+            'username',
+            'password'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -54,10 +55,13 @@ class AdminController extends Controller
             ], 400);
         }
 
-        $user=Admin::query()->where('id','=',$request->id)->firstOrFail();
+        $user=User::query()->where('id','=',$request->id)->first();
         if(!$user){return response()->json(['message'=>'NotFound']);}
 
-        $user=User::query()->where('id','=',$user->user_id)->first();
+       $test = User::query()->where('username','=',$request->username)->first();
+        if($test){
+           return response
+        }
         $user->username = $request->username;
         $user->password = $request->password;
         $user->phone_num = $request->phone_num;
