@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 
+
 use App\Http\Controllers\StudentController;
 use App\Models\SchoolClass;
 use Illuminate\Http\Request;
@@ -32,6 +33,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Route::group(['middleware' => 'isAdmin'], function () {
     //student
+
     Route::post('/students/add', [StudentController::class, 'add']);
     Route::post('/students/delete', [StudentController::class, 'delete']);
     Route::post('/students/update', [StudentController::class, 'update']);

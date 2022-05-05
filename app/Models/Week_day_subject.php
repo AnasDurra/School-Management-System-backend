@@ -10,7 +10,6 @@ class Week_day_subject extends Model
     use HasFactory;
     protected $table='week_day_subjects';
     protected $fillable = [
-        'subfield_id',
         'subject_id',
         'week_day_id'
     ];

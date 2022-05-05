@@ -17,6 +17,7 @@ class CreateTeacherClassroomTable extends Migration
             $table->id();
             $table->foreignId('classroom_id');
             $table->foreignId('teacher_id');
+            $table->foreignId('subject_id');
             $table->timestamps();
         });
     }

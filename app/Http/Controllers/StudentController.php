@@ -5,11 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Classes;
 use App\Models\Classroom;
 use App\Models\Paarent;
-use App\Models\SchoolClass;
 use App\Models\Student;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -23,6 +21,7 @@ class StudentController extends Controller
             'parent_name',
             'parent_phone_num',
             'phone_num' => 'required',
+            //TODO if address isn't set take the address of parents
             'address',
             'classroom_id', // optional
             "class_id" => 'required',
@@ -84,7 +83,7 @@ class StudentController extends Controller
         $student->class = $class;
         //$student->parent = $parent;
 
-        $student->parent = $student_parent;
+        $student->parent = $parent;
         $student->classroom = $class_room;
         return response()->json([
             'message' => 'success',

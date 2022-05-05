@@ -45,7 +45,7 @@ class weeklyScheduleController extends Controller
 
     public function add_subjects_to_schedules(Request $request){
         $validator = Validator::make($request->all(), [
-            'subfield_id' => 'required',
+
             'subject_id' => 'required',
             'week_day_id' => 'required',
             'order' => 'required',

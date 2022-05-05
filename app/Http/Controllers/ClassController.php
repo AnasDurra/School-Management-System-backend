@@ -153,10 +153,7 @@ class ClassController extends Controller
         $class = Classes::query()->where('id', '=', $request->class_id)->first();
         if($class)
         $class->subjects;
-        if($class->subjects)
-    for($i =0;$i<count($class->subjects);$i++){
-        $class->subjects[$i]->subfields;
-    }
+
         return response()->json([
             'message' => 'success',
             'data' => $class
@@ -183,10 +180,7 @@ class ClassController extends Controller
         $class = Classes::query()->where('id', '=', $request->class_id)->first();
         if($class)
         $class->subjects;
-        if($class->subjects)
-        for($i =0;$i<count($class->subjects);$i++){
-            $class->subjects[$i]->subfields;
-        }
+      
         return response()->json([
             'message' => 'success',
             'data'=>$class
@@ -214,7 +208,7 @@ class ClassController extends Controller
         $class_subjects = $class->subjects;
 
         for ($i = 0; $i < count($class_subjects); $i++) {
-            $class_subjects[$i] = Subject::query()->where('id', '=', $class_subjects[$i]->id)->with('subfields')->first();
+            $class_subjects[$i] = Subject::query()->where('id', '=', $class_subjects[$i]->id)->first();
         }
         return response()->json([
             'data' => $class->subjects

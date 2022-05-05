@@ -11,14 +11,13 @@ class Mark extends Model
     protected $table='marks';
     protected $fillable = [
         'value',
-        'subfield_id',
         'subject_id',
         'student_id'
     ];
     protected $primaryKey='id';
 
     public function student(){
-        return $this->belongsTo('app\Models\Student','student_id','id');
+        return $this->belongsTo('app\Models\Student','student_id','user_id');
     }
 
 

@@ -16,20 +16,20 @@ class Student extends Model
         'parent_id',
         'user_id'
     ];
-//protected $primaryKey='id';
+//protected $primaryKey=null;
 
     public function  user(){
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'user_id','id');
     }
     public function parent(){
         return $this->belongsTo('App\Models\Paarent',"parent_id","user_id");
     }
 
     public function marks(){
-        return $this->hasMany('App\Models\Mark','user_id','user_id');
+        return $this->hasMany('App\Models\Mark','student_id','user_id');
     }
     public function classroom(){
-        return $this->belongsTo('App\Models\Classroom','classroom_id','id');
+        return $this->belongsTo('App\Models\Classroom','classroom_id','user_id');
     }
 
 }

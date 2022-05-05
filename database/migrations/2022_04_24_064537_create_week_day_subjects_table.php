@@ -16,7 +16,7 @@ class CreateWeekDaySubjectsTable extends Migration
         Schema::create('week_day_subjects', function (Blueprint $table) {
             $table->id();
             $table->integer('order');
-            $table->integer('subfield_id');
+
             $table->integer('subject_id');
             $table->foreignId('week_day_id');
             $table->timestamps();

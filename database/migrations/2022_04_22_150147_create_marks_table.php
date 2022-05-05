@@ -15,11 +15,10 @@ class CreateMarksTable extends Migration
     {
         Schema::create('marks', function (Blueprint $table) {
             $table->id();
-            $table->integer('value');
-            $table->integer('subfield_id');
-            $table->integer('subject_id');
-            $table->foreignId('user_id');
-
+            $table->string('value');
+            $table->string('subject_id');
+            $table->unsignedBigInteger('student_id');
+            $table->foreign('student_id')->references('user_id')->on('students')->cascadeOnDelete();
             $table->timestamps();
         });
     }
