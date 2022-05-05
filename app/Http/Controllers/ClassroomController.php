@@ -78,14 +78,13 @@ class ClassroomController extends Controller
                     return response()->json([
                         'message' => 'invalid teachers ids',
                     ], 404);
-                for ($j = 0; $j < count($request->teachers_id[$i]['subjects_id']); $j++) {
-                    //checking if subjects exist
-                    $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subjects_id'][$j])->first();
-                    if (!$subject)
-                        return response()->json([
-                            'message' => 'invalid subjects ids',
-                        ], 404);
-                    //checking if subject is for this classroom
+                //checking if subjects exist
+                $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subject_id'])->first();
+                if (!$subject)
+                    return response()->json([
+                        'message' => 'invalid subjects ids',
+                    ], 404);
+                //checking if subject is for this classroom
 //                    $valid = Class_Subject::query()->where([
 //                        ['subject_id ', '=', $subject->id],
 //                        ['class_id', '=', $request->class_id]
@@ -96,7 +95,7 @@ class ClassroomController extends Controller
 //                            'message' => 'subject with id' . $subject->id . 'isn\'t for class with id' . $request->id,
 //                        ], 404);
 
-                }
+
             }
         //--------------------------------------------------------------------------------------------------------------
 
@@ -109,8 +108,7 @@ class ClassroomController extends Controller
             for ($i = 0; $i < count($request->teachers_id); $i++) {
                 $teacher_classroom = new Teacher_classroom();
                 $teacher_classroom->teacher_id = $request->teachers_id[$i]['teacher_id'];
-                for ($j = 0; $j < count($request->teachers_id[$i]['subjects_id']); $j++)
-                    $teacher_classroom->subject_id = $request->teachers_id[$i]['subjects_id'][$j];
+                $teacher_classroom->subject_id = $request->teachers_id[$i]['subjects_id'];
                 $teacher_classroom->classroom_id = $classroom->id;
                 $teacher_classroom->save();
             }
@@ -173,21 +171,20 @@ class ClassroomController extends Controller
                     return response()->json([
                         'message' => 'invalid teachers ids',
                     ], 404);
-                for ($j = 0; $j < count($request->teachers_id[$i]['subjects_id']); $j++) {
-                    //checking if subjects exist
-                    $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subjects_id'][$j])->first();
-                    if (!$subject)
-                        return response()->json([
-                            'message' => 'invalid subjects ids',
-                        ], 404);
-                    //checking if subject blongs to this classroom
+                //checking if subjects exist
+                $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subject_id'])->first();
+                if (!$subject)
+                    return response()->json([
+                        'message' => 'invalid subjects ids',
+                    ], 404);
+                //checking if subject blongs to this classroom
 //                    $valid = Class_Subject::query()->where('class_id', '=', $request->class_id)->where('subject_id
 //                    ', '=', $subject->id)->first();
 //                    if (!$valid)
 //                        return response()->json([
 //                            'message' => 'subject with id' . $subject->id . 'isn\'t for class with id' . $request->id,
 //                        ], 404);
-                }
+
             }
 
         // -------------------------------------------------------------------------------------------------------------
@@ -204,8 +201,7 @@ class ClassroomController extends Controller
             for ($i = 0; $i < count($request->teachers_id); $i++) {
                 $teacher_classroom = new Teacher_classroom();
                 $teacher_classroom->teacher_id = $request->teachers_id[$i]['teacher_id'];
-                for ($j = 0; $j < count($request->teachers_id[$i]['subjects_id']); $j++)
-                    $teacher_classroom->subject_id = $request->teachers_id[$i]['subjects_id'][$j];
+                $teacher_classroom->subject_id = $request->teachers_id[$i]['subject_id'];
                 $teacher_classroom->classroom_id = $classroom->id;
                 $teacher_classroom->save();
             }
