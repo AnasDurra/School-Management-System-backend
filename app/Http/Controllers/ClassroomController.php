@@ -221,8 +221,9 @@ class ClassroomController extends Controller
                 for ($i = 0; $i < count($request->students_id); $i++) {
                     $student = Student::query()->where('user_id', '=', $request->students_id[$i])->first();
                     if ($student) {
-                        $student->classroom_id = $classroom->id;
-                        $student->save();
+//                        $student->classroom_id = $classroom->id;
+//                        $student->save();
+                        Student::query()->where('user_id', '=', $request->students_id[$i])->update(['classroom_id' => $classroom->id]);
                     }
                 }
             }
