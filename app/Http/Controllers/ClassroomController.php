@@ -216,7 +216,8 @@ class ClassroomController extends Controller
             $students = Student::query()->where('classroom_id', '=', $request->id)->get();
             if ($students) {
                 for ($i = 0; $i < count($students); $i++) {
-                    $students[$i]->classroom_id = null;
+                   // $students[$i]->classroom_id = null;
+                    Student::query()->where('user_id', '=', $students[$i])->update(['classroom_id' => null]);
                 }
                 for ($i = 0; $i < count($request->students_id); $i++) {
                     $student = Student::query()->where('user_id', '=', $request->students_id[$i])->first();
