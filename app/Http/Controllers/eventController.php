@@ -25,10 +25,15 @@ class eventController extends Controller
                 'error' => $errors
             ], 400);
         }
-
+        $date = Date::query()->where('date','=',$request->date)->first();
+        if(!$date){
         $date= new Date();
         $date->date = $request->date;
         $date->save();
+        }
+
+
+
         $new = new Event();
         $new->content = $request['content'];
         $new->date_id = $date->id;
