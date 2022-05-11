@@ -5,17 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Date extends Model
 {
     use HasFactory;
-    protected $table='events';
+    use HasFactory;
+    protected $table='dates';
     protected $fillable = [
-        'date_id',
-        'content'
+        'date'
     ];
     protected $primaryKey='id';
 
-    public function date(){
-        $this->belongsTo(Date::class,'date_id','id');
+    public function event(){
+        $this->hasMany(Event::class,'date_id','id');
     }
 }

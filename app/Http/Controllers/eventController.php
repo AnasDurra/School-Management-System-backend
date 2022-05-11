@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Date;
 use App\Models\Event;
 
 
@@ -24,13 +25,18 @@ class eventController extends Controller
                 'error' => $errors
             ], 400);
         }
+
+        $date= new Date();
+        $date->date = $request->date;
+        $date->save();
         $new = new Event();
         $new->content = $request['content'];
-        $new->date = $request->date;
+        $new->date_id = $date->id;
         $new->save();
         $final = [
-            'date' => $new->date,
+            'date' => $date->date,
             'content' => $new->content,
+            'id'=>$date->id
         ];
         return response()->json(
             $final
@@ -43,13 +49,15 @@ class eventController extends Controller
         //  $collection = collect();
         $final = [];
         for ($i = 0; $i < count($events); $i++) {
-            $final[$events[$i]->date][] = $events[$i]->content;
+            $final[$events[$i]->date_id][] = $events[$i]->content;
         }
         $final2 = null;
         foreach ($final as $key => $value) {
+            $date= Date::query()->Where('id','=',$key)->first();
             $final2[] = [
-                'date' => $key,
-                'data' => $value
+                'date' => $date->date,
+                'data' => $value,
+                'id'=>$key
             ];
         }
 
