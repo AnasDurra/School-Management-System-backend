@@ -15,7 +15,9 @@ class Classroom extends Model
         'class_id'
     ];
     protected $primaryKey = 'id';
-
+    protected $hidden =[
+        'pivot'
+    ];
     public function students()
     {
         return $this->hasMany('App\Models\Student', 'classroom_id', 'id');

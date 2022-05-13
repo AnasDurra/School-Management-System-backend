@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Validator;
 
 class TeacherClassroomController extends Controller
 {
-    //
     public function update(Request $request)
     {
         Validator::make($request->all(), [
@@ -51,5 +50,42 @@ class TeacherClassroomController extends Controller
 
             ]
         );
+    }
+
+    public function GetTeacherClassrooms(Request $request){
+        $validator=Validator::make($request->all(), [
+            'teacher_id' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $teacher = Teacher::query()->where('user_id','=',$request->teacher_id)->first();
+
+        if(!$teacher) {
+            return response()->json([
+                'error' => 'Not Found'
+            ]);
+        }
+        $classrooms = $teacher->classrooms;
+
+        $student=null;
+        for($i=0;$i<count($classrooms);$i++){
+            $student = $classrooms[$i]->students;
+            for($j=0;$j<count($student);$j++)
+                $student[$j]->user;
+
+            $classrooms[$i]['students'] = $student;
+        }
+        return response()->json([
+            'teacher' => $teacher,
+        ]);
+
+
+
     }
 }
