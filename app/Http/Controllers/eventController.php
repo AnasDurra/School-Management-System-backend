@@ -35,10 +35,11 @@ class eventController extends Controller
         $new->content = $request['content'];
         $new->date_id = $date->id;
         $new->save();
+
         $final = [
             'date' => $date->date,
             'id'=>$date->id,
-            'content' => $new,
+            'events' => $date->events,
         ];
         return response()->json(
             $final
@@ -87,7 +88,7 @@ class eventController extends Controller
         [
             'date'=>$date->date,
             'id'=>$date->id,
-            'data'=>$events
+            'events'=>$events
 
         ]
         );
