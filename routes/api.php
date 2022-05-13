@@ -74,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     //admins
+    Route::get('/admins/all', [\App\Http\Controllers\AdminController::class, 'all']);
     Route::post('/admins/add', [\App\Http\Controllers\AdminController::class, 'add']);
     Route::post('/admins/update', [\App\Http\Controllers\AdminController::class, 'update']);
     Route::post('/admins/delete', [\App\Http\Controllers\AdminController::class, 'delete']);
@@ -106,6 +107,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/weekly_schedule/add', [\App\Http\Controllers\weeklyScheduleController::class, 'add_weekly_schedule']);
     Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weeklyScheduleController::class, 'add_subjects_to_schedules']);
     Route::post('/weekly_schedule/get', [\App\Http\Controllers\weeklyScheduleController::class, 'get_weekly_schedule']);
+
+    //events
+    Route::post('events/add',[\App\Http\Controllers\eventController::class,'add']);
+    Route::get('events/all',[\App\Http\Controllers\eventController::class,'all']);
+    Route::post('events/delete',[\App\Http\Controllers\eventController::class,'delete']);
 
 });
 
