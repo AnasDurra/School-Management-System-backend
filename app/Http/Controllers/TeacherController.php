@@ -201,16 +201,17 @@ class TeacherController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $user = User::query()->where('id', '=', $request->teacher_id)->with('teacher')->first();
-        if (!$user) {
+
+        $teacher = Teacher::query()->where('user_id', '=', $request->teacher_id)->first();
+        if (!$teacher) {
             return response()->json([
                 'error' => 'NotFound'
             ], 404);
         }
-        if ($user['teacher'])
-            $user['teacher']->subjects;
+        if ($teacher)
+            $teacher_subjects = $teacher->subjects;
         return response()->json([
-            'data' => $user
+            'data' => $teacher_subjects
         ]);
     }
 }
