@@ -16,6 +16,6 @@ class Event extends Model
     protected $primaryKey='id';
 
     public function date(){
-        $this->belongsTo(Date::class,'date_id','id');
+      return  $this->belongsTo(Date::class,'date_id','id');
     }
 }

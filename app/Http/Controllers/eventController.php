@@ -31,17 +31,14 @@ class eventController extends Controller
         $date->date = $request->date;
         $date->save();
         }
-
-
-
         $new = new Event();
         $new->content = $request['content'];
         $new->date_id = $date->id;
         $new->save();
         $final = [
             'date' => $date->date,
-            'content' => $new->content,
-            'id'=>$date->id
+            'id'=>$date->id,
+            'content' => $new,
         ];
         return response()->json(
             $final
@@ -54,22 +51,45 @@ class eventController extends Controller
         //  $collection = collect();
         $final = [];
         for ($i = 0; $i < count($events); $i++) {
-            $final[$events[$i]->date_id][] = $events[$i]->content;
+            $final[$events[$i]->date_id][] = $events[$i];
         }
         $final2 = null;
         foreach ($final as $key => $value) {
             $date= Date::query()->Where('id','=',$key)->first();
             $final2[] = [
                 'date' => $date->date,
-                'data' => $value,
-                'id'=>$key
+                'id'=>$key,
+                'events' => $value
             ];
         }
-
         return response()->json(
             $final2
         );
+    }
+    public function delete(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+        $event = Event::query()->where('id','=',$request->id)->first();
+        $event->delete();
+        $date= Date::query()->where('id','=',$event->date_id)->with('events')->first();
+        $events =[];
+        for($i =0;$i<count($date->events);$i++){
+            $events[]=$date->events[$i];
+        }
+        return response()->json(
+        [
+            'date'=>$date->date,
+            'id'=>$date->id,
+            'data'=>$events
 
-
+        ]
+        );
     }
 }

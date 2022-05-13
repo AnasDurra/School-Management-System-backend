@@ -15,7 +15,7 @@ class Date extends Model
     ];
     protected $primaryKey='id';
 
-    public function event(){
-        $this->hasMany(Event::class,'date_id','id');
+    public function events(){
+       return $this->hasMany(Event::class,'date_id','id');
     }
 }

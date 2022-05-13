@@ -111,6 +111,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //events
     Route::post('events/add',[\App\Http\Controllers\eventController::class,'add']);
     Route::get('events/all',[\App\Http\Controllers\eventController::class,'all']);
+    Route::post('events/delete',[\App\Http\Controllers\eventController::class,'delete']);
 
 });
 
