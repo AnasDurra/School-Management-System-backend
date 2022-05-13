@@ -120,9 +120,10 @@ class ParentController extends Controller
                 if ($parents[$i]['parent'])
                     if ($parents[$i]['parent']['students'])
                         for ($j = 0; $j < count($parents[$i]['parent']['students']); $j++) {
-                            $parents[$i]['parent']->students[$j]->classroom;
+                           $classroom =  Classroom::query()->where('id','=',$parents[$i]['parent']->students[$j]->classroom_id)->first();
                             $class = Classes::query()->where('id', '=', $parents[$i]['parent']['students'][$j]->class_id)->first();
                             $parents[$i]['parent']['students'][$j]->class = $class;
+                            $parents[$i]['parent']['students'][$j]->classroom = $classroom;
                         }
             }
         return response()->json(

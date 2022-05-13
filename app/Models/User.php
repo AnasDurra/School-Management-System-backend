@@ -17,13 +17,15 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
-    protected $primaryKey='id';
+    protected $primaryKey = 'id';
     protected $table = 'users';
     protected $fillable = [
-         'name',
+        'name',
         'username',
         'password',
         'role',
+        'phone_num',
+        'address',
         'phone_num'
     ];
 
@@ -37,14 +39,24 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function  student(){
+    public function student()
+    {
         return $this->hasOne(Student::class);
     }
-    public function  teacher(){
+
+    public function teacher()
+    {
         return $this->hasOne(Teacher::class);
     }
-    public function parent(){
+
+    public function parent()
+    {
         return $this->hasOne(Paarent::class);
+    }
+
+    public function admin()
+    {
+        return $this->hasOne(Admin::class);
     }
 
     /**
