@@ -11,12 +11,10 @@ use function PHPUnit\Framework\at;
 
 class MarkController extends Controller
 {
-    public function add(Request $request)
+    public function setMarks(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'value' => 'required',
-            'subject_id' => 'required',
-            'student_id' => 'required'
+            'info' =>'required', //array , for each one => { student_id , subject_id , value }
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -24,17 +22,28 @@ class MarkController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $mark = new Mark();
-        $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
-        if (!$subject) {
-            return response()->json(['message' => 'wrong subject id !'], 404);
-        }
 
-        $mark->subject_id = $subject->id;
-        $mark->student_id = $request->student_id;
-        $mark->value = $request->value;
-        $mark->save();
-        $mark->subject = $subject;
+        $info = $request->info ;
+        if($request->info) {
+            for ($i = 0; $i < count($request->info); $i++) {
+                $mark[$i]=new Mark();
+                $subject = Subject::query()->where('id', '=', $request->info[$i]['subject_id'])->first();
+                if (!$subject) {
+                    return response()->json(['message' => 'wrong subject id !','subject_id'=>$request->info[$i]['subject_id'] ], 404);
+                }
+                $student = Student::query()->where('user_id', '=', $request->info[$i]['student_id'])->first();
+                if (!$student) {
+                    return response()->json(['message' => 'wrong student id !','student_id'=>$request->info[$i]['student_id'] ], 404);
+                }
+
+                $mark[$i]['student_id'] =$request->info[$i]['student_id'] ;
+                $mark[$i]['subject_id'] =$request->info[$i]['subject_id'];
+
+                $mark[$i]['value'] = $request->info[$i]['value'];
+
+                $mark[$i]->save();
+            }
+        }
         return response()->json([
             'message' => 'added',
             'data' => $mark
@@ -56,12 +65,13 @@ class MarkController extends Controller
 
         $student = Student::query()->where('user_id', '=', $request->student_id)->with('marks')->first();
         if (!$student) return response()->json(['message' => 'NotFound']);
+        $student->user;
         if ($student->marks) {
             for ($i = 0; $i < count($student->marks); $i++) {
                 $student->marks[$i];
             }
         }
-        return $student;
+        return response()->json(['data'=>$student]);
     }
 
     public function update(Request $request)

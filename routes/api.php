@@ -27,7 +27,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::middleware('auth:sanctum')->group(function () {
-    
+
     Route::get('/me', [AuthController::class, 'me']);
     Route::post('/logout', [AuthController::class, 'logout']);
 
@@ -70,10 +70,10 @@ Route::middleware('auth:sanctum')->group(function () {
     // });
 
     //marks
-    Route::post('/marks/add', [\App\Http\Controllers\MarkController::class, 'add']);
+    Route::post('/marks/setMarks', [\App\Http\Controllers\MarkController::class, 'setMarks']);
     Route::post('/marks/update', [\App\Http\Controllers\MarkController::class, 'update']);
     Route::post('/marks/delete', [\App\Http\Controllers\MarkController::class, 'delete']);
-    Route::post('/marks/one', [\App\Http\Controllers\MarkController::class, 'getStudentMarks']);
+    Route::post('/marks/getStudentMarks', [\App\Http\Controllers\MarkController::class, 'getStudentMarks']);
 
 
     //admins
