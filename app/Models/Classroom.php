@@ -38,5 +38,8 @@ class Classroom extends Model
         return $this->hasMany('App\Models\Week_day', 'classroom_id', 'id');
     }
 
-
+    public function assignments()
+    {
+        return $this->hasMany('App\Models\Assignment', 'classroom_id', 'id');
+    }
 }

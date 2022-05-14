@@ -26,5 +26,10 @@ class Teacher extends Model
         return $this->belongsToMany('App\Models\Classroom',"teacher_classroom",'teacher_id','classroom_id','user_id','id');
     }
 
+    public function  assignments(){
+        return $this->hasMany('App\Models\Assignment',"teacher_id",'user_id');
+    }
+
+
 
 }
