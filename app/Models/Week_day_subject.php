@@ -11,7 +11,8 @@ class Week_day_subject extends Model
     protected $table='week_day_subjects';
     protected $fillable = [
         'subject_id',
-        'week_day_id'
+        'week_day_id',
+        'order'
     ];
     protected $primaryKey='id';
 

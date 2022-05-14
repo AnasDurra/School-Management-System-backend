@@ -10,7 +10,8 @@ class Week_day extends Model
     use HasFactory;
     protected $table='week_days';
     protected $fillable = [
-        'day',
+        'order',
+        'classroom_id'
     ];
     protected $primaryKey='id';
 
