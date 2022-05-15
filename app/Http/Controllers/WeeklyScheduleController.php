@@ -172,7 +172,9 @@ class weeklyScheduleController extends Controller
             ['classroom_id', '=', $request->classroom_id],
             ['order', '=', 1]
         ])->first();
-
+        if(!$sunday){
+            return response()->json([]);
+        }
         $subjectsSunday = Week_day_subject::query()->where('week_day_id', '=', $sunday->id)->orderBy('order')->get();
         $monday = Week_day::query()->where([
             ['classroom_id', '=', $request->classroom_id],
