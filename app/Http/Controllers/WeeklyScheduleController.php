@@ -71,39 +71,59 @@ class weeklyScheduleController extends Controller
         $data = null;
         //   return response()->json($subjectsSunday);
         $sessions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-        $empty['name'] ="";
-        //   for ($i = 0; $i < 5; $i++) {
+        $days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday"];
+        $empty = "";
+        for ($i = 0; $i < 5; $i++) $data[$i]["day"] = $days[$i];
+        //for ($i = 0; $i < 5; $i++) {
         for ($j = 0; $j <
         max(count($subjectsSunday), max(count($subjectsMonday), max(count($subjectsTuesday), max(count($subjectsWednesday), count($subjectsThursday)))))
         ; $j++) {
-            if ($j < count($subjectsSunday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+            if ($j < count($subjectsSunday)) {
 
-            if ($j < count($subjectsMonday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[0][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+            } else {
 
-            if ($j < count($subjectsTuesday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[0][$sessions[$j]] = $empty;
+            }
+            if ($j < count($subjectsMonday)) {
 
-            if ($j < count($subjectsWednesday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[1][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+            } else {
 
-            if ($j < count($subjectsThursday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[1][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsTuesday)) {
+
+                $data[2][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+            } else {
+
+                $data[2][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsWednesday)) {
+
+                $data[3][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+            } else {
+
+                $data[3][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsThursday)) {
+
+                $data[4][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+            } else {
+
+                $data[4][$sessions[$j]] = $empty;
+            }
         }
-        //}
+        // }
 
-
-        $returnArray=null;
-        foreach($data as $key=>$value){
-            $returnArray[]=[$key=>$value];
-        }
-        return response()->json($returnArray);
+//        $returnArray=null;
+//       foreach($data as $key=>$value){
+//$returnArray[]=[$key=>$value];
+//    }
+        return response()->json($data);
     }
 
     public function add_subjects_to_schedules(Request $request)
@@ -178,37 +198,58 @@ class weeklyScheduleController extends Controller
         $data = null;
         //   return response()->json($subjectsSunday);
         $sessions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
-        $empty['name'] ="";
-        //   for ($i = 0; $i < 5; $i++) {
+        $days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday"];
+        $empty = "";
+        for ($i = 0; $i < 5; $i++) $data[$i]["day"] = $days[$i];
+        //for ($i = 0; $i < 5; $i++) {
         for ($j = 0; $j <
         max(count($subjectsSunday), max(count($subjectsMonday), max(count($subjectsTuesday), max(count($subjectsWednesday), count($subjectsThursday)))))
         ; $j++) {
-            if ($j < count($subjectsSunday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+            if ($j < count($subjectsSunday)) {
 
-            if ($j < count($subjectsMonday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[0][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+            } else {
 
-            if ($j < count($subjectsTuesday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[0][$sessions[$j]] = $empty;
+            }
+            if ($j < count($subjectsMonday)) {
 
-            if ($j < count($subjectsWednesday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[1][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+            } else {
 
-            if ($j < count($subjectsThursday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first();
-            else $data[$sessions[$j]][] = $empty;
+                $data[1][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsTuesday)) {
+
+                $data[2][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+            } else {
+
+                $data[2][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsWednesday)) {
+
+                $data[3][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+            } else {
+
+                $data[3][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsThursday)) {
+
+                $data[4][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+            } else {
+
+                $data[4][$sessions[$j]] = $empty;
+            }
         }
-        //}
+        // }
 
-        $returnArray=null;
-       foreach($data as $key=>$value){
-$returnArray[]=[$key=>$value];
-    }
-        return response()->json($returnArray);
+//        $returnArray=null;
+//       foreach($data as $key=>$value){
+//$returnArray[]=[$key=>$value];
+//    }
+        return response()->json($data);
     }
 }
