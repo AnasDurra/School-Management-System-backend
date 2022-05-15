@@ -99,10 +99,11 @@ class weeklyScheduleController extends Controller
         //}
 
 
-        return response()->json([
-            'message' => 'success',
-            'data' => $data
-        ]);
+        $returnArray=null;
+        foreach($data as $key=>$value){
+            $returnArray[]=[$key=>$value];
+        }
+        return response()->json($returnArray);
     }
 
     public function add_subjects_to_schedules(Request $request)
@@ -204,10 +205,10 @@ class weeklyScheduleController extends Controller
         }
         //}
 
-//        $returnArray=null;
-//       foreach($data as $key=>$value){
-//$returnArray[]=[$key=>$value];
-  //  }
-        return response()->json($data);
+        $returnArray=null;
+       foreach($data as $key=>$value){
+$returnArray[]=[$key=>$value];
+    }
+        return response()->json($returnArray);
     }
 }
