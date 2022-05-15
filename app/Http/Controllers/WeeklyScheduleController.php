@@ -181,23 +181,23 @@ class weeklyScheduleController extends Controller
         max(count($subjectsSunday), max(count($subjectsMonday), max(count($subjectsTuesday), max(count($subjectsWednesday), count($subjectsThursday)))))
         ; $j++) {
             if ($j < count($subjectsSunday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first();
             else $data[$sessions[$j]][] = "";
 
             if ($j < count($subjectsMonday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first();
             else $data[$sessions[$j]][] = "";
 
             if ($j < count($subjectsTuesday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first();
             else $data[$sessions[$j]][] = "";
 
             if ($j < count($subjectsWednesday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first();
             else $data[$sessions[$j]][] = "";
 
             if ($j < count($subjectsThursday))
-                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+                $data[$sessions[$j]][] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first();
             else $data[$sessions[$j]][] = "";
         }
         //}
