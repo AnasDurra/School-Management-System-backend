@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Class_Subject;
 use App\Models\Classroom;
 
+use App\Models\Classroom_teacherSubject;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -61,8 +62,9 @@ class ClassroomController extends Controller
                 'error' => $errors
             ], 400);
         }
+
         //checking the ids ---------------------------------------------------------------------------------------------
-        if ($request->sudents_id)
+        /*if ($request->sudents_id)
             for ($i = 0; $i < count($request->students_id); $i++) {
                 $student = Student::query()->where('user_id', '=', $request->students_id[$i])->first();
                 if (!$student) {
@@ -70,9 +72,19 @@ class ClassroomController extends Controller
                         'message' => 'invalid students ids',
                     ], 404);
                 }
-            }
-        if ($request->teachers_id)
+            }*/
+        /*if ($request->teachers_id)
+
             for ($i = 0; $i < count($request->teachers_id); $i++) {
+                $teacher_subject = teacher_subject::query()->where('teacher_id', '=', $request->teachers_id[$i]['teacher_id'])
+                    ->where('subject_id', '=', $request->teachers_id[$i]['subject_id'])->first();
+                if (!$teacher_subject)
+                    return response()->json([
+                        'message' => 'invalid teachers_subject ids',
+                    ], 404);*/
+
+
+            /*for ($i = 0; $i < count($request->teachers_id); $i++) {
                 $teacher = Teacher::query()->where('user_id', '=', $request->teachers_id[$i]['teacher_id'])->first();
                 if (!$teacher)
                     return response()->json([
@@ -83,7 +95,13 @@ class ClassroomController extends Controller
                 if (!$subject)
                     return response()->json([
                         'message' => 'invalid subjects ids',
-                    ], 404);
+                    ], 404);*/
+
+
+
+/*------------------------------------------------------------------------------------------------------------------------*/
+
+
                 //checking if subject is for this classroom
 //                    $valid = Class_Subject::query()->where([
 //                        ['subject_id ', '=', $subject->id],
@@ -96,8 +114,12 @@ class ClassroomController extends Controller
 //                        ], 404);
 
 
-            }
+            /*}*/
         //--------------------------------------------------------------------------------------------------------------
+
+
+
+
 
         $classroom = new Classroom();
         $classroom->name = $request->name;
@@ -106,29 +128,57 @@ class ClassroomController extends Controller
         $classroom->save();
         if ($request->teachers_id)
             for ($i = 0; $i < count($request->teachers_id); $i++) {
-                $teacher_classroom = new Teacher_classroom();
-                $teacher_classroom->teacher_id = $request->teachers_id[$i]['teacher_id'];
-                $teacher_classroom->subject_id = $request->teachers_id[$i]['subject_id'];
-                $teacher_classroom->classroom_id = $classroom->id;
-                $teacher_classroom->save();
+                $classroom_teacherSubject = new Classroom_teacherSubject();
+                $teacher_subject=teacher_subject::query()->where('subject_id','=',$request->teachers_id[$i]['subject_id'])
+                    ->where('subject_id','=',$request->teachers_id[$i]['subject_id'])->first();
+
+                if (!$teacher_subject)
+                    return response()->json([
+                        'message' => 'invalid teachers_subject ids',
+                    ], 404);
+
+                //classroomteacherSubject
+                $classroom_teacherSubject->teacherSubject_id =$teacher_subject->id;
+                $classroom_teacherSubject->classroom_id =$classroom->id;
+                $classroom_teacherSubject->save();
+                //TeacherClassroom
+
+                if(!(Teacher_classroom::query()->where('teacher_id','=',$request->teachers_id[$i]['teacher_id'])->first())) {
+                    $teacher_classroom = new Teacher_classroom();
+                    $teacher_classroom->teacher_id = $request->teachers_id[$i]['teacher_id'];
+                    $teacher_classroom->classroom_id = $classroom->id;
+                    $teacher_classroom->save();
+                }
+
+
             }
         if ($request->students_id) {
             for ($i = 0; $i < count($request->students_id); $i++) {
                 $student = Student::query()->where('user_id', '=', $request->students_id[$i])->first();
-                if ($student) {
+                if (!$student) {
+                    return response()->json([
+                        'message' => 'invalid students ids',
+                    ], 404);
+                }
                     // $student->classroom_id = $classroom->id;
                     Student::query()->where('user_id', '=', $request->students_id[$i])->update(['classroom_id' => $classroom->id]);
                     //$student->save();
-                }
             }
         }
         $classroom->students;
         $classroom->teachers;
-        $teacher_subject = Teacher_classroom::query()->where('classroom_id', '=', $classroom->id)->get();
-        $classroom->teacher_subject = $teacher_subject;
-        if ($teacher_subject) {
-            for ($i = 0; $i < count($teacher_subject); $i++) {
-                $subject = Subject::query()->where('id', '=', $teacher_subject[$i]->subject_id)->first();
+
+
+        $all_teacher_in_classroom = Classroom_teacherSubject::query()->where('classroom_id', '=', $classroom->id)->get();
+        $classroom->teacher_subject = $all_teacher_in_classroom;
+        if ($all_teacher_in_classroom) {
+            for ($i = 0; $i < count($all_teacher_in_classroom); $i++) {
+                $teacher_subject=teacher_subject::query()->where('id','=',$all_teacher_in_classroom[$i]->teacherSubject_id)->first();
+                $subject = Subject::query()->where('id', '=', $teacher_subject->subject_id)->first();
+                if(!$subject)
+                    $classroom->teacher_subject[$i]->subject_name = null;
+                $classroom->teacher_subject[$i]->teacher_id = $teacher_subject->teacher_id;
+                $classroom->teacher_subject[$i]->subject_id = $teacher_subject->subject_id;
                 $classroom->teacher_subject[$i]->subject_name = $subject->name;
             }
         }
@@ -160,38 +210,38 @@ class ClassroomController extends Controller
             return response()->json(['message' => 'NotFound']);
         }
         //checking the ids ---------------------------------------------------------------------------------------------
-        if ($request->students_id)
-            for ($i = 0; $i < count($request->students_id); $i++) {
-                $student = Student::query()->where('user_id', '=', $request->students_id[$i])->first();
-                if (!$student) {
-                    return response()->json([
-                        'message' => 'invalid students ids',
-                    ], 404);
-                }
-
-            }
-        if ($request->teachers_id)
-            for ($i = 0; $i < count($request->teachers_id); $i++) {
-                $teacher = Teacher::query()->where('user_id', '=', $request->teachers_id[$i]['teacher_id'])->first();
-                if (!$teacher)
-                    return response()->json([
-                        'message' => 'invalid teachers ids',
-                    ], 404);
-                //checking if subjects exist
-                $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subject_id'])->first();
-                if (!$subject)
-                    return response()->json([
-                        'message' => 'invalid subjects ids',
-                    ], 404);
-                //checking if subject blongs to this classroom
-//                    $valid = Class_Subject::query()->where('class_id', '=', $request->class_id)->where('subject_id
-//                    ', '=', $subject->id)->first();
-//                    if (!$valid)
-//                        return response()->json([
-//                            'message' => 'subject with id' . $subject->id . 'isn\'t for class with id' . $request->id,
-//                        ], 404);
-
-            }
+//        if ($request->students_id)
+//            for ($i = 0; $i < count($request->students_id); $i++) {
+//                $student = Student::query()->where('user_id', '=', $request->students_id[$i])->first();
+//                if (!$student) {
+//                    return response()->json([
+//                        'message' => 'invalid students ids',
+//                    ], 404);
+//                }
+//
+//            }
+//        if ($request->teachers_id)
+//            for ($i = 0; $i < count($request->teachers_id); $i++) {
+//                $teacher = Teacher::query()->where('user_id', '=', $request->teachers_id[$i]['teacher_id'])->first();
+//                if (!$teacher)
+//                    return response()->json([
+//                        'message' => 'invalid teachers ids',
+//                    ], 404);
+//                //checking if subjects exist
+//                $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subject_id'])->first();
+//                if (!$subject)
+//                    return response()->json([
+//                        'message' => 'invalid subjects ids',
+//                    ], 404);
+//                //checking if subject blongs to this classroom
+////                    $valid = Class_Subject::query()->where('class_id', '=', $request->class_id)->where('subject_id
+////                    ', '=', $subject->id)->first();
+////                    if (!$valid)
+////                        return response()->json([
+////                            'message' => 'subject with id' . $subject->id . 'isn\'t for class with id' . $request->id,
+////                        ], 404);
+//
+//            }
 
         // -------------------------------------------------------------------------------------------------------------
 
@@ -206,9 +256,27 @@ class ClassroomController extends Controller
             Teacher_classroom::query()->where('classroom_id', '=', $request->id)->delete();
             for ($i = 0; $i < count($request->teachers_id); $i++) {
                 $teacher_classroom = new Teacher_classroom();
+                $classroom_teacherSubject = new Classroom_teacherSubject();
+                $teacher_subject=teacher_subject::query()->where('subject_id','=',$request->teachers_id[$i]['subject_id'])
+                    ->where('subject_id','=',$request->teachers_id[$i]['subject_id'])->first();
+
+                if (!$teacher_subject)
+                    return response()->json([
+                        'message' => 'invalid teachers_subject ids',
+                    ], 404);
+
+                //classroomteacherSubject
+                $classroom_teacherSubject->teacherSubject_id =$teacher_subject->id;
+                $classroom_teacherSubject->classroom_id =$classroom->id;
+
+                //TeacherClassroom
                 $teacher_classroom->teacher_id = $request->teachers_id[$i]['teacher_id'];
-                $teacher_classroom->subject_id = $request->teachers_id[$i]['subject_id'];
                 $teacher_classroom->classroom_id = $classroom->id;
+
+                /*                $teacher_classroom->subject_id = $request->teachers_id[$i]['subject_id'];*/
+
+
+                $classroom_teacherSubject->save();
                 $teacher_classroom->save();
             }
         }

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Class_Subject;
 use App\Models\Classroom;
+use App\Models\Classroom_teacherSubject;
+use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Teacher_classroom;
 use App\Models\teacher_subject;
@@ -72,9 +75,22 @@ class TeacherClassroomController extends Controller
             ]);
         }
         $classrooms = $teacher->classrooms;
-
         $student=null;
+
+        $teacher_subject = null;
         for($i=0;$i<count($classrooms);$i++){
+            $classroom_teacher_subject= Classroom_teacherSubject::query()->where('classroom_id','=',$classrooms[$i]->id)->get();
+            for($j=0;$j<count($classroom_teacher_subject);$j++) {
+                $temp = teacher_subject::query()->where('id', '=', $classroom_teacher_subject[$j]->teacherSubject_id)
+                    ->where('teacher_id','=',$request->teacher_id)->first();
+                if($temp){
+                    $subject=Subject::query()->where('id','=',$temp->subject_id)->first();
+                    $teacher_subject[$j]['teacher_id']=$temp->teacher_id;
+                    $teacher_subject[$j]['subject_id']=$temp->subject_id;
+                    $teacher_subject[$j]['subject_name']=$subject->name;
+                }
+                $classrooms[$i]['teacher_subject']=$teacher_subject;
+            }
             $student = $classrooms[$i]->students;
             for($j=0;$j<count($student);$j++)
                 $student[$j]->user;
