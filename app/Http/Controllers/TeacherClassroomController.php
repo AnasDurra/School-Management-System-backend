@@ -75,8 +75,6 @@ class TeacherClassroomController extends Controller
             ]);
         }
         $classrooms = $teacher->classrooms;
-        $student=null;
-
         $teacher_subject = null;
         for($i=0;$i<count($classrooms);$i++){
             $classroom_teacher_subject= Classroom_teacherSubject::query()->where('classroom_id','=',$classrooms[$i]->id)->get();
@@ -91,6 +89,7 @@ class TeacherClassroomController extends Controller
                 }
                 $classrooms[$i]['teacher_subject']=$teacher_subject;
             }
+
             $student = $classrooms[$i]->students;
             for($j=0;$j<count($student);$j++)
                 $student[$j]->user;

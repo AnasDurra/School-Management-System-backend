@@ -12,7 +12,6 @@ class Teacher_classroom extends Model
     protected $fillable = [
         'classroom_id',
         'teacher_id',
-        'subject_id'
     ];
     protected $primaryKey='id';
 }
