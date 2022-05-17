@@ -22,22 +22,24 @@ class ClassroomController extends Controller
         $classrooms = Classroom::all();
         if ($classrooms) {
             for ($i = 0; $i < count($classrooms); $i++) {
-                $teachers_subjects = Teacher_classroom::query()->where('classroom_id', '=', $classrooms[$i]->id)->get();
+                $classroom_teacherSubject_in_classroom = Classroom_teacherSubject::query()->where('classroom_id','=',$classrooms[$i]->id)->get();
                 if ($classrooms[$i]->students) {
                     for ($j = 0; $j < count($classrooms[$i]->students); $j++) {
                         $user = User::query()->where('id', '=', $classrooms[$i]->students[$j]->user_id)->with('student')->first();
                         $parent = User::query()->where('id', '=', $classrooms[$i]->students[$j]->parent_id)->with('parent')->first();
-                        $classrooms[$i]->students[$j]->student = $user;
+                        $classrooms[$i]->students[$j] = $user;
                         $classrooms[$i]->students[$j]->student->parent = $parent;
                     }
                 }
 
-                if ($teachers_subjects)
-                    for ($j = 0; $j < count($teachers_subjects); $j++) {
-                        $subject = Subject::query()->where('id', '=', $teachers_subjects[$j]->subject_id)->first();
-                        $teachers_subjects[$j]->subject_name = $subject->name;
+                if ($classroom_teacherSubject_in_classroom)
+                    for ($j = 0; $j < count($classroom_teacherSubject_in_classroom); $j++) {
+                        $teacher_subject = teacher_subject::query()
+                            ->where('id', '=', $classroom_teacherSubject_in_classroom[$j]->teacherSubject_id)->first();
+                        $subject=Subject::query()->where('id','=',$teacher_subject->subject_id)->first();
+                        $classroom_teacherSubject_in_classroom[$j]->subject_name = $subject->name;
                     }
-                $classrooms[$i]->teacher_subject = $teachers_subjects;
+                $classrooms[$i]->teacher_subject = $classroom_teacherSubject_in_classroom;
             }
         }
         return response()->json(
