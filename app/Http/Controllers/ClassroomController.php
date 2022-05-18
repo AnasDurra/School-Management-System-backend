@@ -37,6 +37,9 @@ class ClassroomController extends Controller
                         $teacher_subject = teacher_subject::query()
                             ->where('id', '=', $classroom_teacherSubject_in_classroom[$j]->teacherSubject_id)->first();
                         $subject=Subject::query()->where('id','=',$teacher_subject->subject_id)->first();
+                        $teacher_user=Teacher::query()->where('user_id','=',$teacher_subject->teacher_id)->first();
+                        $classroom_teacherSubject_in_classroom[$j]->teacher_id = $teacher_subject->teacher_id;
+                        $classroom_teacherSubject_in_classroom[$j]->teacher_user = $teacher_user;
                         $classroom_teacherSubject_in_classroom[$j]->subject_name = $subject->name;
                     }
                 $classrooms[$i]->teacher_subject = $classroom_teacherSubject_in_classroom;
