@@ -14,4 +14,9 @@ class teacher_subject extends Model
         'teacher_id'
     ];
     protected $primaryKey='id';
+
+    public function classrooms()
+    {
+        return $this->belongsToMany('App\Models\Classroom', "classroom_teacher_subject", 'teacherSubject_id', 'classroom_id', 'id', 'id');
+    }
 }

@@ -42,4 +42,11 @@ class Classroom extends Model
     {
         return $this->hasMany('App\Models\Assignment', 'classroom_id', 'id');
     }
+
+
+
+    public function Teacher_Subjects()
+    {
+        return $this->belongsToMany('App\Models\teacher_subject', "classroom_teacher_subject", 'classroom_id', 'teacherSubject_id', 'id', 'id');
+    }
 }
