@@ -33,8 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Route::group(['middleware' => 'isAdmin'], function () {
-    //student
 
+    //student
     Route::post('/students/add', [StudentController::class, 'add']);
     Route::post('/students/delete', [StudentController::class, 'delete']);
     Route::post('/students/update', [StudentController::class, 'update']);

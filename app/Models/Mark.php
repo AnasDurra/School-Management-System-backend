@@ -12,13 +12,22 @@ class Mark extends Model
     protected $fillable = [
         'value',
         'subject_id',
-        'student_id'
+        'student_id',
+        'type_id'
     ];
     protected $primaryKey='id';
 
     public function student(){
         return $this->belongsTo('app\Models\Student','student_id','user_id');
     }
+
+    public function type(){
+        return $this->belongsTo('app\Models\Type','type_id','id');
+    }
+
+
+
+
 
 
 }

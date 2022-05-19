@@ -10,6 +10,7 @@ class CreateAssignmentsTable extends Migration
     {
         Schema::create('assignments', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
             $table->string('content');
             $table->date('date');
             $table->foreignId('teacher_id')->references('user_id')->on('teachers')->cascadeOnDelete();
