@@ -52,7 +52,7 @@ class TeacherClassroomController extends Controller
         );
     }
 
-    public function GetTeacherClassrooms(Request $request){
+    public function getTeacherClassrooms(Request $request){
         $validator=Validator::make($request->all(), [
             'teacher_id' => 'required',
         ]);

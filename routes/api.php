@@ -50,7 +50,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/teachers', [\App\Http\Controllers\TeacherController::class, 'one']);
 
     //Get Teacher Classrooms
-    Route::post('/teacher/classrooms/get', [\App\Http\Controllers\TeacherClassroomController::class, 'GetTeacherClassrooms']);
+    Route::post('/teacher/classrooms/get', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherClassrooms']);
 
     //parents
     Route::post('/parents/add', [\App\Http\Controllers\ParentController::class, 'add']);
@@ -108,6 +108,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //weekly_schedules
     Route::post('/weeklySchedule/add', [\App\Http\Controllers\weeklyScheduleController::class, 'addWeeklySchedule']);
+    Route::post('/weeklySchedule/edit', [\App\Http\Controllers\weeklyScheduleController::class, 'editWeeklySchedule']);
+    Route::post('/weeklySchedule/delete', [\App\Http\Controllers\weeklyScheduleController::class, 'deleteWeeklySchedule']);
     Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weeklyScheduleController::class, 'add_subjects_to_schedules']);
     Route::post('/weeklySchedule/get', [\App\Http\Controllers\weeklyScheduleController::class, 'getWeeklySchedule']);
 

@@ -16,8 +16,8 @@ class CreateWeekDaySubjectsTable extends Migration
         Schema::create('week_day_subjects', function (Blueprint $table) {
             $table->id();
             $table->integer('order');
-            $table->foreignId('subject_id');
-            $table->foreignId('week_day_id');
+            $table->foreignId('subject_id')->nullable();
+            $table->foreignId('week_day_id')->constrained('week_days')->cascadeOnDelete();
             $table->timestamps();
         });
     }

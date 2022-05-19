@@ -31,14 +31,14 @@ class weeklyScheduleController extends Controller
             $day->classroom_id = $request->classroom_id;
             $day->order = $i + 1;
             $day->save();
-            for ($j = 0; $j < count($request[$days[$i]]); $j++) {
-
+            for ($j = 0; $j < 8; $j++) {
                 $week_day_subject = new Week_day_subject();
+                if($j<count($request[$days[$i]]))
                 $week_day_subject->subject_id = $request[$days[$i]][$j];
+                else $week_day_subject->subject_id = null;
                 $week_day_subject->week_day_id = $day->id;
                 $week_day_subject->order = $j + 1;
                 $week_day_subject->save();
-
             }
         }
         $sunday = Week_day::query()->where([
@@ -75,43 +75,46 @@ class weeklyScheduleController extends Controller
         $empty = "";
         for ($i = 0; $i < 5; $i++) $data[$i]["day"] = $days[$i];
         //for ($i = 0; $i < 5; $i++) {
-        for ($j = 0; $j <
-        max(count($subjectsSunday), max(count($subjectsMonday), max(count($subjectsTuesday), max(count($subjectsWednesday), count($subjectsThursday)))))
-        ; $j++) {
+        for ($j = 0; $j <8; $j++) {
             if ($j < count($subjectsSunday)) {
-
-                $data[0][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+                if ($subjectsSunday[$j]->subject_id)
+                    $data[0][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+                else $data[0][$sessions[$j]] = $empty;
             } else {
 
                 $data[0][$sessions[$j]] = $empty;
             }
             if ($j < count($subjectsMonday)) {
-
-                $data[1][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+                if ($subjectsMonday[$j]->subject_id)
+                    $data[1][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+                else $data[1][$sessions[$j]] = $empty;
             } else {
 
                 $data[1][$sessions[$j]] = $empty;
             }
 
             if ($j < count($subjectsTuesday)) {
-
-                $data[2][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+                if ($subjectsTuesday[$j]->subject_id)
+                    $data[2][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+                else  $data[2][$sessions[$j]] = $empty;
             } else {
 
                 $data[2][$sessions[$j]] = $empty;
             }
 
             if ($j < count($subjectsWednesday)) {
-
-                $data[3][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+                if ($subjectsWednesday[$j]->subject_id)
+                    $data[3][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+                else $data[3][$sessions[$j]] = $empty;
             } else {
 
                 $data[3][$sessions[$j]] = $empty;
             }
 
             if ($j < count($subjectsThursday)) {
-
-                $data[4][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+                if ($subjectsThursday[$j]->subject_id)
+                    $data[4][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+                else $data[4][$sessions[$j]] = $empty;
             } else {
 
                 $data[4][$sessions[$j]] = $empty;
@@ -172,7 +175,7 @@ class weeklyScheduleController extends Controller
             ['classroom_id', '=', $request->classroom_id],
             ['order', '=', 1]
         ])->first();
-        if(!$sunday){
+        if (!$sunday) {
             return response()->json([]);
         }
         $subjectsSunday = Week_day_subject::query()->where('week_day_id', '=', $sunday->id)->orderBy('order')->get();
@@ -204,43 +207,46 @@ class weeklyScheduleController extends Controller
         $empty = "";
         for ($i = 0; $i < 5; $i++) $data[$i]["day"] = $days[$i];
         //for ($i = 0; $i < 5; $i++) {
-        for ($j = 0; $j <
-        max(count($subjectsSunday), max(count($subjectsMonday), max(count($subjectsTuesday), max(count($subjectsWednesday), count($subjectsThursday)))))
-        ; $j++) {
+        for ($j = 0; $j <8; $j++) {
             if ($j < count($subjectsSunday)) {
-
-                $data[0][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+                if ($subjectsSunday[$j]->subject_id)
+                    $data[0][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+                else $data[0][$sessions[$j]] = $empty;
             } else {
 
                 $data[0][$sessions[$j]] = $empty;
             }
             if ($j < count($subjectsMonday)) {
-
-                $data[1][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+                if ($subjectsMonday[$j]->subject_id)
+                    $data[1][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+                else $data[1][$sessions[$j]] = $empty;
             } else {
 
                 $data[1][$sessions[$j]] = $empty;
             }
 
             if ($j < count($subjectsTuesday)) {
-
-                $data[2][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+                if ($subjectsTuesday[$j]->subject_id)
+                    $data[2][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+                else  $data[2][$sessions[$j]] = $empty;
             } else {
 
                 $data[2][$sessions[$j]] = $empty;
             }
 
             if ($j < count($subjectsWednesday)) {
-
-                $data[3][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+                if ($subjectsWednesday[$j]->subject_id)
+                    $data[3][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+                else $data[3][$sessions[$j]] = $empty;
             } else {
 
                 $data[3][$sessions[$j]] = $empty;
             }
 
             if ($j < count($subjectsThursday)) {
-
-                $data[4][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+                if ($subjectsThursday[$j]->subject_id)
+                    $data[4][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+                else $data[4][$sessions[$j]] = $empty;
             } else {
 
                 $data[4][$sessions[$j]] = $empty;
@@ -253,5 +259,161 @@ class weeklyScheduleController extends Controller
 //$returnArray[]=[$key=>$value];
 //    }
         return response()->json($data);
+    }
+
+    public function editWeeklySchedule(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'classroom_id' => 'required',
+            'day' => 'required',
+            'session_order' => 'required',
+            'subject_id', //optional field
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+        $day = Week_day::query()->where([
+            ['classroom_id', '=', $request->classroom_id],
+            ['order', '=', $request->day]
+        ])->first();
+        $session = Week_day_subject::query()->where([
+            ['week_day_id', '=', $day->id],
+            ['order', '=', $request->session_order]
+        ])->first();
+//        if (!$session) {
+//            //add new session
+//            $allSessions = Week_day_subject::query()->where(['week_day_id', '=', $day->id])->get();
+//            $week_day_subject = new Week_day_subject();
+//            $week_day_subject->week_day_id = $day->id;
+//            $week_day_subject->subject_id = $request->subject_id;
+//            $week_day_subject->order = $request->session_order;
+//            $week_day_subject->save();
+//        }
+//        $session = Week_day_subject::query()->where([
+//            ['week_day_id', '=', $day->id],
+//            ['order', '=', $request->session_order]
+//        ])->first();
+        if ($request->subject_id) {
+            $session->subject_id = $request->subject_id;
+            $session->save();
+        } else {
+            $session->subject_id = null;
+            $session->save();
+            //reorder sessions
+//            $week_day_sessions = Week_day_subject::query()->where(
+//                ['week_day_id', '=', $day->id])->get();
+//            for($i=1;$i<=count($week_day_sessions);$i++) {
+//                $week_day_sessions[$i-1]->order = $i;
+//                $week_day_sessions->save();
+//            }
+        }
+
+        //
+        $sunday = Week_day::query()->where([
+            ['classroom_id', '=', $request->classroom_id],
+            ['order', '=', 1]
+        ])->first();
+        if (!$sunday) {
+            return response()->json([]);
+        }
+        $subjectsSunday = Week_day_subject::query()->where('week_day_id', '=', $sunday->id)->orderBy('order')->get();
+        $monday = Week_day::query()->where([
+            ['classroom_id', '=', $request->classroom_id],
+            ['order', '=', 2]
+        ])->first();
+        $subjectsMonday = Week_day_subject::query()->where('week_day_id', '=', $monday->id)->orderBy('order')->get();
+        $tuesday = Week_day::query()->where([
+            ['classroom_id', '=', $request->classroom_id],
+            ['order', '=', 3]
+        ])->first();
+        $subjectsTuesday = Week_day_subject::query()->where('week_day_id', '=', $tuesday->id)->orderBy('order')->get();
+        $wednesday = Week_day::query()->where([
+            ['classroom_id', '=', $request->classroom_id],
+            ['order', '=', 4]
+        ])->first();
+        $subjectsWednesday = Week_day_subject::query()->where('week_day_id', '=', $wednesday->id)->orderBy('order')->get();
+        $thursday = Week_day::query()->where([
+            ['classroom_id', '=', $request->classroom_id],
+            ['order', '=', 5]
+        ])->first();
+        $subjectsThursday = Week_day_subject::query()->where('week_day_id', '=', $thursday->id)->orderBy('order')->get();
+
+        $data = null;
+        //   return response()->json($subjectsSunday);
+        $sessions = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"];
+        $days = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday"];
+        $empty = "";
+        for ($i = 0; $i < 5; $i++) $data[$i]["day"] = $days[$i];
+        //for ($i = 0; $i < 5; $i++) {
+        for ($j = 0; $j <8; $j++) {
+            if ($j < count($subjectsSunday)) {
+                if ($subjectsSunday[$j]->subject_id)
+                    $data[0][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsSunday[$j]->subject_id)->first()->name;
+                else $data[0][$sessions[$j]] = $empty;
+            } else {
+
+                $data[0][$sessions[$j]] = $empty;
+            }
+            if ($j < count($subjectsMonday)) {
+                if ($subjectsMonday[$j]->subject_id)
+                    $data[1][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsMonday[$j]->subject_id)->first()->name;
+                else $data[1][$sessions[$j]] = $empty;
+            } else {
+
+                $data[1][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsTuesday)) {
+                if ($subjectsTuesday[$j]->subject_id)
+                    $data[2][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsTuesday[$j]->subject_id)->first()->name;
+                else  $data[2][$sessions[$j]] = $empty;
+            } else {
+
+                $data[2][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsWednesday)) {
+                if ($subjectsWednesday[$j]->subject_id)
+                    $data[3][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsWednesday[$j]->subject_id)->first()->name;
+                else $data[3][$sessions[$j]] = $empty;
+            } else {
+
+                $data[3][$sessions[$j]] = $empty;
+            }
+
+            if ($j < count($subjectsThursday)) {
+                if ($subjectsThursday[$j]->subject_id)
+                    $data[4][$sessions[$j]] = Subject::query()->where('id', '=', $subjectsThursday[$j]->subject_id)->first()->name;
+                else $data[4][$sessions[$j]] = $empty;
+            } else {
+
+                $data[4][$sessions[$j]] = $empty;
+            }
+        }
+        // }
+
+//        $returnArray=null;
+//       foreach($data as $key=>$value){
+//$returnArray[]=[$key=>$value];
+//    }
+        return response()->json($data);
+    }
+
+    public function deleteWeeklySchedule(Request $request){
+        $validator = Validator::make($request->all(), [
+            'classroom_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+         Week_day::query()->where('classroom_id','=',$request->classroom_id)->delete();
+
+        return response()->json([]);
     }
 }
