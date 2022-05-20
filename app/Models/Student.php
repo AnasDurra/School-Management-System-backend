@@ -32,4 +32,8 @@ class Student extends Model
         return $this->belongsTo('App\Models\Classroom','classroom_id','user_id');
     }
 
+    public function absents(){
+        return $this->hasMany('App\Models\Absent','student_id','user_id');
+    }
+
 }
