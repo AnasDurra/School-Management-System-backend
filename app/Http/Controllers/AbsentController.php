@@ -61,9 +61,15 @@ class AbsentController extends Controller
         $student = Student::query()->where('user_id', '=', $request->student_id)->first();
 
         if (!$student) return response()->json(['message' => 'Student Not Found']);
+        $absents=Absent::query()->where('student_id','=',$student->user_id)
+            ->where('is_justified','=',false)->get();
+        $absents_j=Absent::query()->where('student_id','=',$student->user_id)
+            ->where('is_justified','=',true)->get();
+        $student->absents = $absents;
+        $student->absents_j = $absents_j;
 
         $student->user;
-        $student->absents;
+        //$student->absents;
         return response()->json(['data'=>$student]);
     }
 

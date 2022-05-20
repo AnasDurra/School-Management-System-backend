@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class TryFile extends Model
+class Category_book extends Model
 {
     use HasFactory;
-    protected $table='try_files';
+    protected $table='category_book';
     protected $fillable = [
-        'book_name',
-        'file'
+        'book_id',
+        'category_id'
     ];
+    protected $primaryKey='id';
 }

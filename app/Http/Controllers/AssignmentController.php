@@ -37,7 +37,7 @@ class AssignmentController extends Controller
         return response()->json([
             'message' => 'added',
             'data'=>$assignment
-        ], 400);
+        ]);
     }
 
     public function get_teacher_assig(Request $request){
