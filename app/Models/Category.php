@@ -14,6 +14,9 @@ class Category extends Model
     ];
     protected $primaryKey='id';
 
+    protected $hidden =[
+        'pivot'
+    ];
     public function books(){
         return $this->belongsToMany('App\Models\Book','category_book','category_id','book_id','id','id');
     }

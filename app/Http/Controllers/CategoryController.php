@@ -30,6 +30,9 @@ class CategoryController extends Controller
         ]);
     }
 
+    
+
+
     public function getAll(){
         $categories = Category::all();
         for($i=0;$i<count($categories);$i++)
@@ -39,4 +42,6 @@ class CategoryController extends Controller
             'data'=>$categories
         ]);
     }
+
+
 }

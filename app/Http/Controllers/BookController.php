@@ -13,7 +13,7 @@ class BookController extends Controller
 
             $validator = Validator::make($request->all(), [
                 'name'=>'required',
-                'category_id'=>'required',
+                'categories_id'=>'required', //array
                 'file'=>'required'
             ]);
             if ($validator->fails()) {
@@ -32,18 +32,81 @@ class BookController extends Controller
             $book->file=$filename;
             $book->save();
 
+            for($i=0;$i<count($request->categories_id);$i++) {
+                $category_book = new Category_book();
+                $category_book->book_id = $book->id;
+                $category_book->category_id = $request->categories_id[$i];
+                $category_book->save();
 
-            $category_book = new Category_book();
-            $category_book->book_id = $book->id;
-            $category_book->category_id = $request->category_id;
-            $category_book->save();
-
+            }
             $book->categories;
             return response()->json([
                 'classroom' => $book
             ]);
         }
 
+    public function update(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required',
+            'name',
+            'categories_id' //array
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $book = Book::query()->where('id','=',$request->id)->first();
+        if(!$book)
+            return response()->json([
+                'message' => 'Book not found'
+            ]);
+        if ($request->name)
+            $book->name = $request->name;
+        $book->save();
+        if($request->categories_id) {
+            $category_book = Category_book::query()->where('book_id', '=', $request->id)->delete();
+            for ($i = 0; $i < count($request->categories_id);$i++) {
+                $category_book =new Category_book ();
+                $category_book->book_id = $request->id;
+                $category_book->category_id = $request->categories_id[$i];
+                $category_book->save();
+            }
+        }
+        $book->categories;
+        return response()->json([
+            'message' => 'updated',
+            'book'=>$book
+        ]);
+
+    }
+
+
+
+        public function delete(Request $request){
+            $validator = Validator::make($request->all(), [
+                'id'=>'required',
+            ]);
+            if ($validator->fails()) {
+                $errors = $validator->errors();
+                return response()->json([
+                    'error' => $errors
+                ], 400);
+            }
+
+            $book = Book::query()->where('id','=',$request->id)->delete();
+            if(!$book)
+                return response()->json([
+                    'message' => 'Book not found'
+                ]);
+
+            return response()->json([
+                'message' => 'deleted',
+            ]);
+
+        }
 
         public function download(Request $request,$file)
         {

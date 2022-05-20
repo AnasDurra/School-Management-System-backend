@@ -138,6 +138,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //book
     Route::post('book/add',[\App\Http\Controllers\BookController::class,'newBook']);
+    Route::post('book/update',[\App\Http\Controllers\BookController::class,'update']);
+    Route::post('book/delete',[\App\Http\Controllers\BookController::class,'delete']);
 
 });
 
