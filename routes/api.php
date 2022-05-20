@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
+Route::get('book/dow/{file}',[\App\Http\Controllers\TryFileController::class,'download']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -129,6 +129,12 @@ Route::middleware('auth:sanctum')->group(function () {
     //absents
     Route::post('absents/add',[\App\Http\Controllers\AbsentController::class,'add']);
     Route::post('absents/one',[\App\Http\Controllers\AbsentController::class,'getStudentAbsents']);
+    Route::post('absents/delete',[\App\Http\Controllers\AbsentController::class,'deleteAbsent']);
+    Route::post('absents/justified',[\App\Http\Controllers\AbsentController::class,'justifiedAbsent']);
+
+    /*//book
+    Route::post('book/add',[\App\Http\Controllers\TryFileController::class,'newFile']);*/
+
 });
 
 

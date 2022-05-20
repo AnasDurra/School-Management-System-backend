@@ -66,4 +66,57 @@ class AbsentController extends Controller
         $student->absents;
         return response()->json(['data'=>$student]);
     }
+
+    public function deleteAbsent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $absent = Absent::query()->where('id','=',$request->id)->first();
+        if(!$absent)
+            return response()->json([
+                'message' => 'Absent Not Found'
+            ], 404);
+
+        $absent->delete();
+        return response()->json([
+            'message' => 'success',
+            'data' => $absent
+        ]);
+    }
+
+    public function justifiedAbsent(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $absent = Absent::query()->where('id','=',$request->id)->first();
+        if(!$absent)
+            return response()->json([
+                'message' => 'Absent Not Found'
+            ], 404);
+
+        $absent->is_justified=true;
+        $absent->save();
+        return response()->json([
+            'message' => 'success',
+            'data' => $absent
+        ]);
+    }
+
+
 }
