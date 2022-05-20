@@ -218,6 +218,8 @@ class StudentController extends Controller
                 $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
                 $class_room = Classroom::query()->where('id', '=', $students[$i]['student']->classroom_id)->first();
                 $parent = Paarent::query()->where('user_id', '=', $students[$i]['student']->parent_id)->first();
+                $students[$i]->student->marks;
+                $students[$i]->student->absents;
                 $students[$i]->class = $class;
                 $students[$i]->parent = $parent;
                 $students[$i]->classroom = $class_room;
@@ -250,6 +252,8 @@ class StudentController extends Controller
         }
 
         $user = User::query()->where('id', '=', $request->id)->with('student')->first();
+        $user->student->marks;
+        $user->student->absents;
         $class = Classes::query()->where('id', '=', $user['student']->class_id)->first();
         $class_room = Classroom::query()->where('id', '=', $user['student']->classroom_id)->first();
         $parent = Paarent::query()->where('user_id', '=', $user['student']->parent_id)->first();

@@ -33,8 +33,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     // Route::group(['middleware' => 'isAdmin'], function () {
-    //student
 
+    //student
     Route::post('/students/add', [StudentController::class, 'add']);
     Route::post('/students/delete', [StudentController::class, 'delete']);
     Route::post('/students/update', [StudentController::class, 'update']);
@@ -123,6 +123,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('assignment/add',[\App\Http\Controllers\AssignmentController::class,'newAssignment']);
     Route::post('assignment/get_teacher',[\App\Http\Controllers\AssignmentController::class,'get_teacher_assig']);
     Route::post('assignment/get_student',[\App\Http\Controllers\AssignmentController::class,'get_students_assig']);
+
+
+
+    //absents
+    Route::post('absents/add',[\App\Http\Controllers\AbsentController::class,'add']);
+    Route::post('absents/one',[\App\Http\Controllers\AbsentController::class,'getStudentAbsents']);
 });
 
 

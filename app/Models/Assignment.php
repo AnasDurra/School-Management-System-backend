@@ -10,6 +10,7 @@ class Assignment extends Model
     use HasFactory;
     protected $table='assignments';
     protected $fillable = [
+        'title',
         'content',
         'date',
         'teacher_id',

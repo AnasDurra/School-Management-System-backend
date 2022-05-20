@@ -12,6 +12,7 @@ class AssignmentController extends Controller
 {
     public function newAssignment(Request $request){
         $validator = Validator::make($request->all(), [
+            'title'=>'required',
             'content' => 'required',
             'date' => 'required',
             'teacher_id' => 'required',
@@ -25,6 +26,7 @@ class AssignmentController extends Controller
         }
 
         $assignment = new Assignment();
+        $assignment->title = $request['title'];
         $assignment->content = $request['content'];
         $assignment->date = $request->date;
         $assignment->teacher_id = $request->teacher_id;

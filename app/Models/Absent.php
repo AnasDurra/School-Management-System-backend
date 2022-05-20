@@ -5,29 +5,19 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Mark extends Model
+class Absent extends Model
 {
     use HasFactory;
-    protected $table='marks';
+    protected $table='absents';
     protected $fillable = [
-        'value',
-        'subject_id',
         'student_id',
-        'type_id'
+        'date',
+        'is_justified'
     ];
     protected $primaryKey='id';
 
     public function student(){
         return $this->belongsTo('app\Models\Student','student_id','user_id');
     }
-
-    public function type(){
-        return $this->belongsTo('app\Models\Type','type_id','id');
-    }
-
-
-
-
-
 
 }
