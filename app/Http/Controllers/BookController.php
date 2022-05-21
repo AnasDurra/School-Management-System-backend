@@ -108,6 +108,21 @@ class BookController extends Controller
 
         }
 
+    public function getAll(Request $request){
+
+        $books = Book::query()->get();
+        if(!$books)
+            return response()->json([
+                'message' => 'no books yet'
+            ]);
+
+        for($i=0;$i<count($books);$i++)
+            $books[$i]->categories;
+        return response()->json([
+            'data' => $books,
+        ]);
+
+    }
         public function download(Request $request,$file)
         {
             return response()->download(public_path('assets/' . $file));
