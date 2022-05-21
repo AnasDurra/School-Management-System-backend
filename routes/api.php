@@ -134,6 +134,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //categories
     Route::post('categories/add',[\App\Http\Controllers\CategoryController::class,'add']);
+    Route::post('categories/update',[\App\Http\Controllers\CategoryController::class,'update']);
+    Route::post('categories/delete',[\App\Http\Controllers\CategoryController::class,'delete']);
     Route::get('categories/getAll',[\App\Http\Controllers\CategoryController::class,'getAll']);
 
     //book

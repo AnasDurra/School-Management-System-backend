@@ -30,7 +30,56 @@ class CategoryController extends Controller
         ]);
     }
 
-    
+    public function update(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required',
+            'name'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $category = Category::query()->find($request->id);
+        if(!$category)
+            return response()->json([
+                'message' => 'Category Notfound',
+            ]);
+        $category->name = $request->name;
+        $category->save();
+
+        return response()->json([
+            'message' => 'updated',
+            'data'=>$category
+        ]);
+    }
+
+
+    public function delete(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $category = Category::query()->find($request->id);
+        if(!$category)
+            return response()->json([
+                'message' => 'Category Notfound',
+            ]);
+        $category->delete();
+
+        return response()->json([
+            'message' => 'deleted',
+            'data'=>$category
+        ]);
+    }
 
 
     public function getAll(){
