@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Subject;
+use App\Models\teacher_subject;
 use App\Models\Week_day;
 use App\Models\Week_day_subject;
 use App\Models\Weekly_schedule;
 use http\Env\Response;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class weeklyScheduleController extends Controller
@@ -415,5 +417,17 @@ class weeklyScheduleController extends Controller
          Week_day::query()->where('classroom_id','=',$request->classroom_id)->delete();
 
         return response()->json([]);
+    }
+    public function getTeacherWeeklySchedule(Request $request){
+        $validator = Validator::make($request->all(), [
+            'teacher_id' => 'required',
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
     }
 }

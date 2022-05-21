@@ -25,11 +25,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
-Route::post('/logout', [AuthController::class, 'logout']);
+
 Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/me', [AuthController::class, 'me']);
-
+    Route::post('/logout', [AuthController::class, 'logout']);
 
 
     // Route::group(['middleware' => 'isAdmin'], function () {
@@ -112,7 +112,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/weeklySchedule/delete', [\App\Http\Controllers\weeklyScheduleController::class, 'deleteWeeklySchedule']);
     Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weeklyScheduleController::class, 'add_subjects_to_schedules']);
     Route::post('/weeklySchedule/get', [\App\Http\Controllers\weeklyScheduleController::class, 'getWeeklySchedule']);
-
+    Route::post('/weeklySchedule/teacher', [\App\Http\Controllers\weeklyScheduleController::class, 'getTeacherWeeklySchedule']);
     //events
     Route::post('events/add',[\App\Http\Controllers\eventController::class,'add']);
     Route::get('events/all',[\App\Http\Controllers\eventController::class,'all']);

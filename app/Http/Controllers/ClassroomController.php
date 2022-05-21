@@ -14,6 +14,7 @@ use App\Models\teacher_subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use function Symfony\Component\String\s;
 
 class ClassroomController extends Controller
 {
@@ -357,6 +358,7 @@ class ClassroomController extends Controller
         if ($teachers_subjects)
             for ($j = 0; $j < count($teachers_subjects); $j++) {
                 $subject = Subject::query()->where('id', '=', $teachers_subjects[$j]->subject_id)->first();
+                if($subject)
                 $teachers_subjects[$j]->subject_name = $subject->name;
             }
         $classroom->teacher_subject = $teachers_subjects;
