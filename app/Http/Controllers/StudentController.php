@@ -190,7 +190,7 @@ class StudentController extends Controller
 
         //delete parent if he has no more children in school
         $isParent = Student::query()->where('parent_id', '=', $parent->user_id)->first();
-        if (!$isParent) Paarent::where('user_id','=', $parent->user_id)->delete();
+        if (!$isParent) user::where('id','=', $parent->user_id)->delete();
 
         return response()->json([
             'message' => 'success',
