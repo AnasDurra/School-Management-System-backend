@@ -40,6 +40,69 @@ class AssignmentController extends Controller
         ]);
     }
 
+    public function update(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required',
+            'title',
+            'content' ,
+            'date' ,
+            'teacher_id' ,
+            'classroom_id'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $assignment = Assignment::query()->find($request->id);
+        if(!$assignment)
+            return response()->json([
+                'message' => 'Assignment Not Found'
+            ]);
+
+        $assignment->title = $request->title;
+        $assignment->content = $request['content'];
+        $assignment->date = $request->date;
+        $assignment->teacher_id = $request->teacher_id;
+        $assignment->classroom_id = $request->classroom_id;
+
+        $assignment->save();
+
+        return response()->json([
+            'message' => 'updated',
+            'data'=>$assignment
+        ]);
+
+    }
+
+    public function delete(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $assignment = Assignment::query()->find($request->id);
+        if(!$assignment)
+            return response()->json([
+                'message' => 'Assignment Not Found'
+            ]);
+
+        $assignment->delete();
+
+        return response()->json([
+            'message' => 'deleted',
+            'data'=>$assignment
+        ]);
+
+    }
+
     public function get_teacher_assig(Request $request){
         $validator = Validator::make($request->all(), [
             'teacher_id' => 'required',

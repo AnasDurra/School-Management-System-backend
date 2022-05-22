@@ -96,14 +96,16 @@ class BookController extends Controller
                 ], 400);
             }
 
-            $book = Book::query()->where('id','=',$request->id)->delete();
+            $book = Book::query()->where('id','=',$request->id)->first();
+
             if(!$book)
                 return response()->json([
                     'message' => 'Book not found'
                 ]);
-
+            $book->delete();
             return response()->json([
                 'message' => 'deleted',
+                'data'=>$book
             ]);
 
         }
