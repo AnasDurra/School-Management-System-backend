@@ -58,8 +58,8 @@ class AuthController extends Controller
         ]);
 
         // compare between the two emails
-        $user= User::query()->where("username","=",$request->username)->firstOrFail();
-        if($request->username){
+        $user= User::query()->where("username","=",$request->username)->first();
+        if($request->username && $user){
             if($request->password==$user->password)
             {
                 $token=$user->createToken("auth_Token")->plainTextToken ;
@@ -69,11 +69,11 @@ class AuthController extends Controller
                     'token_type' => 'Bearer',
                 ]);
             } else{
-                return response()->json(['state'=>false,'message'=>'wrong password']);
+                return response()->json(['state'=>false,'message'=>'wrong password'],451 );
             }
         }
         else{
-            return response()->json(['state'=>false,'message'=>'wrong email']);
+            return response()->json(['state'=>false,'message'=>'wrong username'],414);
         }
 
 

@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Validator;
 class BookController extends Controller
 {
         public function newBook(Request $request){
+
             $validator = Validator::make($request->all(), [
                 'name'=>'required',
                 'categories_id'=>'required', //array
@@ -23,7 +24,7 @@ class BookController extends Controller
             }
             $book = new Book();
             $book->name=$request->name;
-            $file = $request->file('file');
+            $file = $request->file;
             $filename=time().'.'.$file->getClientOriginalExtension();
             /*OR
             $filename=getClientOriginalName;*/
@@ -96,12 +97,12 @@ class BookController extends Controller
             }
 
             $book = Book::query()->where('id','=',$request->id)->first();
-            $book->delete();
+
             if(!$book)
                 return response()->json([
                     'message' => 'Book not found'
                 ]);
-
+            $book->delete();
             return response()->json([
                 'message' => 'deleted',
                 'data'=>$book
@@ -110,6 +111,7 @@ class BookController extends Controller
         }
 
     public function getAll(Request $request){
+
         $books = Book::query()->get();
         if(!$books)
             return response()->json([
@@ -121,6 +123,7 @@ class BookController extends Controller
         return response()->json([
             'data' => $books,
         ]);
+
     }
         public function download(Request $request,$file)
         {
