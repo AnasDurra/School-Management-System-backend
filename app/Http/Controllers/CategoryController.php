@@ -84,8 +84,12 @@ class CategoryController extends Controller
 
     public function getAll(){
         $categories = Category::all();
-        for($i=0;$i<count($categories);$i++)
-            $categories[$i]->books;
+        for($i=0;$i<count($categories);$i++) {
+            $books = $categories[$i]->books;
+            for($j=0;$j<count($books);$j++) {
+                $books[$j]->categories;
+        }
+        }
 
         return response()->json([
             'data'=>$categories

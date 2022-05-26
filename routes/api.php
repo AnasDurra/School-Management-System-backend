@@ -121,6 +121,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //Assignment
     Route::post('assignment/add',[\App\Http\Controllers\AssignmentController::class,'newAssignment']);
+    Route::post('assignment/update',[\App\Http\Controllers\AssignmentController::class,'update']);
+    Route::post('assignment/delete',[\App\Http\Controllers\AssignmentController::class,'delete']);
     Route::post('assignment/get_teacher',[\App\Http\Controllers\AssignmentController::class,'get_teacher_assig']);
     Route::post('assignment/get_student',[\App\Http\Controllers\AssignmentController::class,'get_students_assig']);
 
