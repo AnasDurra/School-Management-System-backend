@@ -83,18 +83,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admins/delete', [\App\Http\Controllers\AdminController::class, 'delete']);
 
     //classes
-    Route::post('/classes/add', [\App\Http\Controllers\ClassController::class, 'add']);
-    Route::post('/classes/update', [\App\Http\Controllers\ClassController::class, 'update']);
-    Route::post('/classes/delete', [\App\Http\Controllers\ClassController::class, 'delete']);
-    Route::get('/classes/all', [\App\Http\Controllers\ClassController::class, 'all']);
-    Route::post('/classes/show_classrooms', [\App\Http\Controllers\ClassController::class, 'show_classrooms']);
+    Route::post('/classes/add', [\App\Http\Controllers\Classes\ClassController::class, 'add']);
+    Route::post('/classes/update', [\App\Http\Controllers\Classes\ClassController::class, 'update']);
+    Route::post('/classes/delete', [\App\Http\Controllers\Classes\ClassController::class, 'delete']);
+    Route::get('/classes/all', [\App\Http\Controllers\Classes\ClassController::class, 'all']);
+    Route::post('/classes/show_classrooms', [\App\Http\Controllers\Classes\ClassController::class, 'show_classrooms']);
 
     ##add subjects to a class
-    Route::post('/classes/subjects/add', [\App\Http\Controllers\ClassController::class, 'addSubjectsToClass']);
+    Route::post('/classes/subjects/add', [\App\Http\Controllers\Classes\ClassController::class, 'addSubjectsToClass']);
     ##delete subject from a class
-    Route::post('/classes/subjects/delete', [\App\Http\Controllers\ClassController::class, 'deleteSubjectsFromClass']);
+    Route::post('/classes/subjects/delete', [\App\Http\Controllers\Classes\ClassController::class, 'deleteSubjectsFromClass']);
     ##get subjects of a class
-    Route::post('/classes/get_subjects_of_class', [\App\Http\Controllers\ClassController::class, 'get_subjects_of_class']);
+    Route::post('/classes/get_subjects_of_class', [\App\Http\Controllers\Classes\ClassController::class, 'get_subjects_of_class']);
 
     //classrooms
     Route::get('/classrooms/all', [\App\Http\Controllers\ClassroomController::class, 'all']);

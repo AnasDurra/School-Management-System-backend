@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Classes;
 
 use App\Models\Class_Subject;
 use App\Models\Classes;
@@ -180,7 +180,7 @@ class ClassController extends Controller
         $class = Classes::query()->where('id', '=', $request->class_id)->first();
         if($class)
         $class->subjects;
-      
+
         return response()->json([
             'message' => 'success',
             'data'=>$class
