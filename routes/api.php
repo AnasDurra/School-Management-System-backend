@@ -146,6 +146,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('book/getAll',[\App\Http\Controllers\BookController::class,'getAll']);
     Route::post('book/delete',[\App\Http\Controllers\BookController::class,'delete']);
 
+
+
+    //bus
+    Route::post('bus/add',[\App\Http\Controllers\BusController::class,'addBus']);
+    Route::post('bus/update',[\App\Http\Controllers\BusController::class,'updateBus']);
+    Route::get('bus/all',[\App\Http\Controllers\BusController::class,'getBuses']);
+    Route::get('bus/getAddresses',[\App\Http\Controllers\BusController::class,'getAddresses']);
+
 });
 
 

@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateStudentsTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
+
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
@@ -18,15 +14,11 @@ class CreateStudentsTable extends Migration
             $table->foreignId('classroom_id')->nullable();
             $table->foreignId('parent_id');
             $table->foreignId('user_id')->unique()->constrained('users')->cascadeOnDelete();
+            $table->foreignId('bus_id')->nullable()->constrained('buses')->nullOnDelete();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('students');

@@ -14,9 +14,12 @@ class Student extends Model
         'class_id',
         'classroom_id',
         'parent_id',
-        'user_id'
+        'user_id',
+        'bus_id'
     ];
-//protected $primaryKey=null;
+
+    protected $primaryKey=null;
+    public $incrementing = false;
 
     public function  user(){
         return $this->belongsTo(User::class,'user_id','id');
@@ -34,6 +37,10 @@ class Student extends Model
 
     public function absents(){
         return $this->hasMany('App\Models\Absent','student_id','user_id');
+    }
+
+    public function bus(){
+        return $this->belongsTo('App\Models\Bus','bus_id','id');
     }
 
 }
