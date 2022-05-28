@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Classes;
 
+use App\Http\Controllers\Controller;
 use App\Models\Class_Subject;
 use App\Models\Classes;
 use App\Models\Subject;
