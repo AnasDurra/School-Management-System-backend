@@ -120,17 +120,19 @@ class BusController extends Controller
         ]);
 
     }
-
     public function getBuses(Request $request){
         $buses = Bus::query()->get();
 
         if(!$buses)
             return response()->json(['message'=>'No buses']);
 
-        foreach ($buses as $bus) {
-            $students =$bus->students;
-            foreach ($students as $student)
-                $student->user;
+        for($i=0;$i<count($buses); $i++) {
+            $students =$buses[$i]->students;
+            for($j=0;$j<count($students); $j++) {
+                $student_user=$students[$j]->user;
+                $addresses[$j]=$student_user['address'];
+                $buses[$i]['addresses']=$addresses;
+            }
         }
 
         return response()->json([
