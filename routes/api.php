@@ -151,6 +151,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //bus
     Route::post('bus/add',[\App\Http\Controllers\BusController::class,'addBus']);
     Route::post('bus/update',[\App\Http\Controllers\BusController::class,'updateBus']);
+    Route::post('bus/delete',[\App\Http\Controllers\BusController::class,'deleteBus']);
     Route::get('bus/all',[\App\Http\Controllers\BusController::class,'getBuses']);
     Route::get('bus/getAddresses',[\App\Http\Controllers\BusController::class,'getAddresses']);
 

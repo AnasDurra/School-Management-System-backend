@@ -100,6 +100,27 @@ class BusController extends Controller
         ]);
     }
 
+    public function deleteBus(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id'=>'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $bus = Bus::query()->find($request->id);
+        $bus->delete();
+        return response()->json([
+            'message'=>'deleted',
+            'data'=>$bus
+
+        ]);
+
+    }
+
     public function getBuses(Request $request){
         $buses = Bus::query()->get();
 
