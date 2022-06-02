@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Paarent;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -63,6 +64,8 @@ class AuthController extends Controller
             if($request->password==$user->password)
             {
                 $token=$user->createToken("auth_Token")->plainTextToken ;
+                if($user->role==3)
+                    $user->parent->students;
                 return response()->json([
                     'access_token' => $token,
                     'data'=>$user,

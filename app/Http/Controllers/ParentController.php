@@ -38,10 +38,9 @@ class ParentController extends Controller
         $user->save();
 
 
-        $parent = new Parent();
-        $parent->user_id = $user->id;
-        $parent->save();
-
+        $paarent = new Paarent();
+        $paarent->user_id = $user->id;
+        $paarent->save();
 
         return response()->json([
             'message' => 'added',
