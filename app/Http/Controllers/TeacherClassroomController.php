@@ -75,20 +75,26 @@ class TeacherClassroomController extends Controller
             ]);
         }
         $classrooms = $teacher->classrooms;
+
         $teacher_subject = null;
+        $index =0;
         for($i=0;$i<count($classrooms);$i++){
+            $index=0;
+            $teacher_subject = null;
             $classroom_teacher_subject= Classroom_teacherSubject::query()->where('classroom_id','=',$classrooms[$i]->id)->get();
             for($j=0;$j<count($classroom_teacher_subject);$j++) {
                 $temp = teacher_subject::query()->where('id', '=', $classroom_teacher_subject[$j]->teacherSubject_id)
                     ->where('teacher_id','=',$request->teacher_id)->first();
                 if($temp){
                     $subject=Subject::query()->where('id','=',$temp->subject_id)->first();
-                    $teacher_subject[$j]['teacher_id']=$temp->teacher_id;
-                    $teacher_subject[$j]['subject_id']=$temp->subject_id;
-                    $teacher_subject[$j]['subject_name']=$subject->name;
+                    $teacher_subject[$index]['teacher_id']=$temp->teacher_id;
+                    $teacher_subject[$index]['subject_id']=$temp->subject_id;
+                    $teacher_subject[$index]['subject_name']=$subject->name;
+                    $index++;
+
                 }
-                $classrooms[$i]['teacher_subject']=$teacher_subject;
             }
+            $classrooms[$i]['teacher_subject']=$teacher_subject;
 
             $student = $classrooms[$i]->students;
             for($j=0;$j<count($student);$j++)
