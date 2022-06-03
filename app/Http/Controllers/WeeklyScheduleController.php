@@ -554,6 +554,6 @@ class weeklyScheduleController extends Controller
             }
         }
 
-        return response()->json($final);
+        return response()->json(['data'=>$final]);
     }
 }
