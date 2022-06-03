@@ -74,6 +74,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/marks/update', [\App\Http\Controllers\MarkController::class, 'update']);
     Route::post('/marks/delete', [\App\Http\Controllers\MarkController::class, 'delete']);
     Route::post('/marks/getStudentMarks', [\App\Http\Controllers\MarkController::class, 'getStudentMarks']);
+    Route::get('/marks/getTypes', [\App\Http\Controllers\MarkController::class, 'getTypes']);
 
 
     //admins
