@@ -24,5 +24,8 @@ class adminSeeder extends Seeder
             'address'=>'tbd',
             'role'=>0
         ]);
+        DB::table('admins')->insert([
+           'user_id'=>1
+        ]);
     }
 }

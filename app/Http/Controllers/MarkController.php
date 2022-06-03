@@ -102,26 +102,38 @@ class MarkController extends Controller
             $type2 = false;
             $type3 = false;
             $type4 = false;
+            $count=0;
+            $sum=0;
             $data[$i]['subject_name'] = $subjects[$i]->name;
             for ($j = 0; $j < count($marks); $j++) {
                 if ($marks[$j]->type_id == 1) {
                     $type1 = true;
                     $data[$i]['1'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 } else if ($marks[$j]->type_id == 2) {
                     $type2 = true;
                     $data[$i]['2'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 } else if ($marks[$j]->type_id == 3) {
                     $type3 = true;
                     $data[$i]['3'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 } else if ($marks[$j]->type_id == 4) {
                     $type4 = true;
                     $data[$i]['4'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 }
             }
             if (!$type1) $data[$i]['1'] = 0;
             if (!$type2) $data[$i]['2'] = 0;
             if (!$type3) $data[$i]['3'] = 0;
             if (!$type4) $data[$i]['4'] = 0;
+            if($count==0)$data[$i]['avg']=0;
+            else $data[$i]['avg']=($sum/$count);
         }
         return response()->json(
       $data
@@ -224,27 +236,38 @@ class MarkController extends Controller
             $type2 = false;
             $type3 = false;
             $type4 = false;
+            $count=0;
+            $sum=0;
             $data[$i]['student_name'] = $students[$i]->user->name;
             for ($j = 0; $j < count($marks); $j++) {
                 if ($marks[$j]->type_id == 1) {
                     $type1 = true;
                     $data[$i]['1'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 } else if ($marks[$j]->type_id == 2) {
                     $type2 = true;
                     $data[$i]['2'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 } else if ($marks[$j]->type_id == 3) {
                     $type3 = true;
                     $data[$i]['3'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 } else if ($marks[$j]->type_id == 4) {
                     $type4 = true;
                     $data[$i]['4'] = $marks[$j]->value;
+                    $count++;
+                    $sum+=$marks[$j]->value;
                 }
             }
             if (!$type1) $data[$i]['1'] = 0;
             if (!$type2) $data[$i]['2'] = 0;
             if (!$type3) $data[$i]['3'] = 0;
             if (!$type4) $data[$i]['4'] = 0;
-
+            if($count) $data[$i]['avg']=$sum/$count;
+            else $data[$i]['avg']=0;
         }
         return response()->json([
             'data' => $data
