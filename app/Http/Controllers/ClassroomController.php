@@ -193,7 +193,7 @@ class ClassroomController extends Controller
             'name',
             'capacity',
             'class_id',
-            'teachers_id',
+            'teachers_id', //array {teacher id ,subjects[id]}
             'students_id'
         ]);
         if ($validator->fails()) {
@@ -253,6 +253,7 @@ class ClassroomController extends Controller
         $classroom->save();
         if ($request->teachers_id) {
             Teacher_classroom::query()->where('classroom_id', '=',$request->id)->delete();
+            Classroom_teacherSubject::query()->where('classroom_id', '=',$request->id)->delete();
             for ($i = 0; $i < count($request->teachers_id); $i++) {
                 $teacher_classroom = new Teacher_classroom();
                 $classroom_teacherSubject = new Classroom_teacherSubject();

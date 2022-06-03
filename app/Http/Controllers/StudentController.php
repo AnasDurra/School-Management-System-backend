@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Absent;
 use App\Models\Classes;
 use App\Models\Classroom;
+use App\Models\Mark;
 use App\Models\Paarent;
 use App\Models\Student;
 use App\Models\User;
@@ -190,7 +191,7 @@ class StudentController extends Controller
 
         //delete parent if he has no more children in school
         $isParent = Student::query()->where('parent_id', '=', $parent->user_id)->first();
-        if (!$isParent) user::where('id','=', $parent->user_id)->delete();
+        if (!$isParent) user::where('id', '=', $parent->user_id)->delete();
 
         return response()->json([
             'message' => 'success',
@@ -219,14 +220,14 @@ class StudentController extends Controller
                 $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
                 $class_room = Classroom::query()->where('id', '=', $students[$i]['student']->classroom_id)->first();
                 $parent = Paarent::query()->where('user_id', '=', $students[$i]['student']->parent_id)->first();
-                $students[$i]->student->marks;
+
                 //$students[$i]->student->absents;
-                $absents=Absent::query()->where('student_id','=',$students[$i]->id)
-                    ->where('is_justified','=',false)->get();
-                $absents_j=Absent::query()->where('student_id','=',$students[$i]->id)
-                    ->where('is_justified','=',true)->get();
-                $students[$i]->student->absents =$absents;
-                $students[$i]->student->absents_j =$absents_j;
+                $absents = Absent::query()->where('student_id', '=', $students[$i]->id)
+                    ->where('is_justified', '=', false)->get();
+                $absents_j = Absent::query()->where('student_id', '=', $students[$i]->id)
+                    ->where('is_justified', '=', true)->get();
+                $students[$i]->student->absents = $absents;
+                $students[$i]->student->absents_j = $absents_j;
                 $students[$i]->class = $class;
                 $students[$i]->parent = $parent;
                 $students[$i]->classroom = $class_room;
@@ -261,12 +262,12 @@ class StudentController extends Controller
         $user = User::query()->where('id', '=', $request->id)->with('student')->first();
         $user->student->marks;
         //$user->student->absents;
-        $absents=Absent::query()->where('student_id','=',$user->id)
-            ->where('is_justified','=',false)->get();
-        $absents_j=Absent::query()->where('student_id','=',$user->id)
-            ->where('is_justified','=',true)->get();
-        $user->student->absents =$absents;
-        $user->student->absents_j =$absents_j;
+        $absents = Absent::query()->where('student_id', '=', $user->id)
+            ->where('is_justified', '=', false)->get();
+        $absents_j = Absent::query()->where('student_id', '=', $user->id)
+            ->where('is_justified', '=', true)->get();
+        $user->student->absents = $absents;
+        $user->student->absents_j = $absents_j;
 
         $class = Classes::query()->where('id', '=', $user['student']->class_id)->first();
         $class_room = Classroom::query()->where('id', '=', $user['student']->classroom_id)->first();
