@@ -19,7 +19,7 @@ class CreateComplaintsTable extends Migration
             $table->string('content');
             $table->foreignId('parent_id')->references('user_id')->on('paarents')->cascadeOnDelete();
             $table->date('date');
-            $table->foreignId('admin_id')->references('user_id')->on('admins')->nullOnDelete();
+            $table->foreignId('admin_id')->nullable()->references('user_id')->on('admins')->nullOnDelete();
             $table->boolean('seen')->nullable()->default(false);
             $table->timestamps();
         });

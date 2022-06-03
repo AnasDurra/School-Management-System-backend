@@ -164,7 +164,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('complaint/add',[\App\Http\Controllers\ComplaintController::class,'add']);
     Route::post('complaint/edit',[\App\Http\Controllers\ComplaintController::class,'update']);
     Route::post('complaint/seenComplaint',[\App\Http\Controllers\ComplaintController::class,'seenComplaint']);
-    Route::post('complaint/getComplaints',[\App\Http\Controllers\ComplaintController::class,'get_complaints']);
+    Route::get('complaint/getComplaints',[\App\Http\Controllers\ComplaintController::class,'get_complaints']);
 
 });
 
