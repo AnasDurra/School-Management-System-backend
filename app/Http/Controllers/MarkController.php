@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mark;
 use App\Models\Student;
 use App\Models\Subject;
+use App\Models\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use function PHPUnit\Framework\at;
@@ -144,7 +145,13 @@ class MarkController extends Controller
             'message' => 'success',
             'data' => $mark
         ]);
+    }
 
+    public function getTypes(Request $request){
+        $types = Type::query()->get();
+        return response()->json([
+            'data' => $types
+        ]);
     }
 
 
