@@ -21,4 +21,8 @@ class Paarent extends Model
         return $this->hasMany('App\Models\Student','parent_id','user_id');
     }
 
+
+    public function complaints(){
+        return $this->hasMany('App\Models\Complaint','parent_id','user_id');
+    }
 }

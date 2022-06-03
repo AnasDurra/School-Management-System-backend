@@ -17,6 +17,10 @@ class Admin extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function complaints(){
+        return $this->hasMany('App\Models\Complaint','admin_id','user_id');
+    }
+
 
 
 }
