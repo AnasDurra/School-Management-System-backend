@@ -32,7 +32,7 @@ class Student extends Model
         return $this->hasMany('App\Models\Mark','student_id','user_id');
     }
     public function classroom(){
-        return $this->belongsTo('App\Models\Classroom','classroom_id','user_id');
+        return $this->belongsTo('App\Models\Classroom','classroom_id','id');
     }
 
     public function absents(){

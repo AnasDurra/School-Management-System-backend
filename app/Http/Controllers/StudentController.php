@@ -220,13 +220,6 @@ class StudentController extends Controller
                 $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
                 $class_room = Classroom::query()->where('id', '=', $students[$i]['student']->classroom_id)->first();
                 $parent = Paarent::query()->where('user_id', '=', $students[$i]['student']->parent_id)->first();
-                $marks = Mark::query()->where('student_id', '=', $students[$i]->student->user_id)->get();
-                $temp=null;
-                for ($j = 0; $j < count($marks); $j++) {
-                    $type = $marks[$j]->type_id;
-                    $temp['type'."$type"]= $marks[$j]->value;
-                }
-                $students[$i]->student->marks=$temp;
 
                 //$students[$i]->student->absents;
                 $absents = Absent::query()->where('student_id', '=', $students[$i]->id)
