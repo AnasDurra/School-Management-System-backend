@@ -72,11 +72,11 @@ class AuthController extends Controller
                     'token_type' => 'Bearer',
                 ]);
             } else{
-                return response()->json(['state'=>false,'message'=>'wrong password'],451 );
+                return response()->json(['state'=>false,'message'=>'wrong password'],414 );
             }
         }
         else{
-            return response()->json(['state'=>false,'message'=>'wrong username'],414);
+            return response()->json(['state'=>false,'message'=>'wrong username'],451);
         }
 
 

@@ -38,8 +38,8 @@ class parentsSeeder extends Seeder
             'user_id'=>3
         ]);
         DB::table('users')->insert([
-            'name'=>'Khaled Durra',
-            'username'=>'khaled_durra',
+            'name'=>'Khalid Durra',
+            'username'=>'khalid_durra',
             'address'=>'qudsia',
             'role'=>3,
             'phone_num'=>'12345',
