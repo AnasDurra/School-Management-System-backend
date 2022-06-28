@@ -23,4 +23,8 @@ class Classes extends Model
         return $this->belongsToMany('App\Models\Subject','class_subject','class_id','subject_id','id','id');
     }
 
+    public function tutorials(){
+        return $this->hasMany('App\Models\Tutorial',"class_id",'id');
+    }
+
 }

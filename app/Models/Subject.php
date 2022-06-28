@@ -26,6 +26,10 @@ class Subject extends Model
         return $this->belongsToMany('App\Models\Classes','class_subject','subject_id','class_id','id','id');
     }
 
+    public function tutorials(){
+        return $this->hasMany('App\Models\Tutorial','subject_id','id');
+    }
+
 
 
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Book;
 use App\Models\Category_book;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 
 class BookController extends Controller
@@ -41,7 +42,7 @@ class BookController extends Controller
             }
             $book->categories;
             return response()->json([
-                'classroom' => $book
+                'data' => $book
             ]);
         }
 
@@ -102,6 +103,10 @@ class BookController extends Controller
                 return response()->json([
                     'message' => 'Book not found'
                 ]);
+            //delete book from assets folder too
+            if (File::exists("assets/{$book->file}")) {
+                unlink("assets/{$book->file}");
+            }
             $book->delete();
             return response()->json([
                 'message' => 'deleted',
