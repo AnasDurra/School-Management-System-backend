@@ -19,6 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::get('book/dow/{file}',[\App\Http\Controllers\BookController::class,'download']);
+Route::get('tutorials/download/{file}',[\App\Http\Controllers\TutorialController::class,'download']);
+Route::get('tutorials/helper_file/download/{file}',[\App\Http\Controllers\HelperFileController::class,'download']);
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -149,6 +151,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('book/update',[\App\Http\Controllers\BookController::class,'update']);
     Route::get('book/getAll',[\App\Http\Controllers\BookController::class,'getAll']);
     Route::post('book/delete',[\App\Http\Controllers\BookController::class,'delete']);
+
+    //tutorials
+    Route::post('tutorials/add',[\App\Http\Controllers\TutorialController::class,'add']);
+    Route::post('tutorials/update',[\App\Http\Controllers\TutorialController::class,'update']);
+    Route::post('tutorials/getall',[\App\Http\Controllers\TutorialController::class,'getall']);
+
+
+    Route::post('tutorials/view',[\App\Http\Controllers\TutorialController::class,'view']);
+    Route::post('tutorials/delete',[\App\Http\Controllers\TutorialController::class,'delete']);
 
 
 
