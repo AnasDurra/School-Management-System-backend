@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive_Year;
 use App\Models\Class_Subject;
 use App\Models\Classroom;
 
@@ -20,7 +21,7 @@ class ClassroomController extends Controller
 {
     public function all(Request $request)
     {
-        $classrooms = Classroom::all();
+        $classrooms = Classroom::query()->filterYear('created_at')->get();
         if ($classrooms) {
             for ($i = 0; $i < count($classrooms); $i++) {
                 $classroom_teacherSubject_in_classroom = Classroom_teacherSubject::query()->where('classroom_id','=',$classrooms[$i]->id)->get();
@@ -81,8 +82,7 @@ class ClassroomController extends Controller
                 }
             }
 
-        if ($request->teachers_id)
-
+        if ($request->teachers_id) {
             for ($i = 0; $i < count($request->teachers_id); $i++) {
                 $teacher_subject = teacher_subject::query()->where('teacher_id', '=', $request->teachers_id[$i]['teacher_id'])
                     ->where('subject_id', '=', $request->teachers_id[$i]['subject_id'])->first();
@@ -90,21 +90,23 @@ class ClassroomController extends Controller
                     return response()->json([
                         'message' => 'invalid teachers_subject ids',
                     ], 404);
+            }
 
 
-                for ($i = 0; $i < count($request->teachers_id); $i++) {
-                    $teacher = Teacher::query()->where('user_id', '=', $request->teachers_id[$i]['teacher_id'])->first();
-                    if (!$teacher)
-                        return response()->json([
-                            'message' => 'invalid teachers ids',
-                        ], 404);
-                    //checking if subjects exist
-                    $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subject_id'])->first();
-                    if (!$subject)
-                        return response()->json([
-                            'message' => 'invalid subjects ids',
-                        ], 404);
-                }
+            for ($i = 0; $i < count($request->teachers_id); $i++) {
+                $teacher = Teacher::query()->where('user_id', '=', $request->teachers_id[$i]['teacher_id'])->first();
+                if (!$teacher)
+                    return response()->json([
+                        'message' => 'invalid teachers ids',
+                    ], 404);
+                //checking if subjects exist
+                $subject = Subject::query()->where('id', '=', $request->teachers_id[$i]['subject_id'])->first();
+                if (!$subject)
+                    return response()->json([
+                        'message' => 'invalid subjects ids',
+                    ], 404);
+            }
+        }
 
 
                 /*------------------------------------------------------------------------------------------------------------------------*/
@@ -131,6 +133,7 @@ class ClassroomController extends Controller
                 $classroom->capacity = $request->capacity;
                 $classroom->class_id = $request->class_id;
                 $classroom->save();
+
                 if ($request->teachers_id)
                     for ($i = 0; $i < count($request->teachers_id); $i++) {
                         $classroom_teacherSubject = new Classroom_teacherSubject();
@@ -179,12 +182,23 @@ class ClassroomController extends Controller
                         $classroom->teacher_subject[$i]->subject_name = $subject->name;
                     }
                 }
+                //archive related
+                $archiveYears = Archive_Year::query()->get();
+                $arr = [];
+                for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+                if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+                    $archiveYear = new Archive_Year();
+                    if (now()->month < 9)
+                        $archiveYear->year = now()->year - 1;
+                    else         $archiveYear->year = now()->year;
+                    $archiveYear->save();
+                }
                 return response()->json([
                     'message' => 'success',
                     'data' => $classroom
                 ]);
             }
-    }
+
 
     public function update(Request $request)
     {

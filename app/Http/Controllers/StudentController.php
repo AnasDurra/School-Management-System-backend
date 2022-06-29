@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Absent;
+use App\Models\Archive_Year;
 use App\Models\Classes;
 use App\Models\Classroom;
 use App\Models\Mark;
 use App\Models\Paarent;
 use App\Models\Student;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -87,11 +89,23 @@ class StudentController extends Controller
 
         $student->parent = $parent;
         $student->classroom = $class_room;
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
+
         return response()->json([
             'message' => 'success',
             'user' => $user,
             'student' => $student,
-            'parent_was_in_system' => $has_parents_in_system,
+            'parent_was_in_system' => $has_parents_in_system
         ]);
 
     }
@@ -214,7 +228,12 @@ class StudentController extends Controller
 //                'error' => $errors
 //            ], 400);
 //        }
-        $students = User::query()->where('role', '=', 4)->with('student')->get();
+        $active_year = Archive_Year::query()->where('active', '=', 1)->first()->year;
+
+        $students = User::query()->where('role', '=', 4)->filterYear('created_at')->with('student')->get();
+//                return response()->json([
+//                'error' => $students
+//            ], 400);
         if ($students)
             for ($i = 0; $i < count($students); $i++) {
                 $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
@@ -259,7 +278,7 @@ class StudentController extends Controller
             ], 400);
         }
 
-        $user = User::query()->where('id', '=', $request->id)->with('student')->first();
+        $user = User::query()->where('id', '=', $request->id)->filterYear('created_at')->with('student')->first();
         $user->student->marks;
         //$user->student->absents;
         $absents = Absent::query()->where('student_id', '=', $user->id)

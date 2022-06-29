@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive_Year;
 use App\Models\Subject;
 use App\Models\Teacher;
 
@@ -53,6 +54,18 @@ class TeacherController extends Controller
 
         //access subjects so they became visible in user'
         $user['teacher']->subjects;
+
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json([
             'message' => 'added',
             'user' => $user,
@@ -154,7 +167,7 @@ class TeacherController extends Controller
 
     public function all(Request $request)
     {
-        $teachers = User::query()->where('role', '=', 2)->with('teacher')->get();
+        $teachers = User::query()->where('role', '=', 2)->filterYear('created_at')->with('teacher')->get();
         if ($teachers)
             for ($i = 0; $i < count($teachers); $i++) {
                 //accessing subjects so they became visibile in the returned JSON
@@ -178,7 +191,7 @@ class TeacherController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $user = User::query()->where('id', '=', $request->id)->with('teacher')->first();
+        $user = User::query()->where('id', '=', $request->id)->filterYear('created_at')->with('teacher')->first();
         if (!$user) {
             return response()->json([
                 'error' => 'NotFound'

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive_Year;
 use App\Models\Bus;
 use App\Models\Student;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
 class BusController extends Controller
 {
     public function getAddresses(Request $request){
-        $address = User::query()->select('address')->distinct()->get();
+        $address = User::query()->filterYear('created_at')->select('address')->distinct()->get();
 
         return response()->json([
             $address
@@ -51,6 +52,17 @@ class BusController extends Controller
         for($i=0;$i<count($students);$i++)
             $students[$i]->user;
 
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json([
             'message' => 'added',
             'data'=>$bus
@@ -121,7 +133,7 @@ class BusController extends Controller
 
     }
     public function getBuses(Request $request){
-        $buses = Bus::query()->get();
+        $buses = Bus::query()->filterYear('created_at')->get();
 
         if(!$buses)
             return response()->json(['message'=>'No buses']);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive_Year;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -30,6 +31,17 @@ class ComplaintController extends Controller
            'date'=>$request->date,
         ]);
 
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json([
             'message' => 'success',
             'data'=>$complaint
@@ -62,7 +74,7 @@ class ComplaintController extends Controller
     }
 
     public function get_complaints(Request $request){
-        $complaints = Complaint::query()->get();
+        $complaints = Complaint::query()->filterYear('created_at')->get();
         foreach ($complaints as $complaint)
             $complaint->parent->user;
 
@@ -91,4 +103,6 @@ class ComplaintController extends Controller
             'data'=>$complaint
         ]);
     }
+
+
 }

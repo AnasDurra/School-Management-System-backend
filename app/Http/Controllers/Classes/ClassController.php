@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Classes;
 
 use App\Http\Controllers\Controller;
+use App\Models\Archive_Year;
 use App\Models\Class_Subject;
 use App\Models\Classes;
 use App\Models\Subject;
@@ -36,6 +37,18 @@ class ClassController extends Controller
         }
 
         $classWithSubjects = Classes::query()->where('id', '=', $class->id)->with('subjects')->first();
+
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json([
             'message' => 'added',
             'data' => $classWithSubjects
@@ -95,7 +108,7 @@ class ClassController extends Controller
 
     public function all(Request $request)
     {
-        $classes = Classes::query()->with('subjects')->get();
+        $classes = Classes::query()->filterYear('created_at')->with('subjects')->get();
 
         if (!$classes) {
             return response()->json([
@@ -155,6 +168,17 @@ class ClassController extends Controller
         if($class)
         $class->subjects;
 
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json([
             'message' => 'success',
             'data' => $class

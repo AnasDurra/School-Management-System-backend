@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+<<<<<<< HEAD
 use App\Models\Admin_tag;
 use App\Models\Tag;
+=======
+use App\Models\Archive_Year;
+>>>>>>> f64c0ee8588d88f97e3c5dc68b7b033ffeb9a203
 use App\Models\User;
 use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
@@ -17,7 +21,7 @@ class AdminController extends Controller
     public function all(Request $request)
     {
         $admins = User::query()->where(
-            'role', '=', 1)->orWhere('role','=',0)->with('admin')->get();
+            'role', '<=', 1)->filterYear('created_at')->with('admin')->get();
 
         foreach ($admins as $admin){
             $admin->admin->tags;
@@ -59,7 +63,21 @@ class AdminController extends Controller
             $admin_tag->save();
             }
         $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
+<<<<<<< HEAD
         $user->admin->tags;
+=======
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
+>>>>>>> f64c0ee8588d88f97e3c5dc68b7b033ffeb9a203
         return response()->json([
             'message' => 'added',
             'data' => $user
