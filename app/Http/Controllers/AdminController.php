@@ -60,7 +60,9 @@ class AdminController extends Controller
             $admin_tag->save();
             }
         $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
-        //archive related
+
+        $user->admin->tags;
+
         $archiveYears = Archive_Year::query()->get();
         $arr = [];
         for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
@@ -71,7 +73,9 @@ class AdminController extends Controller
             else         $archiveYear->year = now()->year;
             $archiveYear->save();
         }
+
         $user->admin->tags;
+
         return response()->json([
             'message' => 'added',
             'data' => $user
