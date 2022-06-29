@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+<<<<<<< HEAD
 use App\Models\Archive_Year;
+=======
+use App\Models\Admin_tag;
+use App\Models\Tag;
+>>>>>>> 69c912274b8a56c502678564e5668c4363db9db5
 use App\Models\User;
 use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
@@ -18,6 +23,9 @@ class AdminController extends Controller
         $admins = User::query()->where(
             'role', '<=', 1)->filterYear('created_at')->with('admin')->get();
 
+        foreach ($admins as $admin){
+            $admin->admin->tags;
+        }
         return response()->json($admins);
     }
 
@@ -26,7 +34,8 @@ class AdminController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'phone_num' => 'required',
-            'address' => 'required'
+            'address' => 'required',
+            'tags' // array
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -45,7 +54,16 @@ class AdminController extends Controller
         $admin = new Admin();
         $admin->user_id = $user->id;
         $admin->save();
+
+        if($request->tags)
+            for($i=0 ; $i < count($request->tags) ; $i++){
+            $admin_tag= new Admin_tag();
+            $admin_tag->admin_id= $user->id;
+            $admin_tag->tag_id = $request->tags[$i];
+            $admin_tag->save();
+            }
         $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
+<<<<<<< HEAD
         //archive related
         $archiveYears = Archive_Year::query()->get();
         $arr = [];
@@ -57,6 +75,9 @@ class AdminController extends Controller
             else         $archiveYear->year = now()->year;
             $archiveYear->save();
         }
+=======
+        $user->admin->tags;
+>>>>>>> 69c912274b8a56c502678564e5668c4363db9db5
         return response()->json([
             'message' => 'added',
             'data' => $user
@@ -72,7 +93,8 @@ class AdminController extends Controller
             'address',
             'username',
             'password',
-            'name'
+            'name',
+            'tags' //array
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -102,7 +124,16 @@ class AdminController extends Controller
             $user->address = $request->address;
 
         $user->save();
+        Admin_tag::query()->where('admin_id','=',$request->id)->delete();
+        if($request->tags)
+            for($i=0 ; $i<count($request->tags) ; $i++){
+                $admin_tag = new Admin_tag();
+                $admin_tag->admin_id = $request->id;
+                $admin_tag->tag_id = $request->tags[$i];
+                $admin_tag->save();
+            }
 
+        $user->admin->tags;
         return response()->json([
             'message' => 'success',
             'data' => $user

@@ -186,6 +186,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('archive/switchActiveYear',[\App\Http\Controllers\ArchiveYearController::class,'switchActiveYear']);
 
 
+
+    //get all tags
+    Route::get('tags/all',[\App\Http\Controllers\TagController::class,'all']);
+
+
 });
 
 
