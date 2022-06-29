@@ -177,6 +177,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('complaint/seenComplaint',[\App\Http\Controllers\ComplaintController::class,'seenComplaint']);
     Route::get('complaint/getComplaints',[\App\Http\Controllers\ComplaintController::class,'get_complaints']);
 
+
+    //get all tags
+    Route::get('tags/all',[\App\Http\Controllers\TagController::class,'all']);
+
+
 });
 
 

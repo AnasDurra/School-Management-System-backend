@@ -9,6 +9,8 @@ use App\Models\Tutorial;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
+
+
 class TutorialController extends Controller
 {
     public function add(Request $request){
@@ -69,6 +71,7 @@ class TutorialController extends Controller
             'description',
             'class_id',
             'subject_id',
+            //helper_files!!
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -128,8 +131,12 @@ class TutorialController extends Controller
             'data'=>$tutorial
         ]);
     }
+    public function dd(){
+        return 5;
+    }
 
     public function getall(Request $request){
+
         $validator = Validator::make($request->all(), [
             'class_id' => 'required'
         ]);
