@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-<<<<<<< HEAD
 use App\Models\Archive_Year;
-=======
 use App\Models\Admin_tag;
 use App\Models\Tag;
->>>>>>> 69c912274b8a56c502678564e5668c4363db9db5
 use App\Models\User;
 use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
@@ -63,7 +60,6 @@ class AdminController extends Controller
             $admin_tag->save();
             }
         $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
-<<<<<<< HEAD
         //archive related
         $archiveYears = Archive_Year::query()->get();
         $arr = [];
@@ -75,9 +71,7 @@ class AdminController extends Controller
             else         $archiveYear->year = now()->year;
             $archiveYear->save();
         }
-=======
         $user->admin->tags;
->>>>>>> 69c912274b8a56c502678564e5668c4363db9db5
         return response()->json([
             'message' => 'added',
             'data' => $user
