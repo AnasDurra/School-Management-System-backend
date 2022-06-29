@@ -10,6 +10,13 @@ use phpDocumentor\Reflection\Types\Integer;
 class ArchiveYearController extends Controller
 {
     //
+    public function getYears(Request $request)
+    {
+        $data = Archive_Year::all();
+        return response()->json([
+            'data' => $data
+        ]);
+    }
     public function getActiveYear(Request $request)
     {
         $data = Archive_Year::query()->where('active', '=', 1)->first();

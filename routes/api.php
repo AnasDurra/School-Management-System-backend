@@ -182,6 +182,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //archive
     Route::get('archive/activeYear',[\App\Http\Controllers\ArchiveYearController::class,'getActiveYear']);
+    Route::get('archive/years',[\App\Http\Controllers\ArchiveYearController::class,'getYears']);
     Route::post('archive/switchActiveYear',[\App\Http\Controllers\ArchiveYearController::class,'switchActiveYear']);
 
 
