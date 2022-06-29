@@ -13,6 +13,33 @@ use function PHPUnit\Framework\at;
 
 class MarkController extends Controller
 {
+
+    public function check(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'student_id' => 'required',
+            'subject_id' => 'required',
+            'type_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+        $student = Student::query()->where('user_id', '=', $request->student_id)->first();
+        $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
+        $mark = Mark::query()->where('type_id','=', $request->type_id)->where('subject_id', '=', $request->subject_id)->
+        where('student_id', '=', $request->student_id)->first();
+        if (!$mark || !$student || !$subject)
+            return response()->json(
+                false
+                , 404);
+        else  return response()->json(
+            true
+            , 200);
+    }
+
     public function setMarks(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -73,7 +100,7 @@ class MarkController extends Controller
         }
         return response()->json([
             'message' => 'success'
-           // , 'data' => $mark  no need to return anything for now
+            // , 'data' => $mark  no need to return anything for now
         ]);
     }
 
@@ -104,61 +131,61 @@ class MarkController extends Controller
 //        }
 //        return response()->json(['data' => $student]);
         $data = null;
-        $student = Student::query()->where('user_id','=',$request->student_id)->first();
+        $student = Student::query()->where('user_id', '=', $request->student_id)->first();
         $subjects = $student->classroom->class->subjects;
-        for($i=0;$i<count($subjects);$i++){
-             $marks = Mark::query()->where([
-                 ['student_id','=',$request->student_id],
-                 ['subject_id','=',$subjects[$i]->id]
-             ])->get();
+        for ($i = 0; $i < count($subjects); $i++) {
+            $marks = Mark::query()->where([
+                ['student_id', '=', $request->student_id],
+                ['subject_id', '=', $subjects[$i]->id]
+            ])->get();
             $type1 = false;
             $type2 = false;
             $type3 = false;
             $type4 = false;
-            $count=0;
-            $sum=0;
+            $count = 0;
+            $sum = 0;
             $data[$i]['subject_name'] = $subjects[$i]->name;
             for ($j = 0; $j < count($marks); $j++) {
                 if ($marks[$j]->type_id == 1) {
                     $type1 = true;
                     $data[$i]['1'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 } else if ($marks[$j]->type_id == 2) {
                     $type2 = true;
                     $data[$i]['2'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 } else if ($marks[$j]->type_id == 3) {
                     $type3 = true;
                     $data[$i]['3'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 } else if ($marks[$j]->type_id == 4) {
                     $type4 = true;
                     $data[$i]['4'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 }
             }
             if (!$type1) $data[$i]['1'] = 0;
             if (!$type2) $data[$i]['2'] = 0;
             if (!$type3) $data[$i]['3'] = 0;
             if (!$type4) $data[$i]['4'] = 0;
-            if($count==0)$data[$i]['avg']=0;
-            else $data[$i]['avg']=($sum/$count);
+            if ($count == 0) $data[$i]['avg'] = 0;
+            else $data[$i]['avg'] = ($sum / $count);
         }
         return response()->json(
-      $data
+            $data
         );
     }
 
     public function update(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'student_id' =>'required',
-            'subject_id' =>'required',
-            'type_id' =>'required',
+            'student_id' => 'required',
+            'subject_id' => 'required',
+            'type_id' => 'required',
             'value',
         ]);
         if ($validator->fails()) {
@@ -169,15 +196,15 @@ class MarkController extends Controller
         }
 
         $mark = Mark::query()->where([
-            ['student_id','=',$request->student_id],
-            ['subject_id','=',$request->subject_id],
-            ['type_id','=',$request->type_id]
+            ['student_id', '=', $request->student_id],
+            ['subject_id', '=', $request->subject_id],
+            ['type_id', '=', $request->type_id]
         ])->first();
         if (!$mark) {
             $mark = new Mark();
-            $mark->student_id=$request->student_id;
-            $mark->subject_id=$request->subject_id;
-            $mark->type_id=$request->type_id;
+            $mark->student_id = $request->student_id;
+            $mark->subject_id = $request->subject_id;
+            $mark->type_id = $request->type_id;
         }
         if ($request->value)
             $mark->value = $request->value;
@@ -188,7 +215,7 @@ class MarkController extends Controller
 //        $mark->subject = $subject;
         return response()->json([
             'message' => 'success'
-        //    , 'data' => $mark currently no data needed
+            //    , 'data' => $mark currently no data needed
         ]);
     }
 
@@ -249,38 +276,38 @@ class MarkController extends Controller
             $type2 = false;
             $type3 = false;
             $type4 = false;
-            $count=0;
-            $sum=0;
+            $count = 0;
+            $sum = 0;
             $data[$i]['student_name'] = $students[$i]->user->name;
             for ($j = 0; $j < count($marks); $j++) {
                 if ($marks[$j]->type_id == 1) {
                     $type1 = true;
                     $data[$i]['1'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 } else if ($marks[$j]->type_id == 2) {
                     $type2 = true;
                     $data[$i]['2'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 } else if ($marks[$j]->type_id == 3) {
                     $type3 = true;
                     $data[$i]['3'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 } else if ($marks[$j]->type_id == 4) {
                     $type4 = true;
                     $data[$i]['4'] = $marks[$j]->value;
                     $count++;
-                    $sum+=$marks[$j]->value;
+                    $sum += $marks[$j]->value;
                 }
             }
             if (!$type1) $data[$i]['1'] = 0;
             if (!$type2) $data[$i]['2'] = 0;
             if (!$type3) $data[$i]['3'] = 0;
             if (!$type4) $data[$i]['4'] = 0;
-            if($count) $data[$i]['avg']=$sum/$count;
-            else $data[$i]['avg']=0;
+            if ($count) $data[$i]['avg'] = $sum / $count;
+            else $data[$i]['avg'] = 0;
         }
         return response()->json([
             'data' => $data

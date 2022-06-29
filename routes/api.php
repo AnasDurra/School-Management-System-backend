@@ -81,6 +81,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/marks/classroom', [\App\Http\Controllers\MarkController::class, 'getClassroomSubjectMarks']);
     //marks for student as schedule
     Route::post('/marks/student', [\App\Http\Controllers\MarkController::class, 'getStudentMarks']);
+    //check if mark is in db
+    Route::post('/marks/check', [\App\Http\Controllers\MarkController::class, 'check']);
 
     //admins
     Route::get('/admins/all', [\App\Http\Controllers\AdminController::class, 'all']);//f
