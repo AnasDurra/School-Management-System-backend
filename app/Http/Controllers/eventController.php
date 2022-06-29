@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Archive_Year;
 use App\Models\Date;
 use App\Models\Event;
 
@@ -41,6 +42,17 @@ class eventController extends Controller
             'id'=>$date->id,
             'events' => $date->events,
         ];
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json(
             $final
             , 200);
@@ -48,7 +60,7 @@ class eventController extends Controller
 
     public function all(Request $request)
     {
-        $events = Event::all();
+        $events = Event::query()->filterYear('created_at')->get();
         //  $collection = collect();
         $final = [];
         for ($i = 0; $i < count($events); $i++) {

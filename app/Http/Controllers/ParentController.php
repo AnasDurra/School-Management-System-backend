@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\admin;
+use App\Models\Archive_Year;
 use App\Models\Classes;
 use App\Models\Classroom;
 use App\Models\Paarent;
@@ -42,6 +43,17 @@ class ParentController extends Controller
         $paarent->user_id = $user->id;
         $paarent->save();
 
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json([
             'message' => 'added',
         ]);
@@ -113,7 +125,7 @@ class ParentController extends Controller
 
     public function all()
     {
-        $parents = User::query()->where('role', '=', '3')->with('parent')->get();
+        $parents = User::query()->where('role', '=', '3')->filterYear('created_at')->with('parent')->get();
         if ($parents)
             for ($i = 0; $i < count($parents); $i++) {
                 if ($parents[$i]['parent'])
@@ -142,7 +154,7 @@ class ParentController extends Controller
             ], 400);
         }
 
-        $user = User::query()->where('id', '=', $request->id)->with('parent')->first();
+        $user = User::query()->where('id', '=', $request->id)->filterYear('created_at')->with('parent')->first();
         if ($user) {
             if ($user['parent'])
                 for ($i = 0; $i < count($user['parent']['students']); $i++) {

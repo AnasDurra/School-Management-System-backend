@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Archive_Year;
 use App\Models\User;
 use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
@@ -15,7 +16,7 @@ class AdminController extends Controller
     public function all(Request $request)
     {
         $admins = User::query()->where(
-            'role', '=', 1)->orWhere('role','=',0)->with('admin')->get();
+            'role', '<=', 1)->filterYear('created_at')->with('admin')->get();
 
         return response()->json($admins);
     }
@@ -45,6 +46,17 @@ class AdminController extends Controller
         $admin->user_id = $user->id;
         $admin->save();
         $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
+        //archive related
+        $archiveYears = Archive_Year::query()->get();
+        $arr = [];
+        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
+        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
+            $archiveYear = new Archive_Year();
+            if (now()->month < 9)
+                $archiveYear->year = now()->year - 1;
+            else         $archiveYear->year = now()->year;
+            $archiveYear->save();
+        }
         return response()->json([
             'message' => 'added',
             'data' => $user
