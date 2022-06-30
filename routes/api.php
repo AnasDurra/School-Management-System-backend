@@ -191,6 +191,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('tags/all',[\App\Http\Controllers\TagController::class,'all']);
 
 
+    //import from
+    Route::get('import/get_classes',[\App\Http\Controllers\ArchiveYearController::class,'previousYearClasses']);
+    Route::post('import/get_students',[\App\Http\Controllers\Classes\ClassController::class,'previousYearsStudents']);
+    Route::post('import/addStudent',[\App\Http\Controllers\Classes\ClassController::class,'importStudent']);
+
+
 });
 
 
