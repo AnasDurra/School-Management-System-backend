@@ -26,7 +26,8 @@ class AfterDropSeeder extends Seeder
             TeachersSubjectsSeeder::class,
             TeachersClassroomsSeeder::class,
             ClassroomsTeachersSubjectsSeeder::class,
-            TypesSeeder::class
+            TypesSeeder::class,
+            TagsSeeder::class //
         ]);
     }
 }
