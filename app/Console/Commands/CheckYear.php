@@ -47,9 +47,12 @@ class CheckYear extends Command
     {
         $currentYear = now()->month < 9 ? now()->year - 1 : now()->year;
         $archive_years = Archive_Year::all();
+        $max_year = 0;
         for ($i = 0; $i < count($archive_years); $i++) {
             if ($archive_years[$i]->year >= $currentYear) return Command::SUCCESS; //this year isn't a new year
+            $max_year = max($max_year,$archive_years[$i]->year);
         }
+        if($currentYear-$max_year!=1) return Command::SUCCESS; //you can only import from previous year
         //ORDER IS IMPORTANT
 
         //import classes to new year
