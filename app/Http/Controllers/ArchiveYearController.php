@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive_Year;
+use App\Models\Classes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Integer;
@@ -56,6 +57,27 @@ class ArchiveYearController extends Controller
         return response()->json([
             'active year' => $data->year
         ]);
+    }
+
+    //import from
+    public function previousYearClasses(Request $request){
+        $active_year = Archive_Year::query()->select('year')->where('active','=',1)->first();
+        $active_year =$active_year->year;
+        $classes = Classes::query()->
+        where(function ($query) use ($active_year){
+            $query->
+            where(function ($query1) use ($active_year){
+                $query1->whereMonth('created_at','>=',9)->whereYear('created_at','=',$active_year-1);
+            })->
+            orWhere(function ($query2) use ($active_year){
+                $query2->whereMonth('created_at','<',9)->whereYear('created_at','=',$active_year);
+            });
+        })->get();
+
+        return response()->json([
+            'data' => $classes
+        ]);
+
     }
 
 }

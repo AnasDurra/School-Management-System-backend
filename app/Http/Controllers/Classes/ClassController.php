@@ -6,9 +6,12 @@ use App\Http\Controllers\Controller;
 use App\Models\Archive_Year;
 use App\Models\Class_Subject;
 use App\Models\Classes;
+use App\Models\Student;
 use App\Models\Subject;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ClassController extends Controller
 {
@@ -237,6 +240,77 @@ class ClassController extends Controller
         }
         return response()->json([
             'data' => $class->subjects
+        ]);
+    }
+
+    public function previousYearsStudents(Request $request){
+        $validator = Validator::make($request->all(), [
+            'class_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+        $active_year = Archive_Year::query()->select('year')->where('active','=',1)->first();
+        $active_year =$active_year->year;
+
+        $students = Student::query()->where('class_id','=',$request->class_id)
+            ->whereNotExists(function ($query) use ($active_year){
+            $query->
+            where(function ($query1) use ($active_year){
+                $query1->whereMonth('created_at','>=',9)->whereYear('created_at','=',$active_year);
+            })->
+            orWhere(function ($query2) use ($active_year){
+                $query2->whereMonth('created_at','<',9)->whereYear('created_at','=',$active_year+1);
+            });
+        })->with('user')->get();
+
+        return response()->json([
+            'data' =>$students
+        ]);
+    }
+
+    public function importStudent(Request $request){
+        $validator = Validator::make($request->all(), [
+            'class_id' => 'required',
+            'student_ids' => 'required' //array of
+
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        for($i=0 ; $i<count($request->student_ids) ;$i++){
+            $student = Student::query()->where('user_id','=',$request->student_ids[$i])->with('user')->first();
+
+            $user = new User();
+            $user->name =$student->user->name;
+            $user->username =Str::random(10);
+            $user->password =Str::random(5);;
+            $user->phone_num =$student->user->phone_num;
+            $user->address =$student->user->address;
+            $user->role =$student->user->role;
+            $user->save();
+
+            $new_student = new Student();
+
+            $new_student->user_id = $user->id;
+            $new_student->classroom_id = $student->classroom_id;
+            $new_student->parent_id = $student->parent_id;
+            $new_student->class_id = $request->class_id;
+            $new_student->bus_id = $request->bus_id;
+            $new_student->save();
+            $new_student->user;
+            $students[] =$new_student;
+        }
+
+        return response()->json([
+            'data' =>$students
         ]);
     }
 }
