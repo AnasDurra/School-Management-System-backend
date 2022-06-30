@@ -21,10 +21,12 @@ class TeachersSeeder extends Seeder
             'address'=>'Barzeh',
             'role'=>2,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('teachers')->insert([
-            'user_id'=>10
+            'user_id'=>10,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'sami',
@@ -32,10 +34,12 @@ class TeachersSeeder extends Seeder
             'address'=>'jouber',
             'role'=>2,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('teachers')->insert([
-            'user_id'=>11
+            'user_id'=>11,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'mohsen',
@@ -43,10 +47,12 @@ class TeachersSeeder extends Seeder
             'address'=>'jableh',
             'role'=>2,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('teachers')->insert([
-            'user_id'=>12
+            'user_id'=>12,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'salwa',
@@ -54,10 +60,12 @@ class TeachersSeeder extends Seeder
             'address'=>'jaramana',
             'role'=>2,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('teachers')->insert([
-            'user_id'=>13
+            'user_id'=>13,
+            'created_at'=>now()
         ]);
     }
 }

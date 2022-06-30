@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class ClassesSeeder extends Seeder
+class ArchiveYearSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,12 +15,9 @@ class ClassesSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('classes')->insert([
-            'name'=>'First',
-            'created_at'=>now()
-        ]);
-        DB::table('classes')->insert([
-            'name'=>'Second',
+        DB::table('archive_years')->insert([
+            'year'=>now()->month<9?now()->year-1:now()->year,
+            'active'=> true,
             'created_at'=>now()
         ]);
     }

@@ -6,11 +6,7 @@ use Illuminate\Database\Seeder;
 
 class AfterDropSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+
     public function run()
     {
         //
@@ -27,7 +23,10 @@ class AfterDropSeeder extends Seeder
             TeachersClassroomsSeeder::class,
             ClassroomsTeachersSubjectsSeeder::class,
             TypesSeeder::class,
-            TagsSeeder::class //
+            TagsSeeder::class ,
+
+            ArchiveYearSeeder::class
+
         ]);
     }
 }

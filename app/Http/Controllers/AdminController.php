@@ -6,6 +6,9 @@ use App\Models\Admin;
 use App\Models\Admin_tag;
 use App\Models\Tag;
 use App\Models\Archive_Year;
+
+
+
 use App\Models\User;
 use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
@@ -63,7 +66,9 @@ class AdminController extends Controller
 
         $user->admin->tags;
 
+
         //archive related
+
         $archiveYears = Archive_Year::query()->get();
         $arr = [];
         for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
@@ -74,6 +79,10 @@ class AdminController extends Controller
             else         $archiveYear->year = now()->year;
             $archiveYear->save();
         }
+
+
+        $user->admin->tags;
+
 
         return response()->json([
             'message' => 'added',

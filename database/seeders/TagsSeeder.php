@@ -16,16 +16,20 @@ class TagsSeeder extends Seeder
     {
         //
         DB::table('tags')->insert([
-            'tag_name'=>'EVENT'
+            'tag_name'=>'EVENT',
+            'created_at'=>now()
         ]);
         DB::table('tags')->insert([
-            'tag_name'=>'TRANSPORTATION'
+            'tag_name'=>'TRANSPORTATION',
+            'created_at'=>now()
         ]);
         DB::table('tags')->insert([
-            'tag_name'=>'COMPLAINS'
+            'tag_name'=>'COMPLAINS',
+            'created_at'=>now()
         ]);
         DB::table('tags')->insert([
-            'tag_name'=>'LIBRARY'
+            'tag_name'=>'LIBRARY',
+            'created_at'=>now()
         ]);
     }
 }

@@ -17,15 +17,19 @@ class TypesSeeder extends Seeder
         //
         DB::table('types')->insert([
             'name'=>'Activities',
+            'created_at'=>now()
         ]);
         DB::table('types')->insert([
             'name'=>'Quizzes',
+            'created_at'=>now()
         ]);
         DB::table('types')->insert([
             'name'=>'Midterm Exam',
+            'created_at'=>now()
         ]);
         DB::table('types')->insert([
             'name'=>'Final Exam',
+            'created_at'=>now()
         ]);
     }
 }

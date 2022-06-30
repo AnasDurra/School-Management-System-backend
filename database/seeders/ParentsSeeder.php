@@ -21,10 +21,12 @@ class parentsSeeder extends Seeder
             'address'=>'ruken aldeen',
             'role'=>3,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('paarents')->insert([
-           'user_id'=>2
+           'user_id'=>2,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'Ahmad Barakat',
@@ -32,10 +34,12 @@ class parentsSeeder extends Seeder
             'address'=>'mazzeh',
             'role'=>3,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('paarents')->insert([
-            'user_id'=>3
+            'user_id'=>3,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'Khalid Durra',
@@ -43,10 +47,12 @@ class parentsSeeder extends Seeder
             'address'=>'qudsia',
             'role'=>3,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('paarents')->insert([
-            'user_id'=>4
+            'user_id'=>4,
+            'created_at'=>now()
         ]);
         DB::table('users')->insert([
             'name'=>'Ghassan Dukmak',
@@ -54,10 +60,12 @@ class parentsSeeder extends Seeder
             'address'=>'mashroua dummar',
             'role'=>3,
             'phone_num'=>'12345',
-            'password'=>'12345'
+            'password'=>'12345',
+            'created_at'=>now()
         ]);
         DB::table('paarents')->insert([
-            'user_id'=>5
+            'user_id'=>5,
+            'created_at'=>now()
         ]);
     }
 }
