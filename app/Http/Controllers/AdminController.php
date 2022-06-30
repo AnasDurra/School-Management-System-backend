@@ -21,7 +21,7 @@ class AdminController extends Controller
     public function all(Request $request)
     {
         $admins = User::query()->where(
-            'role', '<=', 1)->filteactiveYearrYear('created_at')->with('admin')->get();
+            'role', '<=', 1)->filterYear('created_at')->with('admin')->get();
 
         foreach ($admins as $admin){
             $admin->admin->tags;
