@@ -18,6 +18,7 @@ class ArchiveYearController extends Controller
             'data' => $data
         ]);
     }
+
     public function getActiveYear(Request $request)
     {
         $data = Archive_Year::query()->where('active', '=', 1)->first();
@@ -60,17 +61,18 @@ class ArchiveYearController extends Controller
     }
 
     //import from
-    public function previousYearClasses(Request $request){
-        $active_year = Archive_Year::query()->select('year')->where('active','=',1)->first();
-        $active_year =$active_year->year;
+    public function previousYearClasses(Request $request)
+    {
+        $active_year = Archive_Year::query()->select('year')->where('active', '=', 1)->first();
+        $active_year = $active_year->year;
         $classes = Classes::query()->
-        where(function ($query) use ($active_year){
+        where(function ($query) use ($active_year) {
             $query->
-            where(function ($query1) use ($active_year){
-                $query1->whereMonth('created_at','>=',9)->whereYear('created_at','=',$active_year-1);
+            where(function ($query1) use ($active_year) {
+                $query1->whereMonth('created_at', '>=', 9)->whereYear('created_at', '=', $active_year - 1);
             })->
-            orWhere(function ($query2) use ($active_year){
-                $query2->whereMonth('created_at','<',9)->whereYear('created_at','=',$active_year);
+            orWhere(function ($query2) use ($active_year) {
+                $query2->whereMonth('created_at', '<', 9)->whereYear('created_at', '=', $active_year);
             });
         })->get();
 
@@ -78,6 +80,22 @@ class ArchiveYearController extends Controller
             'data' => $classes
         ]);
 
+    }
+
+    public function lastYearIsActiveYearCheck(Request $request)
+    {
+        $active_year = Archive_Year::query()->where('active', '=', 1)->first();
+        $last_year = Archive_Year::query()->max('year');
+
+        if ($last_year == $active_year->year) {
+            return response()->json([
+                'result' => 1
+            ]);
+        } else {
+            return response()->json([
+                'result' => 0
+            ]);
+        }
     }
 
 }

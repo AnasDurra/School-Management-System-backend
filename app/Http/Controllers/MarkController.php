@@ -29,15 +29,15 @@ class MarkController extends Controller
         }
         $student = Student::query()->where('user_id', '=', $request->student_id)->first();
         $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
-        $mark = Mark::query()->where('type_id','=', $request->type_id)->where('subject_id', '=', $request->subject_id)->
+        $mark = Mark::query()->where('type_id', '=', $request->type_id)->where('subject_id', '=', $request->subject_id)->
         where('student_id', '=', $request->student_id)->first();
         if (!$mark || !$student || !$subject)
-            return response()->json(
-                false
-                , 404);
-        else  return response()->json(
-            true
-            , 200);
+            return response()->json([
+                'result' => 0
+            ], 404);
+        else  return response()->json([
+                'result' => 1
+            ], 200);
     }
 
     public function setMarks(Request $request)

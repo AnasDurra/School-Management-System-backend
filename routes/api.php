@@ -184,6 +184,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('archive/activeYear',[\App\Http\Controllers\ArchiveYearController::class,'getActiveYear']);
     Route::get('archive/years',[\App\Http\Controllers\ArchiveYearController::class,'getYears']);
     Route::post('archive/switchActiveYear',[\App\Http\Controllers\ArchiveYearController::class,'switchActiveYear']);
+    Route::get('archive/lastYearCheck',[\App\Http\Controllers\ArchiveYearController::class,'lastYearIsActiveYearCheck']); //check if current year is last year
 
 
 
@@ -195,6 +196,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('import/get_classes',[\App\Http\Controllers\ArchiveYearController::class,'previousYearClasses']);
     Route::post('import/get_students',[\App\Http\Controllers\Classes\ClassController::class,'previousYearsStudents']);
     Route::post('import/addStudent',[\App\Http\Controllers\Classes\ClassController::class,'importStudent']);
+
 
 
 });
