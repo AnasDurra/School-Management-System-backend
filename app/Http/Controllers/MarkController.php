@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Archive_Year;
 use App\Models\Mark;
+use App\Models\Obligate;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\Type;
@@ -13,7 +14,39 @@ use function PHPUnit\Framework\at;
 
 class MarkController extends Controller
 {
+    public function obligate(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'student_id' => 'required',
+            'subject_id' => 'required',
+            'type_id' => 'required',
+            'body'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+        $student = Student::query()->where('user_id', '=', $request->student_id)->first();
+        $subject = Subject::query()->where('id', '=', $request->subject_id)->first();
+        $mark = Mark::query()->where('type_id', '=', $request->type_id)->where('subject_id', '=', $request->subject_id)->
+        where('student_id', '=', $request->student_id)->first();
+        if (!$mark || !$student || !$subject)
+            return response()->json([
+                'message' => 'wrong inputs'
+            ], 404);
+        $obligation = new Obligate();
+        $obligation->mark_id = $mark->id;
+        $obligation->body = $request->body;
+        $obligation->save();
 
+         return response()->json([
+        'message' => 'ok'
+    ]);
+
+
+    }
     public function check(Request $request)
     {
         $validator = Validator::make($request->all(), [

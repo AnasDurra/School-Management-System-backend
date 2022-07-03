@@ -24,6 +24,9 @@ class Mark extends Model
     public function type(){
         return $this->belongsTo('app\Models\Type','type_id','id');
     }
+    public function obligate(){
+        return $this->hasOne(Obligate::class,'mark_id','id');
+    }
 
 
 
