@@ -76,8 +76,7 @@ class TeacherController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'id' => 'required',
-            'username',
-            'password',
+            'name',
             'phone_num',
             'address',
             'subjects_id',
@@ -91,10 +90,10 @@ class TeacherController extends Controller
 
         $user = User::query()->where('id', '=', $request->id)->with('teacher')->first();
 
-        if ($request->username)
-            $user['username'] = $request->username;
-        if ($request->password)
-            $user['password'] = $request->password;
+        if ($request->name)
+            $user['name'] = $request->name;
+//        if ($request->password)
+//            $user['password'] = $request->password;
         if ($request->phone_num)
             $user['phone_num'] = $request->phone_num;
         if ($request->address)
