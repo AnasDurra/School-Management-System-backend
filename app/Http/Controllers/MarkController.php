@@ -14,7 +14,7 @@ use function PHPUnit\Framework\at;
 
 class MarkController extends Controller
 {
-    public function obligate(Request $request)
+    public function object(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'student_id' => 'required',

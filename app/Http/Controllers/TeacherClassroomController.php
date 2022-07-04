@@ -21,7 +21,7 @@ class TeacherClassroomController extends Controller
 {
 
 
-    public function getTeacherObligations(Request $request)
+    public function getTeacherObjections(Request $request)
     {
         Validator::make($request->all(), [
             'teacher_id' => 'required'

@@ -54,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //Get Teacher Classrooms
     Route::post('/teacher/classrooms/get', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherClassrooms']);
     //get teacher obligations
-    Route::post('/teacher/obligations', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherObligations']);
+    Route::post('/teacher/objection', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherObjections']);
 
     //parents
     Route::post('/parents/add', [\App\Http\Controllers\ParentController::class, 'add']);
@@ -85,7 +85,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/marks/student', [\App\Http\Controllers\MarkController::class, 'getStudentMarks']);
     //check if mark is in db
     Route::post('/marks/check', [\App\Http\Controllers\MarkController::class, 'check']);
-    Route::post('/mark/obligate', [\App\Http\Controllers\MarkController::class, 'obligate']);
+    Route::post('/mark/object', [\App\Http\Controllers\MarkController::class, 'object']);
 
     //admins
     Route::get('/admins/all', [\App\Http\Controllers\AdminController::class, 'all']);//f
