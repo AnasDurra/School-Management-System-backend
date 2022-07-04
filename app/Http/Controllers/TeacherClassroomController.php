@@ -12,6 +12,7 @@ use App\Models\Subject;
 use App\Models\Teacher;
 use App\Models\Teacher_classroom;
 use App\Models\teacher_subject;
+use App\Models\Type;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -71,15 +72,14 @@ class TeacherClassroomController extends Controller
         for ($i = 0; $i < count($obligations_id); $i++) {
             $obligation = Obligate::query()->where('id', '=', $obligations_id[$i])->first();
             $data[$i]['body'] = $obligation->body;
-            $data[$i]['type'] = $obligation->mark->type_id;
-            $data[$i]['subject'] = $obligation->mark->subject_id;
+            $data[$i]['type'] = Type::query()->where('id','=',$obligation->mark->type_id)->first();
+            $data[$i]['subject'] = Subject::query()->where('id','=',$obligation->mark->subject_id)->first();
             $data[$i]['student'] = User::query()->where('id', '=', $obligation->mark->student_id)->first();
         }
 
         return response()->json(
             [
                 'data' => $data,
-
             ]
         );
     }
