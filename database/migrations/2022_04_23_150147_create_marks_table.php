@@ -15,7 +15,7 @@ class CreateMarksTable extends Migration
     {
         Schema::create('marks', function (Blueprint $table) {
             $table->id();
-            $table->string('value');
+            $table->string('value')->default('-1');
             $table->foreignId('type_id')->references('id')->on('types')->cascadeOnDelete();
             $table->foreignId('student_id')->references('user_id')->on('students')->cascadeOnDelete();
             $table->integer('subject_id');

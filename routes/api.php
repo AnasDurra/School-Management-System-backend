@@ -54,7 +54,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //Get Teacher Classrooms
     Route::post('/teacher/classrooms/get', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherClassrooms']);
     //get teacher obligations
-    Route::post('/teacher/objection', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherObjections']);
+    Route::post('/teacher/objections', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherObjections']);
 
     //parents
     Route::post('/parents/add', [\App\Http\Controllers\ParentController::class, 'add']);

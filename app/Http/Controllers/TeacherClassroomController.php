@@ -75,6 +75,7 @@ class TeacherClassroomController extends Controller
             $data[$i]['type'] = Type::query()->where('id','=',$obligation->mark->type_id)->first();
             $data[$i]['subject'] = Subject::query()->where('id','=',$obligation->mark->subject_id)->first();
             $data[$i]['student'] = User::query()->where('id', '=', $obligation->mark->student_id)->first();
+            $data[$i]['classroom'] = Student::query()->where('user_id', '=', $obligation->mark->student_id)->first()->classroom;
         }
 
         return response()->json(
