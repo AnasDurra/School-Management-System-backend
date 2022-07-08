@@ -78,9 +78,43 @@ class AuthController extends Controller
         else{
             return response()->json(['state'=>false,'message'=>'wrong username'],451);
         }
+    }
 
+    public function updateAuth(Request $request){
+        $validator = Validator::make($request->all(), [
+            "id"=>"required",
+            "username"=>'alpha_dash',
+            "password"
+        ]);
+
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $user = User::query()->find($request->id);
+        if(!$user)
+            return response()->json([
+                'message'=>'Not Found'
+            ],404);
+
+        if($request->username)
+            $user->username = $request->username;
+
+        if($request->password)
+            $user->password = $request->password;
+
+        $user->save();
+
+        return response()->json([
+            'message'=>'updated',
+            'data'=>$user,
+        ]);
 
     }
+
     public function logout(Request $request){
         auth()->user()->tokens()->delete();
         return response()->json([
