@@ -14,6 +14,7 @@ class Tutorial extends Model
         'description',
         'class_id',
         'subject_id',
+        'teacher_id',
         'views',
         'file'
     ];
@@ -29,5 +30,8 @@ class Tutorial extends Model
 
     public function subject(){
         return $this->belongsTo('App\Models\Subject','subject_id','id');
+    }
+    public function teacher(){
+     return $this->belongsTo(Teacher::class,'teacher_id','user_id');
     }
 }

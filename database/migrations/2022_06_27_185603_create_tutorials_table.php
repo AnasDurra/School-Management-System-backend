@@ -15,6 +15,7 @@ class CreateTutorialsTable extends Migration
             $table->string('description');
             $table->foreignId('class_id')->references('id')->on('classes')->cascadeOnDelete();
             $table->foreignId('subject_id')->references('id')->on('subjects')->cascadeOnDelete();
+            $table->foreignId('teacher_id')->references('user_id')->on('teachers'); //TODO should we on cascade delete?
             $table->integer('views')->default(0);
             $table->string('file');
             $table->timestamps();

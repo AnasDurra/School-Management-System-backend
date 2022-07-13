@@ -29,6 +29,9 @@ class Teacher extends Model
     public function  assignments(){
         return $this->hasMany('App\Models\Assignment',"teacher_id",'user_id');
     }
+    public function tutorials(){
+        return $this->hasMany(Tutorial::class,'teacher_id','user_id');
+    }
 
 
 
