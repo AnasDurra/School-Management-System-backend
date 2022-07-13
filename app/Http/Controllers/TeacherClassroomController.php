@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Class_Subject;
+use App\Models\Classes;
 use App\Models\Classroom;
 use App\Models\Classroom_teacherSubject;
 use App\Models\Mark;
@@ -153,6 +154,7 @@ class TeacherClassroomController extends Controller
         $teacher_subject = null;
         $index = 0;
         for ($i = 0; $i < count($classrooms); $i++) {
+            $classrooms[$i]['class_name'] = Classes::query()->where('id','=',$classrooms[$i]->class_id)->first()->name;
             $index = 0;
             $teacher_subject = null;
             $classroom_teacher_subject = Classroom_teacherSubject::query()->where('classroom_id', '=', $classrooms[$i]->id)->get();
