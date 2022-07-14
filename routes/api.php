@@ -161,7 +161,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('tutorials/add',[\App\Http\Controllers\TutorialController::class,'add']);
     Route::post('tutorials/update',[\App\Http\Controllers\TutorialController::class,'update']);
     Route::post('tutorials/getall',[\App\Http\Controllers\TutorialController::class,'getall']);
-
+    Route::post('tutorials/teacher',[\App\Http\Controllers\TutorialController::class,'getTeacherTutorials']);
 
     Route::post('tutorials/view',[\App\Http\Controllers\TutorialController::class,'view']);
     Route::post('tutorials/delete',[\App\Http\Controllers\TutorialController::class,'delete']);

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Classes;
 use App\Models\Helper_file;
+use App\Models\Teacher;
 use Illuminate\Support\Facades\File;
 use App\Models\Tutorial;
 use Illuminate\Http\Request;
@@ -20,6 +21,7 @@ class TutorialController extends Controller
             'class_id'=>'required',
             'subject_id'=>'required',
             'file'=>'required',
+            'teacher_id'=>'required',
             'helper_files' // array of files
         ]);
         if ($validator->fails()) {
@@ -34,6 +36,7 @@ class TutorialController extends Controller
         $tutorial->description = $request->description;
         $tutorial->class_id = $request->class_id;
         $tutorial->subject_id = $request->subject_id;
+        $tutorial->teacher_id = $request->teacher_id;
 
         $file= $request->file;
         $filename=time().'.'.$file->getClientOriginalExtension();
@@ -163,6 +166,34 @@ class TutorialController extends Controller
             'data' => $tutorials
         ]);
     }
+    public function getTeacherTutorials(Request $request){
+
+        $validator = Validator::make($request->all(), [
+            'teacher_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $teacher = Teacher::query()->where('user_id','=',$request->teacher_id)->first();
+        if(!$teacher)
+            return response()->json([
+                'message' => 'Teacher not found',
+            ],404);
+
+        $tutorials = $teacher->tutorials;
+        foreach ($tutorials as $tutorial){
+            $tutorial->subject;
+            $tutorial->helper_files;
+            $tutorial->class;
+        }
+        return response()->json([
+            'data' => $tutorials
+        ]);
+    }
 
     public function download(Request $request,$file){
         return response()->download(public_path('tutorials/' . $file));
@@ -205,4 +236,6 @@ class TutorialController extends Controller
             'data' => $tutorial
         ]);
     }
+
+
 }

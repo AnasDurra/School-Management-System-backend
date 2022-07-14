@@ -201,11 +201,11 @@ class MarkController extends Controller
                     $sum += $marks[$j]->value;
                 }
             }
-            if (!$type1) $data[$i]['1'] = 0;
-            if (!$type2) $data[$i]['2'] = 0;
-            if (!$type3) $data[$i]['3'] = 0;
-            if (!$type4) $data[$i]['4'] = 0;
-            if ($count == 0) $data[$i]['avg'] = 0;
+            if (!$type1) $data[$i]['1'] = -1;
+            if (!$type2) $data[$i]['2'] = -1;
+            if (!$type3) $data[$i]['3'] = -1;
+            if (!$type4) $data[$i]['4'] = -1;
+            if ($count == 0) $data[$i]['avg'] = -1;
             else $data[$i]['avg'] = ($sum / $count);
         }
         return response()->json(
