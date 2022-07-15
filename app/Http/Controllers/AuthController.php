@@ -66,6 +66,8 @@ class AuthController extends Controller
                 $token=$user->createToken("auth_Token")->plainTextToken ;
                 if($user->role==3)
                     $user->parent->students;
+                if($user->role==1||$user->role==0)
+                     $user->admin->tags;
                 return response()->json([
                     'access_token' => $token,
                     'data'=>$user,
