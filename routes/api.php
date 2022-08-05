@@ -201,6 +201,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('import/addStudent',[\App\Http\Controllers\Classes\ClassController::class,'importStudent']);
 
 
+    //statisstics for dashboard
+    Route::get('statistics',[\App\Http\Controllers\StatisticsController::class,'getStatistics']);
     //update auth info
     Route::post('/update', [AuthController::class, 'updateAuth']);
 

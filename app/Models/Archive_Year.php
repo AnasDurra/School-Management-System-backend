@@ -13,5 +13,5 @@ class Archive_Year extends Model
        'year',
         'active'
     ];
-    protected $primaryKey='id';
+    Protected $primaryKey='id';
 }
