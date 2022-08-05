@@ -4,12 +4,12 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTagsTable extends Migration
+class CreateResponsibilitiesTable extends Migration
 {
 
     public function up()
     {
-        Schema::create('tags', function (Blueprint $table) {
+        Schema::create('responsibilities', function (Blueprint $table) {
             $table->id();
             $table->string('tag_name');
             $table->timestamps();

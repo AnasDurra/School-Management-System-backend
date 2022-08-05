@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Models\Responsibility;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class TagController extends Controller
+class ResponsibilityController extends Controller
 {
     public function all(Request $request){
-        $tags = Tag::all();
+        $tags = Responsibility::all();
 
         if(!$tags)
             return response()->json([

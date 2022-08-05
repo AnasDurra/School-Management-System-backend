@@ -23,7 +23,7 @@ class AfterDropSeeder extends Seeder
             TeachersClassroomsSeeder::class,
             ClassroomsTeachersSubjectsSeeder::class,
             TypesSeeder::class,
-            TagsSeeder::class ,
+            ResponsibilitiesSeeder::class ,
 
             ArchiveYearSeeder::class
 

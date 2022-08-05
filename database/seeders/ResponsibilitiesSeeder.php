@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TagsSeeder extends Seeder
+class ResponsibilitiesSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,19 +15,19 @@ class TagsSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('tags')->insert([
+        DB::table('responsibilities')->insert([
             'tag_name'=>'EVENT',
             'created_at'=>now()
         ]);
-        DB::table('tags')->insert([
+        DB::table('responsibilities')->insert([
             'tag_name'=>'TRANSPORTATION',
             'created_at'=>now()
         ]);
-        DB::table('tags')->insert([
+        DB::table('responsibilities')->insert([
             'tag_name'=>'COMPLAINS',
             'created_at'=>now()
         ]);
-        DB::table('tags')->insert([
+        DB::table('responsibilities')->insert([
             'tag_name'=>'LIBRARY',
             'created_at'=>now()
         ]);

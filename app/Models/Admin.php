@@ -22,7 +22,7 @@ class Admin extends Model
     }
 
     public function tags(){
-        return $this->belongsToMany('App\Models\Tag','admin_tags','admin_id','tag_id','user_id','id');
+        return $this->belongsToMany('App\Models\Responsibility','admin_tags','admin_id','tag_id','user_id','id');
     }
 
 

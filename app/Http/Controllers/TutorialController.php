@@ -11,17 +11,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 
-
 class TutorialController extends Controller
 {
-    public function add(Request $request){
+    public function add(Request $request)
+    {
         $validator = Validator::make($request->all(), [
-            'name'=>'required',
-            'description'=>'required',
-            'class_id'=>'required',
-            'subject_id'=>'required',
-            'file'=>'required',
-            'teacher_id'=>'required',
+            'name' => 'required',
+            'description' => 'required',
+            'class_id' => 'required',
+            'subject_id' => 'required',
+            'file' => 'required',
+            'teacher_id' => 'required',
             'helper_files' // array of files
         ]);
         if ($validator->fails()) {
@@ -38,25 +38,25 @@ class TutorialController extends Controller
         $tutorial->subject_id = $request->subject_id;
         $tutorial->teacher_id = $request->teacher_id;
 
-        $file= $request->file;
-        $filename=time().'.'.$file->getClientOriginalExtension();
+        $file = $request->file;
+        $filename = time() . '.' . $file->getClientOriginalExtension();
 
-        $request->file->move('tutorials',$filename);
-        $tutorial->file=$filename;
+        $request->file->move('tutorials', $filename);
+        $tutorial->file = $filename;
         $tutorial->save();
 
-        if($request->helper_files)
-            for($i=0;$i<count($request->helper_files);$i++){
-            $helper_file = new Helper_file();
-            $helper_file->tutorial_id = $tutorial->id;
+        if ($request->helper_files)
+            for ($i = 0; $i < count($request->helper_files); $i++) {
+                $helper_file = new Helper_file();
+                $helper_file->tutorial_id = $tutorial->id;
 
-            $file2=$request->helper_files[$i];
-            $file2name=$file2->getClientOriginalName();
+                $file2 = $request->helper_files[$i];
+                $file2name = $file2->getClientOriginalName();
 
-            $request->helper_files[$i]->move('helper_files',$file2name);
-            $helper_file->file=$file2name;
-            $helper_file->save();
-        }
+                $request->helper_files[$i]->move('helper_files', $file2name);
+                $helper_file->file = $file2name;
+                $helper_file->save();
+            }
 
         $tutorial->class;
         $tutorial->subject;
@@ -83,21 +83,21 @@ class TutorialController extends Controller
             ], 400);
         }
         $tutorial = Tutorial::query()->find($request->id);
-        if(!$tutorial)
+        if (!$tutorial)
             return response()->json([
                 'message' => 'Tutorial not found',
-            ],404);
+            ], 404);
 
-        if($request->name)
+        if ($request->name)
             $tutorial->name = $request->name;
 
-        if($request->description)
+        if ($request->description)
             $tutorial->description = $request->description;
 
-        if($request->class_id)
+        if ($request->class_id)
             $tutorial->class_id = $request->class_id;
 
-        if($request->subject_id)
+        if ($request->subject_id)
             $tutorial->subject_id = $request->subject_id;
 
         $tutorial->save();
@@ -109,11 +109,12 @@ class TutorialController extends Controller
 
         return response()->json([
             'message' => 'updated',
-            'data'=>$tutorial
+            'data' => $tutorial
         ]);
     }
 
-    public function view(Request $request){
+    public function view(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'id' => 'required'
         ]);
@@ -125,23 +126,27 @@ class TutorialController extends Controller
         }
         $tutorial = Tutorial::query()->find($request->id);
 
-        if(!$tutorial)
+        if (!$tutorial)
             return response()->json([
                 'message' => 'Tutorial not found',
-            ],404);
+            ], 404);
         $tutorial->subject;
         return response()->json([
-            'data'=>$tutorial
+            'data' => $tutorial
         ]);
     }
-    public function dd(){
+
+    public function dd()
+    {
         return 5;
     }
 
-    public function getall(Request $request){
+    public function getClassSubjectTutorials(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
-            'class_id' => 'required'
+            'class_id' => 'required',
+            'subject_id' => 'required'
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -151,13 +156,14 @@ class TutorialController extends Controller
         }
 
         $class = Classes::query()->find($request->class_id);
-        if(!$class)
+        if (!$class)
             return response()->json([
                 'message' => 'Class not found',
-            ],404);
+            ], 404);
 
-        $tutorials = $class->tutorials;
-        foreach ($tutorials as $tutorial){
+        $tutorials = Tutorial::query()->where('class_id', '=', $request->class_id)
+            ->where('subject_id', '=', $request->subject_id)->get();
+        foreach ($tutorials as $tutorial) {
             $tutorial->subject;
             $tutorial->helper_files;
             $tutorial->class;
@@ -166,7 +172,9 @@ class TutorialController extends Controller
             'data' => $tutorials
         ]);
     }
-    public function getTeacherTutorials(Request $request){
+
+    public function getTeacherTutorials(Request $request)
+    {
 
         $validator = Validator::make($request->all(), [
             'teacher_id' => 'required'
@@ -178,14 +186,14 @@ class TutorialController extends Controller
             ], 400);
         }
 
-        $teacher = Teacher::query()->where('user_id','=',$request->teacher_id)->first();
-        if(!$teacher)
+        $teacher = Teacher::query()->where('user_id', '=', $request->teacher_id)->first();
+        if (!$teacher)
             return response()->json([
                 'message' => 'Teacher not found',
-            ],404);
+            ], 404);
 
         $tutorials = $teacher->tutorials;
-        foreach ($tutorials as $tutorial){
+        foreach ($tutorials as $tutorial) {
             $tutorial->subject;
             $tutorial->helper_files;
             $tutorial->class;
@@ -195,13 +203,14 @@ class TutorialController extends Controller
         ]);
     }
 
-    public function download(Request $request,$file){
+    public function download(Request $request, $file)
+    {
         return response()->download(public_path('tutorials/' . $file));
     }
 
     public function delete(Request $request)
     {
-        $validator= Validator::make($request->all(), [
+        $validator = Validator::make($request->all(), [
             'id' => 'required',
         ]);
         if ($validator->fails()) {
@@ -215,9 +224,9 @@ class TutorialController extends Controller
         if (!$tutorial)
             return response()->json([
                 'message' => 'Tutorial not found'
-            ],404);
-        $helper_files= $tutorial->helper_files;
-        if($helper_files)
+            ], 404);
+        $helper_files = $tutorial->helper_files;
+        if ($helper_files)
             foreach ($helper_files as $helper_file) {
                 //delete files from helper_files folder
                 if (File::exists("helper_files/{$helper_file->file}")) {

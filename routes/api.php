@@ -160,7 +160,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //tutorials
     Route::post('tutorials/add',[\App\Http\Controllers\TutorialController::class,'add']);
     Route::post('tutorials/update',[\App\Http\Controllers\TutorialController::class,'update']);
-    Route::post('tutorials/getall',[\App\Http\Controllers\TutorialController::class,'getall']);
+    Route::post('tutorials/class/subject',[\App\Http\Controllers\TutorialController::class,'getClassSubjectTutorials']);
     Route::post('tutorials/teacher',[\App\Http\Controllers\TutorialController::class,'getTeacherTutorials']);
 
     Route::post('tutorials/view',[\App\Http\Controllers\TutorialController::class,'view']);
@@ -192,7 +192,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 
     //get all tags
-    Route::get('tags/all',[\App\Http\Controllers\TagController::class,'all']);
+    Route::get('admin/responsibilities/all',[\App\Http\Controllers\ResponsibilityController::class,'all']);
 
 
     //import from

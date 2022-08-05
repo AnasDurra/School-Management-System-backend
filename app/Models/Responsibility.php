@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tag extends Model
+class Responsibility extends Model
 {
     use HasFactory;
-    protected $table='tags';
+    protected $table='responsibilities';
     protected $fillable = [
         'name'
     ];
@@ -19,6 +19,6 @@ class Tag extends Model
     ];
 
     public function admins(){
-        return $this->belongsToMany('App\Models\Admin','admin_tags','tag_id','admin_id','id','user_id');
+        return $this->belongsToMany('App\Models\Admin','admin_responsibilities','responsibility_id','admin_id','id','user_id');
     }
 }

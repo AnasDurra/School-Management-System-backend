@@ -31,13 +31,13 @@ class ClassController extends Controller
         $class = new Classes();
         $class->name = $request->name;
         $class->save();
-        if($request->subjects_id)
-        for ($i = 0; $i < count($request->subjects_id); $i++) {
-            $class_subjects = new Class_Subject();
-            $class_subjects->subject_id = $request->subjects_id[$i];
-            $class_subjects->class_id = $class->id;
-            $class_subjects->save();
-        }
+        if ($request->subjects_id)
+            for ($i = 0; $i < count($request->subjects_id); $i++) {
+                $class_subjects = new Class_Subject();
+                $class_subjects->subject_id = $request->subjects_id[$i];
+                $class_subjects->class_id = $class->id;
+                $class_subjects->save();
+            }
 
         $classWithSubjects = Classes::query()->where('id', '=', $class->id)->with('subjects')->first();
 
@@ -112,7 +112,12 @@ class ClassController extends Controller
     public function all(Request $request)
     {
         $classes = Classes::query()->filterYear('created_at')->with('subjects')->get();
-
+        for ($i = 0; $i < count($classes); $i++) {
+            for ($j = 0; $j < count($classes[$i]->subjects); $j++) {
+                $classes[$i]->subjects[$j]['class_id']=$classes[$i]->id;
+                $classes[$i]->subjects[$j]['class_name']=$classes[$i]->name;
+            }
+        }
         if (!$classes) {
             return response()->json([
                 'message' => 'No classes'
@@ -168,8 +173,8 @@ class ClassController extends Controller
 
         }
         $class = Classes::query()->where('id', '=', $request->class_id)->first();
-        if($class)
-        $class->subjects;
+        if ($class)
+            $class->subjects;
 
         //archive related
         $archiveYears = Archive_Year::query()->get();
@@ -206,12 +211,12 @@ class ClassController extends Controller
             where('class_id', '=', $request->class_id)->delete();
 
         $class = Classes::query()->where('id', '=', $request->class_id)->first();
-        if($class)
-        $class->subjects;
+        if ($class)
+            $class->subjects;
 
         return response()->json([
             'message' => 'success',
-            'data'=>$class
+            'data' => $class
         ]);
     }
 
@@ -243,7 +248,8 @@ class ClassController extends Controller
         ]);
     }
 
-    public function previousYearsStudents(Request $request){
+    public function previousYearsStudents(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'class_id' => 'required'
         ]);
@@ -253,26 +259,27 @@ class ClassController extends Controller
                 'error' => $errors
             ], 400);
         }
-        $active_year = Archive_Year::query()->select('year')->where('active','=',1)->first();
-        $active_year =$active_year->year;
+        $active_year = Archive_Year::query()->select('year')->where('active', '=', 1)->first();
+        $active_year = $active_year->year;
 
-        $students = Student::query()->where('class_id','=',$request->class_id)
-            ->whereNotExists(function ($query) use ($active_year){
-            $query->
-            where(function ($query1) use ($active_year){
-                $query1->whereMonth('created_at','>=',9)->whereYear('created_at','=',$active_year);
-            })->
-            orWhere(function ($query2) use ($active_year){
-                $query2->whereMonth('created_at','<',9)->whereYear('created_at','=',$active_year+1);
-            });
-        })->with('user')->get();
+        $students = Student::query()->where('class_id', '=', $request->class_id)
+            ->whereNotExists(function ($query) use ($active_year) {
+                $query->
+                where(function ($query1) use ($active_year) {
+                    $query1->whereMonth('created_at', '>=', 9)->whereYear('created_at', '=', $active_year);
+                })->
+                orWhere(function ($query2) use ($active_year) {
+                    $query2->whereMonth('created_at', '<', 9)->whereYear('created_at', '=', $active_year + 1);
+                });
+            })->with('user')->get();
 
         return response()->json([
-            'data' =>$students
+            'data' => $students
         ]);
     }
 
-    public function importStudent(Request $request){
+    public function importStudent(Request $request)
+    {
         $validator = Validator::make($request->all(), [
             'class_id' => 'required',
             'student_ids' => 'required' //array of
@@ -285,16 +292,16 @@ class ClassController extends Controller
             ], 400);
         }
 
-        for($i=0 ; $i<count($request->student_ids) ;$i++){
-            $student = Student::query()->where('user_id','=',$request->student_ids[$i])->with('user')->first();
+        for ($i = 0; $i < count($request->student_ids); $i++) {
+            $student = Student::query()->where('user_id', '=', $request->student_ids[$i])->with('user')->first();
 
             $user = new User();
-            $user->name =$student->user->name;
-            $user->username =Str::random(10);
-            $user->password =Str::random(5);;
-            $user->phone_num =$student->user->phone_num;
-            $user->address =$student->user->address;
-            $user->role =$student->user->role;
+            $user->name = $student->user->name;
+            $user->username = Str::random(10);
+            $user->password = Str::random(5);;
+            $user->phone_num = $student->user->phone_num;
+            $user->address = $student->user->address;
+            $user->role = $student->user->role;
             $user->save();
 
             $new_student = new Student();
@@ -306,11 +313,11 @@ class ClassController extends Controller
             $new_student->bus_id = $request->bus_id;
             $new_student->save();
             $new_student->user;
-            $students[] =$new_student;
+            $students[] = $new_student;
         }
 
         return response()->json([
-            'data' =>$students
+            'data' => $students
         ]);
     }
 }
