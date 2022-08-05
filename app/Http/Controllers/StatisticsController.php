@@ -14,7 +14,7 @@ class StatisticsController extends Controller
     public function getStatistics(Request $request)
     {
         //each year and it's student count
-        $years = Archive_Year::all();
+        $years = Archive_Year::query()->orderBy('year','asc')->get();
         $students_count_each_year = [];
         $current_active_year = Archive_Year::query()->where('active', '=', '1')->first();
         $current_active_year->active = 0;
