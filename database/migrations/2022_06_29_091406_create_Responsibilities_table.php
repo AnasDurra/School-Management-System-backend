@@ -11,13 +11,13 @@ class CreateResponsibilitiesTable extends Migration
     {
         Schema::create('responsibilities', function (Blueprint $table) {
             $table->id();
-            $table->string('tag_name');
+            $table->string('responsibility_name');
             $table->timestamps();
         });
     }
 
     public function down()
     {
-        Schema::dropIfExists('tags');
+        Schema::dropIfExists('responsibilities');
     }
 }

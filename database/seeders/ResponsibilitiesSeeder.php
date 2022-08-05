@@ -16,20 +16,27 @@ class ResponsibilitiesSeeder extends Seeder
     {
         //
         DB::table('responsibilities')->insert([
-            'tag_name'=>'EVENT',
+            'responsibility_name'=>'events',
             'created_at'=>now()
         ]);
         DB::table('responsibilities')->insert([
-            'tag_name'=>'TRANSPORTATION',
+            'responsibility_name'=>'transportation',
             'created_at'=>now()
         ]);
         DB::table('responsibilities')->insert([
-            'tag_name'=>'COMPLAINS',
+            'responsibility_name'=>'complaints',
             'created_at'=>now()
         ]);
         DB::table('responsibilities')->insert([
-            'tag_name'=>'LIBRARY',
+            'responsibility_name'=>'library',
             'created_at'=>now()
         ]);
+
+        for($i=1 ; $i<=4 ; $i++)
+            DB::table('admin_responsibilities')->insert([
+                'admin_id'=>1,
+                'responsibility_id'=>$i,
+                'created_at'=>now()
+            ]);
     }
 }

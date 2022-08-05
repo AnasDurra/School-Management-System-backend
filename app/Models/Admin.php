@@ -13,6 +13,10 @@ class Admin extends Model
      'user_id',
 ];
 
+    protected $hidden =[
+        'pivot'
+    ];
+
     public function user(){
         return $this->belongsTo(User::class);
     }
@@ -21,8 +25,8 @@ class Admin extends Model
         return $this->hasMany('App\Models\Complaint','admin_id','user_id');
     }
 
-    public function tags(){
-        return $this->belongsToMany('App\Models\Responsibility','admin_tags','admin_id','tag_id','user_id','id');
+    public function responsibilities(){
+        return $this->belongsToMany('App\Models\Responsibility','admin_responsibilities','admin_id','responsibility_id','user_id','id');
     }
 
 

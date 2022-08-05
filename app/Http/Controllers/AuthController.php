@@ -67,7 +67,7 @@ class AuthController extends Controller
                 if($user->role==3)
                     $user->parent->students;
                 if($user->role==1||$user->role==0)
-                     $user->admin->tags;
+                     $user->admin->responsibilities;
                 return response()->json([
                     'access_token' => $token,
                     'data'=>$user,

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
-use App\Models\Admin_tag;
+use App\Models\Admin_responsibility;
 use App\Models\Responsibility;
 use App\Models\Archive_Year;
 
@@ -24,7 +24,7 @@ class AdminController extends Controller
             'role', '<=', 1)->filterYear('created_at')->with('admin')->get();
 
         foreach ($admins as $admin){
-            $admin->admin->tags;
+            $admin->admin->responsibilities;
         }
         return response()->json($admins);
     }
@@ -35,7 +35,7 @@ class AdminController extends Controller
             'name' => 'required',
             'phone_num' => 'required',
             'address' => 'required',
-            'tags' // array
+            'responsibilities' // array
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -55,16 +55,16 @@ class AdminController extends Controller
         $admin->user_id = $user->id;
         $admin->save();
 
-        if($request->tags)
-            for($i=0 ; $i < count($request->tags) ; $i++){
-            $admin_tag= new Admin_tag();
-            $admin_tag->admin_id= $user->id;
-            $admin_tag->tag_id = $request->tags[$i];
-            $admin_tag->save();
+        if($request->responsibilities)
+            for($i=0 ; $i < count($request->responsibilities) ; $i++){
+            $admin_responsibility= new Admin_responsibility();
+            $admin_responsibility->admin_id= $user->id;
+            $admin_responsibility->responsibility_id = $request->responsibilities[$i];
+            $admin_responsibility->save();
             }
         $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
 
-        $user->admin->tags;
+
 
 
         //archive related
@@ -80,9 +80,7 @@ class AdminController extends Controller
             $archiveYear->save();
         }
 
-
-        $user->admin->tags;
-
+        $user->admin->responsibilities;
 
         return response()->json([
             'message' => 'added',
@@ -100,7 +98,7 @@ class AdminController extends Controller
             'username',
             'password',
             'name',
-            'tags' //array
+            'responsibilities' //array
         ]);
         if ($validator->fails()) {
             $errors = $validator->errors();
@@ -130,16 +128,16 @@ class AdminController extends Controller
             $user->address = $request->address;
 
         $user->save();
-        Admin_tag::query()->where('admin_id','=',$request->id)->delete();
-        if($request->tags)
-            for($i=0 ; $i<count($request->tags) ; $i++){
-                $admin_tag = new Admin_tag();
-                $admin_tag->admin_id = $request->id;
-                $admin_tag->tag_id = $request->tags[$i];
-                $admin_tag->save();
+        Admin_responsibility::query()->where('admin_id','=',$request->id)->delete();
+        if($request->responsibilities)
+            for($i=0 ; $i<count($request->responsibilities) ; $i++){
+                $admin_responsibility = new Admin_responsibility();
+                $admin_responsibility->admin_id = $request->id;
+                $admin_responsibility->responsibility_id = $request->responsibilities[$i];
+                $admin_responsibility->save();
             }
 
-        $user->admin->tags;
+        $user->admin->responsibilities;
         return response()->json([
             'message' => 'success',
             'data' => $user
