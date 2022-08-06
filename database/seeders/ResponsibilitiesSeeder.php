@@ -31,8 +31,12 @@ class ResponsibilitiesSeeder extends Seeder
             'responsibility_name'=>'library',
             'created_at'=>now()
         ]);
+        DB::table('responsibilities')->insert([
+            'responsibility_name'=>'absents',
+            'created_at'=>now()
+        ]);
 
-        for($i=1 ; $i<=4 ; $i++)
+        for($i=1 ; $i<=5 ; $i++)
             DB::table('admin_responsibilities')->insert([
                 'admin_id'=>1,
                 'responsibility_id'=>$i,

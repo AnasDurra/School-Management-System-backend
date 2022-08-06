@@ -85,8 +85,9 @@ class AuthController extends Controller
     public function updateAuth(Request $request){
         $validator = Validator::make($request->all(), [
             "id"=>"required",
-            "username"=>'alpha_dash',
-            "password"
+            "username",
+            "password"=>'required',
+            'new_password'
         ]);
 
         if ($validator->fails()) {
@@ -102,11 +103,16 @@ class AuthController extends Controller
                 'message'=>'Not Found'
             ],404);
 
-        if($request->username)
-            $user->username = $request->username;
 
-        if($request->password)
-            $user->password = $request->password;
+           if( !$user->password = $request->password)
+               return response()->json([
+                   'message'=>'Bad Entries'
+               ],404);
+
+        if($request->username)
+           $user->username=$request->username;
+        if($request->new_password)
+            $user->password=$request->new_password;
 
         $user->save();
 

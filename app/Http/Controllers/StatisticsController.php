@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive_Year;
+use App\Models\Bus;
 use App\Models\Classroom;
 use App\Models\Student;
 use App\Models\Teacher;
@@ -52,11 +53,19 @@ class StatisticsController extends Controller
         }
         $data['full_capacity'] = $full_capacity_count;
         $data['occupied_seats'] = $students_cnt;
+
+        //buses count
+        $buses_current_year = Bus::query()->filterYear('created_at')->get();
+        $buses_count_current_year = 0;
+        if ($buses_current_year) $buses_count_current_year = count($buses_current_year);
+
+
         return response()->json([
                 'students_count_year' => $students_count_each_year,
                 'classrooms_count_current_year' => $classroom_count_current_year,
                 'teachers_count_current_year' => $teacher_count_current_year,
-                'full_to_empty' => $data
+                'full_to_empty' => $data,
+                'buses_count'=>$buses_count_current_year
 
             ]
         );
