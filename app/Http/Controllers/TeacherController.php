@@ -31,7 +31,7 @@ class TeacherController extends Controller
 
         $user = new User();
         $user->name = $request->name;
-        $user->username = strtolower(Str::random(10));
+        $user->username = strtok($request->name, " ").'_'. strtolower(Str::random(3));
         $user->password = strtolower(Str::random(6));
         $user->phone_num = $request->phone_num;
         $user->address = $request->address;

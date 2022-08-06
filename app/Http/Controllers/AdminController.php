@@ -10,6 +10,7 @@ use App\Models\Archive_Year;
 
 
 use App\Models\User;
+use Cassandra\Numeric;
 use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -45,7 +46,7 @@ class AdminController extends Controller
         }
         $user = new User();
         $user->name = $request->name;
-        $user->username = strtolower(Str::random(10));
+        $user->username = strtok($request->name, " ").'_'. strtolower(Numeric::random(3));
         $user->password = strtolower(Str::random(6));
         $user->phone_num = $request->phone_num;
         $user->address = $request->address;

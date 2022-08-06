@@ -40,8 +40,8 @@ class StudentController extends Controller
 
         $user = new User();
         $user->name = $request->name;
-        $user->username = strtolower(Str::random(10));
-        $user->password = strtolower(Str::random(6));
+        $user->username = strtok($request->name, " ").'_'. strtolower(Str::random(3));
+        $user->password = strtolower(Str::random(5));
         $user->phone_num = $request->phone_num;
         if ($request->address)
             $user->address = $request->address;
@@ -67,7 +67,7 @@ class StudentController extends Controller
             $student_parent = new User();
             $student_parent->name = $request->parent_name;
             $student_parent->address = $request->address;
-            $student_parent->username = strtolower(Str::random(10));
+            $student_parent->username = strtok($request->name, " ").'_'. strtolower(Str::random(3));;
             $student_parent->password = strtolower(Str::random(6));
             $student_parent->phone_num = $request->parent_phone_num;
             $student_parent->role = 3;
