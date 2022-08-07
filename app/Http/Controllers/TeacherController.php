@@ -167,17 +167,23 @@ class TeacherController extends Controller
     public function all(Request $request)
     {
         $teachers = User::query()->where('role', '=', 2)->filterYear('created_at')->with('teacher')->get();
-        if ($teachers)
+        if ($teachers) {
             for ($i = 0; $i < count($teachers); $i++) {
                 //accessing subjects so they became visibile in the returned JSON
                 $teachers[$i]['teacher']->subjects;
                 $teachers[$i]['teacher']->classrooms;
             }
-        if(!$teachers) $data=[-1];
-        else $data=$teachers;
-        return response()->json(
-            $data
+        }
+
+        if($teachers && count($teachers)==0)
+            return response()->json([
+                -1
+                    ]
+            );
+        else  return response()->json(
+            $teachers
         );
+
     }
 
 
