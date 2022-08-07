@@ -10,7 +10,7 @@ class Paarent extends Model
 {
     use HasFactory;
     protected $table='paarents';
-    protected $fillable = ['user_id'
+    protected $fillable = ['user_id','imported'
     ];
 
 

@@ -173,8 +173,10 @@ class TeacherController extends Controller
                 $teachers[$i]['teacher']->subjects;
                 $teachers[$i]['teacher']->classrooms;
             }
+        if(!$teachers) $data=[-1];
+        else $data=$teachers;
         return response()->json(
-            $teachers
+            $data
         );
     }
 

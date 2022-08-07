@@ -203,10 +203,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //statistics for dashboard
     Route::get('statistics',[\App\Http\Controllers\StatisticsController::class,'getStatistics']);
+
+
+
     //update auth info
     Route::post('/update', [AuthController::class, 'updateAuth']);
 
+
 });
+Route::post('/pdf',[\App\Http\Controllers\PDFgenerator::class,'index']);
 
 
 

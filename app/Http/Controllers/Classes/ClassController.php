@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Archive_Year;
 use App\Models\Class_Subject;
 use App\Models\Classes;
+use App\Models\Paarent;
 use App\Models\Student;
 use App\Models\Subject;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use phpDocumentor\Reflection\Types\Parent_;
 
 class ClassController extends Controller
 {
@@ -294,7 +296,9 @@ class ClassController extends Controller
 
         for ($i = 0; $i < count($request->student_ids); $i++) {
             $student = Student::query()->where('user_id', '=', $request->student_ids[$i])->with('user')->first();
+            $parent = Paarent::query()->where('user_id','=',$student->parent->user_id)->with('user')->first();
 
+            //user student
             $user = new User();
             $user->name = $student->user->name;
             $user->username = Str::random(10);
@@ -303,12 +307,31 @@ class ClassController extends Controller
             $user->address = $student->user->address;
             $user->role = $student->user->role;
             $user->save();
+    //user parent
+            //if this parent hasn't been imported before
+            if(!$parent->imported) {
+                $user2 = new User();
+                $user2->name = $parent->user->name;
+                $user2->username = Str::random(10);
+                $user2->password = Str::random(5);;
+                $user2->phone_num = $parent->user->phone_num;
+                $user2->address = $parent->user->address;
+                $user2->role = $parent->user->role;
+                $user2->save();
+
+                $new_parent = new Paarent();
+                $new_parent->user_id = $user2->id;
+                $new_parent->save();
+                $parent->new_id=$user2->id;
+                $parent->imported=true;
+                $parent->save();
+            }
 
             $new_student = new Student();
 
             $new_student->user_id = $user->id;
             $new_student->classroom_id = $student->classroom_id;
-            $new_student->parent_id = $student->parent_id;
+            $new_student->parent_id = $parent->new_id;
             $new_student->class_id = $request->class_id;
             $new_student->bus_id = $request->bus_id;
             $new_student->save();
@@ -318,6 +341,7 @@ class ClassController extends Controller
 
         return response()->json([
             'data' => $students
+            //'paremt'=>$parent
         ]);
     }
 }
