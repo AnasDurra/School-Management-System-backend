@@ -175,12 +175,7 @@ class TeacherController extends Controller
             }
         }
 
-        if($teachers && count($teachers)==0)
-            return response()->json([
-                -1
-                    ]
-            );
-        else  return response()->json(
+         return response()->json(
             $teachers
         );
 
