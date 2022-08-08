@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Archive_Year;
 use App\Models\Mark;
 use App\Models\Student;
 use Codedge\Fpdf\Fpdf\Fpdf;
@@ -40,6 +41,7 @@ class PDFgenerator extends Controller
         $admin= Admin::query()->where('user_id','=',$request->moderator_id)->first();
         $student->classroom->class->subjects;
         $student->marks;
+        $year = Archive_Year::query()->where('active','=',1)->first();
 //        return response()->json([
 //           $student
 //        ], 400);
@@ -52,17 +54,19 @@ class PDFgenerator extends Controller
         $this->fpdf->Text(10, 30, 'Parent :');
         $this->fpdf->Text(10, 40, 'Class :');
         $this->fpdf->Text(10, 50, 'Classroom :');
-        $this->fpdf->Text(240, 190, 'Date : ');
-        $this->fpdf->Text(10, 190, 'Moderator : ');
+        $this->fpdf->Text(10, 60, 'Year :');
+        $this->fpdf->Text($this->fpdf->GetPageWidth()-60, $this->fpdf->GetPageHeight()-20, 'Date : ');
+        $this->fpdf->Text($this->fpdf->GetPageWidth()/20, $this->fpdf->GetPageHeight()-20, 'Moderator : ');
         $this->fpdf->SetTextColor(0,0,0);
 
-        $this->fpdf->Text(260, 190, (Carbon::now()->toDateString()));
-        $this->fpdf->Text(40, 190, $admin->user->name);
+        $this->fpdf->Text($this->fpdf->GetPageWidth()-40, $this->fpdf->GetPageHeight()-20, (Carbon::now()->toDateString()));
+        $this->fpdf->Text($this->fpdf->GetPageWidth()/20 + 30, $this->fpdf->GetPageHeight()-20, $admin->user->name);
 
         $this->fpdf->Text(50, 20, $student->user->name); //student name here
         $this->fpdf->Text(50, 30, $student->parent->user->name); //student name here
         $this->fpdf->Text(50, 40, $student->classroom->class->name); //student name here
         $this->fpdf->Text(50, 50, $student->classroom->name); //student name here
+        $this->fpdf->Text(50, 60, $year->year .' - '. ($year->year+1));
         $this->fpdf->Ln('80');
 
 
@@ -107,36 +111,8 @@ class PDFgenerator extends Controller
             $this->fpdf->Ln();
         }
 
-//        // Colors, line width and bold font
-//        $this->fpdf->SetFillColor(255,0,0);
-//        $this->fpdf->SetTextColor(255);
-//        $this->fpdf->SetDrawColor(128,0,0);
-//        $this->fpdf->SetLineWidth(.3);
-//        $this->fpdf->SetFont('','B');
-//
-//        // Header
-//        $w = array(40, 40, 40, 40);
-//        for($i=0;$i<4;$i++)
-//            $this->fpdf->Cell($w[$i],7,'hi',1,0,'C',true);
-//
-//        // Color and font restoration
-//        $this->fpdf->SetFillColor(224,235,255);
-//        $this->fpdf->SetTextColor(0);
-//        $this->fpdf->SetFont('');
-//        // Data
-//        $fill = false;
-//        for($i=0;$i<4;$i++)
-//        {
-//            $this->fpdf->Cell($w[0],6,$i,'LR',0,'L',$fill);
-//            $this->fpdf->Cell($w[1],6,$i,'LR',0,'L',$fill);
-//            $this->fpdf->Cell($w[2],6,number_format($i),'LR',0,'R',$fill);
-//            $this->fpdf->Cell($w[3],6,number_format($i),'LR',0,'R',$fill);
-//            $this->fpdf->Ln();
-//            $fill = !$fill;
-//        }
-//        // Closing line
-//        $this->fpdf->Cell(array_sum($w),0,'','T');
-        $this->fpdf->Output();
+
+        $this->fpdf->Output('D');
 
         exit;
     }

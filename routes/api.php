@@ -209,9 +209,10 @@ Route::middleware('auth:sanctum')->group(function () {
     //update auth info
     Route::post('/update', [AuthController::class, 'updateAuth']);
 
-
+        // jalaaa //results
+    Route::post('/result',[\App\Http\Controllers\PDFgenerator::class,'index']);
 });
-Route::post('/pdf',[\App\Http\Controllers\PDFgenerator::class,'index']);
+
 
 
 
