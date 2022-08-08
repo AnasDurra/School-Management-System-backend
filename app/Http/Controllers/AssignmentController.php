@@ -132,6 +132,11 @@ class AssignmentController extends Controller
             'message' => 'Not Found'
         ]);
         $teacher->assignments;
+        for($i=0;$i<count($teacher->assignments);$i++){
+            $teacher->assignments[$i]->classroom;
+            //$classroom_name = Classroom::query()->where('id','=',$teacher->assignments[$i]->clasroom_id)
+        }
+
         return response()->json([
             'teacher' => $teacher
         ]);

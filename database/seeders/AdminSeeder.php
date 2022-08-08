@@ -14,7 +14,7 @@ class adminSeeder extends Seeder
         DB::table('users')->insert([
             'username' => 'admin',
             'password' => 'admin',
-            'name'=>'owner',
+            'name'=>'Headmaster',
             'phone_num'=>'0000',
             'address'=>'tbd',
             'role'=>0,

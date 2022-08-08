@@ -112,7 +112,7 @@ class PDFgenerator extends Controller
         }
 
 
-        $this->fpdf->Output('D');
+        $this->fpdf->Output('C:\Users\VS\Desktop\ilumi\laravel_project\public\tutorials\\'.$student->user->name.'.pdf','F');
 
         exit;
     }
