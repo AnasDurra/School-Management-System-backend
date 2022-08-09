@@ -114,16 +114,14 @@ class ClassController extends Controller
     public function all(Request $request)
     {
         $classes = Classes::query()->filterYear('created_at')->with('subjects')->get();
-<<<<<<< Updated upstream
+
         for ($i = 0; $i < count($classes); $i++) {
             for ($j = 0; $j < count($classes[$i]->subjects); $j++) {
                 $classes[$i]->subjects[$j]['class_id']=$classes[$i]->id;
                 $classes[$i]->subjects[$j]['class_name']=$classes[$i]->name;
             }
         }
-=======
 
->>>>>>> Stashed changes
         if (!$classes) {
             return response()->json([
                 'message' => 'No classes'

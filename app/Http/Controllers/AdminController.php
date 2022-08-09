@@ -7,14 +7,7 @@ use App\Models\Admin;
 use App\Models\Admin_responsibility;
 use App\Models\Responsibility;
 use App\Models\Archive_Year;
-
-
-
-
-
-
 use App\Models\User;
-
 use Database\Seeders\adminSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;

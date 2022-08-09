@@ -88,7 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/mark/object', [\App\Http\Controllers\MarkController::class, 'object']);
 
     //admins
-    Route::get('/admins/all', [\App\Http\Controllers\Adminco::class, 'all']);//f
+    Route::get('/admins/all', [\App\Http\Controllers\AdminController::class, 'all']);//f
     Route::post('/admins/add', [\App\Http\Controllers\AdminController::class, 'add']);
     Route::post('/admins/update', [\App\Http\Controllers\AdminController::class, 'update']);
     Route::post('/admins/delete', [\App\Http\Controllers\AdminController::class, 'delete']);
