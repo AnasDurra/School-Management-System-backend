@@ -88,7 +88,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/mark/object', [\App\Http\Controllers\MarkController::class, 'object']);
 
     //admins
-    Route::get('/admins/all', [\App\Http\Controllers\AdminController::class, 'all']);//f
+    Route::get('/admins/all', [\App\Http\Controllers\Adminco::class, 'all']);//f
     Route::post('/admins/add', [\App\Http\Controllers\AdminController::class, 'add']);
     Route::post('/admins/update', [\App\Http\Controllers\AdminController::class, 'update']);
     Route::post('/admins/delete', [\App\Http\Controllers\AdminController::class, 'delete']);
@@ -185,7 +185,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //archive
     Route::get('archive/activeYear',[\App\Http\Controllers\ArchiveYearController::class,'getActiveYear']);
-<<<<<<< Updated upstream
+
     Route::get('archive/years',[\App\Http\Controllers\ArchiveYearController::class,'getYears']);
     Route::post('archive/switchActiveYear',[\App\Http\Controllers\ArchiveYearController::class,'switchActiveYear']);
     Route::get('archive/lastYearCheck',[\App\Http\Controllers\ArchiveYearController::class,'lastYearIsActiveYearCheck']); //check if current year is last year
@@ -194,9 +194,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //get all tags
     Route::get('admin/responsibilities/all',[\App\Http\Controllers\ResponsibilityController::class,'all']);
-=======
+
     Route::post('archive/switchActiveYear',[\App\Http\Controllers\ArchiveYearController::class,'switchActiveYear']);
->>>>>>> Stashed changes
+
 
 
     //import from

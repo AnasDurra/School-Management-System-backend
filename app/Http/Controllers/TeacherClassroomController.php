@@ -27,7 +27,6 @@ class TeacherClassroomController extends Controller
         Validator::make($request->all(), [
             'teacher_id' => 'required'
         ]);
-        $obligations_id = [];
         $teacher = Teacher::query()->where('user_id', '=', $request->teacher_id)->first();
         if (!$teacher) {
             return response()->json(
@@ -36,50 +35,34 @@ class TeacherClassroomController extends Controller
                 ], 404
             );
         }
-        $classrooms_id = [];
-        for ($i = 0; $i < count($teacher->classrooms); $i++) {
-            $classrooms_id [] = $teacher->classrooms[$i]->id;
-        }
-        $teacher_students_id = [];
-        for ($i = 0; $i < count($classrooms_id); $i++) {
-            $classroom = Classroom::query()->where('id', '=', $classrooms_id[$i])->first();
-            if (!$classroom) {
-                return response()->json(
-                    [
-                        'invalid classroom id' => $request->classrooms_id[$i]
-                    ], 404
-                );
-            }
-//            return response()->json(
-//                [
-//                    $classroom->students
-//                ], 404
-//            );
-            for ($j = 0; $j < count($classroom->students); $j++) {
-                $teacher_students_id[] = $classroom->students[$j]->user_id;
-            }
-        }
-        $teacher_students_marks = [];
-        for ($j = 0; $j < count($teacher_students_id); $j++) {
-            $student_marks = Mark::query()->where('student_id', '=', $teacher_students_id[$j])->get();
-            for ($k = 0; $k < count($student_marks); $k++) {
-                $student_obligation = Obligate::query()->where('mark_id', '=', $student_marks[$k]->id)->first();
-                if ($student_obligation) {
-                    $obligations_id[] = $student_obligation->id;
-                }
-            }
-        }
+//        $classrooms_id = [];
+//        for ($i = 0; $i < count($teacher->classrooms); $i++) {
+//            $classrooms_id [] = $teacher->classrooms[$i]->id;
+//        }
+        $obligations = Obligate::query()->get();
         $data = [];
-        for ($i = 0; $i < count($obligations_id); $i++) {
-            $obligation = Obligate::query()->where('id', '=', $obligations_id[$i])->first();
-            $data[$i]['body'] = $obligation->body;
-            $data[$i]['type'] = Type::query()->where('id','=',$obligation->mark->type_id)->first();
-            $data[$i]['subject'] = Subject::query()->where('id','=',$obligation->mark->subject_id)->first();
-            $data[$i]['student'] = User::query()->where('id', '=', $obligation->mark->student_id)->first();
-            $data[$i]['classroom'] = Student::query()->where('user_id', '=', $obligation->mark->student_id)->first()->classroom;
-            $mark=Mark::query()->where('id','=',$obligation->mark->id)->first();
+        $j=0;
+        for ($i = 0; $i < count($obligations); $i++) {
+            $obj_classroom_id = $obligations[$i]->mark->student->classroom->id;
+            $obj_subject_id = $obligations[$i]->mark->subject->id;
+            $teacher_subject = teacher_subject::query()->where('teacher_id', '=', $request->teacher_id)
+                ->where('subject_id', '=', $obj_subject_id)->first();
+            if(!$teacher_subject) continue;
+            $yes =Classroom_teacherSubject::query()->where(
+                'classroom_id', '=', $obj_classroom_id
+            )
+                ->where('teacherSubject_id', '=',$teacher_subject->id)->first();
+            if(!$yes)continue;
+
+            $data[$j]['body'] = $obligations[$i]->body;
+            $data[$j]['type'] = Type::query()->where('id', '=', $obligations[$i]->mark->type_id)->first();
+            $data[$j]['subject'] = Subject::query()->where('id', '=', $obligations[$i]->mark->subject_id)->first();
+            $data[$j]['student'] = User::query()->where('id', '=', $obligations[$i]->mark->student_id)->first();
+            $data[$j]['classroom'] = Student::query()->where('user_id', '=', $obligations[$i]->mark->student_id)->first()->classroom;
+            $mark = Mark::query()->where('id', '=', $obligations[$i]->mark->id)->first();
             $mark->type;
-            $data[$i]['mark'] = $mark;
+            $data[$j]['mark'] = $mark;
+            $j++;
         }
 
         return response()->json(
@@ -154,7 +137,7 @@ class TeacherClassroomController extends Controller
         $teacher_subject = null;
         $index = 0;
         for ($i = 0; $i < count($classrooms); $i++) {
-            $classrooms[$i]['class_name'] = Classes::query()->where('id','=',$classrooms[$i]->class_id)->first()->name;
+            $classrooms[$i]['class_name'] = Classes::query()->where('id', '=', $classrooms[$i]->class_id)->first()->name;
             $index = 0;
             $teacher_subject = null;
             $classroom_teacher_subject = Classroom_teacherSubject::query()->where('classroom_id', '=', $classrooms[$i]->id)->get();

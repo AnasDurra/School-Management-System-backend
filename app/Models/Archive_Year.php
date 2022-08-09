@@ -13,9 +13,7 @@ class Archive_Year extends Model
        'year',
         'active'
     ];
-<<<<<<< Updated upstream
+
     Protected $primaryKey='id';
-=======
-    protected $primaryKey='id';
->>>>>>> Stashed changes
+
 }

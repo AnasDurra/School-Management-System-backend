@@ -29,6 +29,9 @@ class Subject extends Model
     public function tutorials(){
         return $this->hasMany('App\Models\Tutorial','subject_id','id');
     }
+    public function  marks(){
+        return $this->hasMany(Mark::class,'subject_id','id');
+    }
 
 
 

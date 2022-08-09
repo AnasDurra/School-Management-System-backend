@@ -10,6 +10,7 @@ class CreateStudentsTable extends Migration
     public function up()
     {
         Schema::create('students', function (Blueprint $table) {
+            $table->id();
             $table->integer('class_id');
             $table->foreignId('classroom_id')->nullable();
             $table->foreignId('parent_id');
