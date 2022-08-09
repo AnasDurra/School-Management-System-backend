@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+<<<<<<< Updated upstream
 use App\Models\Admin_responsibility;
 use App\Models\Responsibility;
 use App\Models\Archive_Year;
 
 
 
+=======
+use App\Models\Archive_Year;
+>>>>>>> Stashed changes
 use App\Models\User;
 use Cassandra\Numeric;
 use Database\Seeders\adminSeeder;
@@ -64,12 +68,16 @@ class AdminController extends Controller
             $admin_responsibility->save();
             }
         $user = User::query()->where('id', '=', $admin->user_id)->with('admin')->first();
+<<<<<<< Updated upstream
 
 
 
 
         //archive related
 
+=======
+        //archive related
+>>>>>>> Stashed changes
         $archiveYears = Archive_Year::query()->get();
         $arr = [];
         for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
@@ -80,9 +88,12 @@ class AdminController extends Controller
             else         $archiveYear->year = now()->year;
             $archiveYear->save();
         }
+<<<<<<< Updated upstream
 
         $user->admin->responsibilities;
 
+=======
+>>>>>>> Stashed changes
         return response()->json([
             'message' => 'added',
             'data' => $user

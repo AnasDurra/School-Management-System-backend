@@ -167,7 +167,11 @@ class TeacherController extends Controller
     public function all(Request $request)
     {
         $teachers = User::query()->where('role', '=', 2)->filterYear('created_at')->with('teacher')->get();
+<<<<<<< Updated upstream
         if ($teachers) {
+=======
+        if ($teachers)
+>>>>>>> Stashed changes
             for ($i = 0; $i < count($teachers); $i++) {
                 //accessing subjects so they became visibile in the returned JSON
                 $teachers[$i]['teacher']->subjects;

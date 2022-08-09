@@ -185,6 +185,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //archive
     Route::get('archive/activeYear',[\App\Http\Controllers\ArchiveYearController::class,'getActiveYear']);
+<<<<<<< Updated upstream
     Route::get('archive/years',[\App\Http\Controllers\ArchiveYearController::class,'getYears']);
     Route::post('archive/switchActiveYear',[\App\Http\Controllers\ArchiveYearController::class,'switchActiveYear']);
     Route::get('archive/lastYearCheck',[\App\Http\Controllers\ArchiveYearController::class,'lastYearIsActiveYearCheck']); //check if current year is last year
@@ -193,6 +194,9 @@ Route::middleware('auth:sanctum')->group(function () {
 
     //get all tags
     Route::get('admin/responsibilities/all',[\App\Http\Controllers\ResponsibilityController::class,'all']);
+=======
+    Route::post('archive/switchActiveYear',[\App\Http\Controllers\ArchiveYearController::class,'switchActiveYear']);
+>>>>>>> Stashed changes
 
 
     //import from

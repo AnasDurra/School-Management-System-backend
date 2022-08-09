@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive_Year;
+<<<<<<< Updated upstream
 use App\Models\Classes;
+=======
+>>>>>>> Stashed changes
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use phpDocumentor\Reflection\Types\Integer;
@@ -11,6 +14,7 @@ use phpDocumentor\Reflection\Types\Integer;
 class ArchiveYearController extends Controller
 {
     //
+<<<<<<< Updated upstream
     public function getYears(Request $request)
     {
         $data = Archive_Year::all();
@@ -19,6 +23,8 @@ class ArchiveYearController extends Controller
         ]);
     }
 
+=======
+>>>>>>> Stashed changes
     public function getActiveYear(Request $request)
     {
         $data = Archive_Year::query()->where('active', '=', 1)->first();
@@ -60,6 +66,7 @@ class ArchiveYearController extends Controller
         ]);
     }
 
+<<<<<<< Updated upstream
     //import from
     public function previousYearClasses(Request $request)
     {
@@ -98,4 +105,6 @@ class ArchiveYearController extends Controller
         }
     }
 
+=======
+>>>>>>> Stashed changes
 }
