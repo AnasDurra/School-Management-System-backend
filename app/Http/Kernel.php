@@ -2,6 +2,11 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\isAbsentsOfficial;
+use App\Http\Middleware\isBusOfficial;
+use App\Http\Middleware\isComplaintsOfficial;
+use App\Http\Middleware\isEventsOfficial;
+use App\Http\Middleware\isLibraryOfficial;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\isAdminMiddleWare;
 
@@ -64,6 +69,11 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'isAdmin'=>  isAdminMiddleWare::class
+        'isAdmin'=>  isAdminMiddleWare::class,
+        'LibraryOfficial' => isLibraryOfficial::class,
+        'AbsentsOfficial' => isAbsentsOfficial::class,
+        'ComplaintsOfficial' => isComplaintsOfficial::class,
+        'EventsOfficial' => isEventsOfficial::class,
+        'BusOfficial' => isBusOfficial::class
     ];
 }
