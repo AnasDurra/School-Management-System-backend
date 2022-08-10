@@ -124,11 +124,14 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/weekly_schedule/add_subjects', [\App\Http\Controllers\weeklyScheduleController::class, 'add_subjects_to_schedules']);
     Route::post('/weeklySchedule/get', [\App\Http\Controllers\weeklyScheduleController::class, 'getWeeklySchedule']);
     Route::post('/weeklySchedule/teacher', [\App\Http\Controllers\weeklyScheduleController::class, 'getTeacherWeeklySchedule']);
-    //events
-    Route::post('events/add',[\App\Http\Controllers\eventController::class,'add']);
-    Route::get('events/all',[\App\Http\Controllers\eventController::class,'all']); //f
-    Route::post('events/delete',[\App\Http\Controllers\eventController::class,'delete']);
 
+
+    //events
+    Route::group(['middleware' => 'EventsOfficial'], function () {
+        Route::post('events/add', [\App\Http\Controllers\eventController::class, 'add']);
+        Route::post('events/delete', [\App\Http\Controllers\eventController::class, 'delete']);
+    });
+    Route::get('events/all', [\App\Http\Controllers\eventController::class, 'all']); //f
 
     //Assignment
     Route::post('assignment/add',[\App\Http\Controllers\AssignmentController::class,'newAssignment']);
@@ -138,24 +141,28 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('assignment/get_student',[\App\Http\Controllers\AssignmentController::class,'get_students_assig']);
 
 
-
     //absents
-    Route::post('absents/add',[\App\Http\Controllers\AbsentController::class,'add']);
-    Route::post('absents/one',[\App\Http\Controllers\AbsentController::class,'getStudentAbsents']);
-    Route::post('absents/delete',[\App\Http\Controllers\AbsentController::class,'deleteAbsent']);
-    Route::post('absents/justified',[\App\Http\Controllers\AbsentController::class,'justifiedAbsent']);
+    Route::group(['middleware' => 'AbsentsOfficial'], function () {
 
-    //categories
-    Route::post('categories/add',[\App\Http\Controllers\CategoryController::class,'add']);
-    Route::post('categories/update',[\App\Http\Controllers\CategoryController::class,'update']);
-    Route::post('categories/delete',[\App\Http\Controllers\CategoryController::class,'delete']);
+        Route::post('absents/add', [\App\Http\Controllers\AbsentController::class, 'add']);
+        Route::post('absents/delete', [\App\Http\Controllers\AbsentController::class, 'deleteAbsent']);
+        Route::post('absents/justified', [\App\Http\Controllers\AbsentController::class, 'justifiedAbsent']);
+    });
+    Route::post('absents/one', [\App\Http\Controllers\AbsentController::class, 'getStudentAbsents']);
+
+    Route::group(['middleware' => 'LibraryOfficial'], function () {
+        //categories
+        Route::post('categories/add', [\App\Http\Controllers\CategoryController::class, 'add']);
+        Route::post('categories/update', [\App\Http\Controllers\CategoryController::class, 'update']);
+        Route::post('categories/delete', [\App\Http\Controllers\CategoryController::class, 'delete']);
+
+        //book
+        Route::post('book/add', [\App\Http\Controllers\BookController::class, 'newBook']);
+        Route::post('book/update', [\App\Http\Controllers\BookController::class, 'update']);
+        Route::post('book/delete', [\App\Http\Controllers\BookController::class, 'delete']);
+    });
     Route::get('categories/getAll',[\App\Http\Controllers\CategoryController::class,'getAll']);
-
-    //book
-    Route::post('book/add',[\App\Http\Controllers\BookController::class,'newBook']);
-    Route::post('book/update',[\App\Http\Controllers\BookController::class,'update']);
-    Route::get('book/getAll',[\App\Http\Controllers\BookController::class,'getAll']);
-    Route::post('book/delete',[\App\Http\Controllers\BookController::class,'delete']);
+    Route::get('book/getAll', [\App\Http\Controllers\BookController::class, 'getAll']);
 
     //tutorials
     Route::post('tutorials/add',[\App\Http\Controllers\TutorialController::class,'add']);
@@ -166,22 +173,23 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('tutorials/view',[\App\Http\Controllers\TutorialController::class,'view']);
     Route::post('tutorials/delete',[\App\Http\Controllers\TutorialController::class,'delete']);
 
-
-
     //bus
-    Route::post('bus/add',[\App\Http\Controllers\BusController::class,'addBus']);
-    Route::post('bus/update',[\App\Http\Controllers\BusController::class,'updateBus']);
-    Route::post('bus/delete',[\App\Http\Controllers\BusController::class,'deleteBus']);
-    Route::get('bus/all',[\App\Http\Controllers\BusController::class,'getBuses']);//f
-    Route::get('bus/getAddresses',[\App\Http\Controllers\BusController::class,'getAddresses']);//f
+    Route::group(['middleware' => 'BusOfficial'], function () {
+        Route::post('bus/add', [\App\Http\Controllers\BusController::class, 'addBus']);
+        Route::post('bus/update', [\App\Http\Controllers\BusController::class, 'updateBus']);
+        Route::post('bus/delete', [\App\Http\Controllers\BusController::class, 'deleteBus']);
+    });
+        Route::get('bus/all', [\App\Http\Controllers\BusController::class, 'getBuses']);//f
+        Route::get('bus/getAddresses', [\App\Http\Controllers\BusController::class, 'getAddresses']);//f
 
 
     //complaint
-    Route::post('complaint/add',[\App\Http\Controllers\ComplaintController::class,'add']);
-    Route::post('complaint/edit',[\App\Http\Controllers\ComplaintController::class,'update']);
-    Route::post('complaint/seenComplaint',[\App\Http\Controllers\ComplaintController::class,'seenComplaint']);
-    Route::get('complaint/getComplaints',[\App\Http\Controllers\ComplaintController::class,'get_complaints']);//f
-
+    Route::group(['middleware' => 'ComplaintsOfficial'], function () {
+        Route::post('complaint/add', [\App\Http\Controllers\ComplaintController::class, 'add']);
+        Route::post('complaint/edit', [\App\Http\Controllers\ComplaintController::class, 'update']);
+        Route::post('complaint/seenComplaint', [\App\Http\Controllers\ComplaintController::class, 'seenComplaint']);
+        Route::get('complaint/getComplaints', [\App\Http\Controllers\ComplaintController::class, 'get_complaints']);//f
+    });
 
     //archive
     Route::get('archive/activeYear',[\App\Http\Controllers\ArchiveYearController::class,'getActiveYear']);
@@ -213,7 +221,7 @@ Route::middleware('auth:sanctum')->group(function () {
     //update auth info
     Route::post('/update', [AuthController::class, 'updateAuth']);
 
-        // jalaaa //results
+    // jalaaa //results
     Route::post('/result',[\App\Http\Controllers\PDFgenerator::class,'index']);
 });
 

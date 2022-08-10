@@ -151,7 +151,7 @@ class TeacherController extends Controller
             $clone = $user;
             if ($clone['teacher'])
                 $clone['teacher']->subjects;
-            $user->delete();
+            $user = User::query()->where('id', '=', $request->id)->delete();
         } else {
             return response()->json([
                 'message' => 'invalid id'
