@@ -221,8 +221,14 @@ Route::middleware('auth:sanctum')->group(function () {
     //update auth info
     Route::post('/update', [AuthController::class, 'updateAuth']);
 
+<<<<<<< Updated upstream
     // jalaaa //results
     Route::post('/result',[\App\Http\Controllers\PDFgenerator::class,'index']);
+=======
+        // jalaaa //results
+    Route::post('/classroom/result',[\App\Http\Controllers\PDFgenerator::class,'index']);
+
+>>>>>>> Stashed changes
 });
 
 
