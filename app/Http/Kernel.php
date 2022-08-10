@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\Cors;
 use App\Http\Middleware\isAbsentsOfficial;
 use App\Http\Middleware\isBusOfficial;
 use App\Http\Middleware\isComplaintsOfficial;
@@ -74,6 +75,7 @@ class Kernel extends HttpKernel
         'AbsentsOfficial' => isAbsentsOfficial::class,
         'ComplaintsOfficial' => isComplaintsOfficial::class,
         'EventsOfficial' => isEventsOfficial::class,
-        'BusOfficial' => isBusOfficial::class
+        'BusOfficial' => isBusOfficial::class,
+        'cors'=>Cors::class
     ];
 }
