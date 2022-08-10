@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::middleware('cors')->group(function () {
+
     Route::get('book/dow/{file}', [\App\Http\Controllers\BookController::class, 'download']);
     Route::get('tutorials/download/{file}', [\App\Http\Controllers\TutorialController::class, 'download']);
     Route::get('tutorials/helper_file/download/{file}', [\App\Http\Controllers\HelperFileController::class, 'download']);
@@ -225,4 +225,4 @@ Route::middleware('cors')->group(function () {
 
 
 
-});
+

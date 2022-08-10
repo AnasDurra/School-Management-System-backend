@@ -8,6 +8,7 @@ use App\Http\Middleware\isBusOfficial;
 use App\Http\Middleware\isComplaintsOfficial;
 use App\Http\Middleware\isEventsOfficial;
 use App\Http\Middleware\isLibraryOfficial;
+use Fruitcake\Cors\HandleCors;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 use App\Http\Middleware\isAdminMiddleWare;
 
@@ -28,6 +29,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        HandleCors::class
     ];
 
     /**
@@ -76,6 +78,6 @@ class Kernel extends HttpKernel
         'ComplaintsOfficial' => isComplaintsOfficial::class,
         'EventsOfficial' => isEventsOfficial::class,
         'BusOfficial' => isBusOfficial::class,
-        'cors'=>Cors::class
+
     ];
 }
