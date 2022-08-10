@@ -221,13 +221,13 @@ Route::middleware('auth:sanctum')->group(function () {
     //update auth info
     Route::post('/update', [AuthController::class, 'updateAuth']);
 
-    
-        // jalaaa //results
-    Route::post('/classroom/result',[\App\Http\Controllers\PDFgenerator::class,'index']);
+
+
 
 
 });
 
-
+// jalaaa //results
+Route::post('/classroom/result',[\App\Http\Controllers\PDFgenerator::class,'index']);
 
 

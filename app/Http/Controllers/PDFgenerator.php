@@ -75,7 +75,7 @@ class PDFgenerator extends Controller
 //           $student
 //        ], 400);
         $this->fpdf->AddPage('L', 'A4', '0');
-        $this->fpdf->Image('C:\Users\VS\Desktop\ilumi\laravel_project\app\Http\Controllers\logo.jpg', 240, 6, 40, 40);
+        $this->fpdf->Image( public_path('logo.jpg'), 240, 6, 40, 40);
         //header left
         $this->fpdf->SetFont('Arial', 'B', 13);
         $this->fpdf->SetTextColor(117, 149, 168);
