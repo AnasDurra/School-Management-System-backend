@@ -31,6 +31,10 @@ class AbsentController extends Controller
         }
 
         for ($i = 0; $i < count($request->students_id); $i++) {
+            $absent = Absent::query()->where('student_id','=',$request->students_id[$i]['student_id'])->where('date','=',$request->students_id[$i]['date'])->first();
+            if($absent)
+                continue;
+
             $absent[$i] = new Absent();
             $absent[$i]->student_id = $request->students_id[$i]['student_id'];
             $absent[$i]->date = $request->students_id[$i]['date'];
