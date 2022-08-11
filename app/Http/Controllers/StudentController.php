@@ -40,7 +40,7 @@ class StudentController extends Controller
 
         $user = new User();
         $user->name = $request->name;
-        $user->username = strtok($request->name, " ").'_'. strtolower(Str::random(3));
+        $user->username = strtok($request->name, " ").'_'. strtolower(rand(100,9999));
         $user->password = strtolower(Str::random(5));
         $user->phone_num = $request->phone_num;
         if ($request->address)

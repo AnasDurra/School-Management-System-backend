@@ -304,7 +304,8 @@ class MarkController extends Controller
         $data = null;
         $students = Student::query()->where('classroom_id', '=', $request->classroom_id)->get();
         for ($i = 0; $i < count($students); $i++) {
-            $marks = Mark::query()->where('student_id', '=', $students[$i]->user_id)->get();
+            $marks = Mark::query()->where('student_id', '=', $students[$i]->user_id)
+                ->where('subject_id','=',$request->subject_id)->get();
             $type1 = false;
             $type2 = false;
             $type3 = false;
@@ -339,8 +340,9 @@ class MarkController extends Controller
             if (!$type2) $data[$i]['2'] = 0;
             if (!$type3) $data[$i]['3'] = 0;
             if (!$type4) $data[$i]['4'] = 0;
-            if ($count) $data[$i]['avg'] = $sum / $count;
+            if ($count) $data[$i]['avg'] = number_format((float)($sum / $count), 2, '.', '') ;
             else $data[$i]['avg'] = 0;
+
         }
         return response()->json([
             'data' => $data
