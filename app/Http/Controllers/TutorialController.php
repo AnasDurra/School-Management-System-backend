@@ -173,6 +173,35 @@ class TutorialController extends Controller
         ]);
     }
 
+    public function getClassTutorials(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'class_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $class = Classes::query()->find($request->class_id);
+        if (!$class)
+            return response()->json([
+                'message' => 'Class not found',
+            ], 404);
+
+        $tutorials = Tutorial::query()->where('class_id', '=', $request->class_id)->get();
+        foreach ($tutorials as $tutorial) {
+            $tutorial->subject;
+            $tutorial->helper_files;
+            $tutorial->class;
+        }
+        return response()->json([
+            'data' => $tutorials
+        ]);
+    }
     public function getTeacherTutorials(Request $request)
     {
 

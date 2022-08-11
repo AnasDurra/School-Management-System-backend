@@ -174,7 +174,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('tutorials/update', [\App\Http\Controllers\TutorialController::class, 'update']);
     Route::post('tutorials/class/subject', [\App\Http\Controllers\TutorialController::class, 'getClassSubjectTutorials']);
     Route::post('tutorials/teacher', [\App\Http\Controllers\TutorialController::class, 'getTeacherTutorials']);
-
+    Route::post('tutorials/class', [\App\Http\Controllers\TutorialController::class, 'getClassTutorials']);
     Route::post('tutorials/view', [\App\Http\Controllers\TutorialController::class, 'view']);
     Route::post('tutorials/delete', [\App\Http\Controllers\TutorialController::class, 'delete']);
 
@@ -192,7 +192,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::group(['middleware' => 'ComplaintsOfficial'], function () {
         Route::post('complaint/add', [\App\Http\Controllers\ComplaintController::class, 'add']);
         Route::post('complaint/edit', [\App\Http\Controllers\ComplaintController::class, 'update']);
-        Route::post('complaint/seenComplaint', [\App\Http\Controllers\ComplaintController::class, 'seenComplaint']);
+        Route::post('complaint/seenComplaint', [\App\Http\Controllers\ComplaintController::class, 'seenComplaint']); //set complaint as seen
     });
     Route::get('complaint/getComplaints', [\App\Http\Controllers\ComplaintController::class, 'get_complaints']);//f
 
