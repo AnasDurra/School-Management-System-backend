@@ -132,8 +132,10 @@ class PDFgenerator extends Controller
                     $this->fpdf->Cell(40, 10, $student->classroom->class->subjects[$i]->name, 1, 0, 'C');
                 } else if ($j == 5) {
                     if ($cnt) {
+                        $full_cnt++;
+                        $full_sum+=$sum/$cnt;
                        if($sum/$cnt<40) $this->fpdf->SetTextColor(256, 0, 0);
-                        $this->fpdf->Cell(40, 10, $sum / $cnt, 1, 0, 'C');
+                        $this->fpdf->Cell(40, 10, number_format((float)($sum/$cnt), 2, '.', '') , 1, 0, 'C');
                         $this->fpdf->SetTextColor(0);
                     }
                     else $this->fpdf->Cell(40, 10, '-', 1, 0, 'C');
@@ -148,8 +150,8 @@ class PDFgenerator extends Controller
                         $sum += $mark->value;
                     } else   $this->fpdf->Cell(40, 10, '-', 1, 0, 'C');
                 }
-                if ($cnt) $full_cnt++;
-                $full_sum += $sum;
+
+
 
             }
             $this->fpdf->Ln();
@@ -160,7 +162,7 @@ class PDFgenerator extends Controller
         $this->fpdf->Text(10, 70, 'Final Percentage :');
         $this->fpdf->SetTextColor(0, 0, 0);
         if ($full_sum / $full_cnt < 40) $this->fpdf->SetTextColor(255, 0, 0);
-        $this->fpdf->Text(60, 70, number_format((float)($full_sum / $full_cnt), 2, '.', '') . ' %');
+        $this->fpdf->Text(60, 70, number_format((float)($full_sum/$full_cnt), 2, '.', '') . ' %');
         //absents
         $this->fpdf->SetTextColor(117, 149, 168);
         $justified = Absent::query()->where('student_id', '=', $student_id)->where('is_justified', '=', 1)->get();
