@@ -258,6 +258,7 @@ class TeacherController extends Controller
         $classes[]= $classroom->class;
 
        $classes = array_unique($classes);
+       sort($classes);
         return response()->json([
             'data' => $classes
         ]);
