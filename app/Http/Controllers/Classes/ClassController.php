@@ -303,8 +303,8 @@ class ClassController extends Controller
             //user student
             $user = new User();
             $user->name = $student->user->name;
-            $user->username = Str::random(10);
-            $user->password = Str::random(5);;
+            $user->username = strtok($user->name, " ").'_'. strtolower(Str::random(3));
+            $user->password = strtolower(Str::random(6));
             $user->phone_num = $student->user->phone_num;
             $user->address = $student->user->address;
             $user->role = $student->user->role;

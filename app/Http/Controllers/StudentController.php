@@ -67,7 +67,7 @@ class StudentController extends Controller
             $student_parent = new User();
             $student_parent->name = $request->parent_name;
             $student_parent->address = $request->address;
-            $student_parent->username = strtok($request->name, " ").'_'. strtolower(Str::random(3));;
+            $student_parent->username = strtok($request->name, " ").'_'. strtolower(Str::random(3));
             $student_parent->password = strtolower(Str::random(6));
             $student_parent->phone_num = $request->parent_phone_num;
             $student_parent->role = 3;
