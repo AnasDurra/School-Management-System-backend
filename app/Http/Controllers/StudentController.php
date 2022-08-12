@@ -89,17 +89,7 @@ class StudentController extends Controller
 
         $student->parent = $parent;
         $student->classroom = $class_room;
-        //archive related
-        $archiveYears = Archive_Year::query()->get();
-        $arr = [];
-        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
-        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
-            $archiveYear = new Archive_Year();
-            if (now()->month < 9)
-                $archiveYear->year = now()->year - 1;
-            else         $archiveYear->year = now()->year;
-            $archiveYear->save();
-        }
+
 
         return response()->json([
             'message' => 'success',
@@ -205,7 +195,7 @@ class StudentController extends Controller
 
         //delete parent if he has no more children in school
         $isParent = Student::query()->where('parent_id', '=', $parent->user_id)->first();
-        if (!$isParent) user::where('id', '=', $parent->user_id)->delete();
+        if (!$isParent) User::query()->where('id', '=', $parent->user_id)->delete();
 
         return response()->json([
             'message' => 'success',

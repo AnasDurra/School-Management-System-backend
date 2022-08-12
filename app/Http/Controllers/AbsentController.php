@@ -45,17 +45,7 @@ class AbsentController extends Controller
             $absent[$i]->save();
         }
 
-        //archive related
-        $archiveYears = Archive_Year::query()->get();
-        $arr = [];
-        for ($i = 0; $i < count($archiveYears); $i++) $arr[] = $archiveYears[$i]->year;
-        if (!in_array(now()->month < 9 ? now()->year - 1 : now()->year, $arr)) {
-            $archiveYear = new Archive_Year();
-            if (now()->month < 9)
-                $archiveYear->year = now()->year - 1;
-            else         $archiveYear->year = now()->year;
-            $archiveYear->save();
-        }
+
         return response()->json([
             'message' => 'success',
             'data' => $absent
