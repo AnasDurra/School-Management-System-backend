@@ -17,23 +17,14 @@ class StatisticsController extends Controller
         //each year and it's student count
         $years = Archive_Year::query()->orderBy('year','asc')->get();
         $students_count_each_year = [];
-        $current_active_year = Archive_Year::query()->where('active', '=', '1')->first();
-        $current_active_year->active = 0;
-        $current_active_year->save();
         for ($i = 0; $i < count($years); $i++) {
             $students_count = 0;
-            $year = Archive_Year::query()->Where('id', '=', $years[$i]->id)->first();
-            $year->active = 1;
-            $year->save();
-            $students = Student::query()->filterYear('created_at')->get();
+            $students = Student::query()->filterYear('created_at',$years[$i]->year)->get();
             if ($students) $students_count = count($students);
-            $year->active = 0;
-            $year->save();
-            $students_count_each_year[$i]['year'] = $year->year;
+            $students_count_each_year[$i]['year'] = $years[$i]->year;
             $students_count_each_year[$i]['count'] = $students_count;
         }
-        $current_active_year->active = 1;
-        $current_active_year->save();
+
 //classrooms count in current year
         $classrooms_current_year = Classroom::query()->filterYear('created_at')->get();
         $classroom_count_current_year = 0;
