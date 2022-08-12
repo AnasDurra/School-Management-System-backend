@@ -150,12 +150,12 @@ Route::middleware('auth:sanctum')->group(function () {
                 // add/delete teachers of classroom
     Route::post('/classroom/teachers/update', [\App\Http\Controllers\teacherClassroomController::class, 'update']);
     //complaint
+    Route::post('complaint/add', [\App\Http\Controllers\ComplaintController::class, 'add']);
+    Route::get('complaint/getComplaints', [\App\Http\Controllers\ComplaintController::class, 'get_complaints']);//f
     Route::group(['middleware' => 'ComplaintsOfficial'], function () {
-        Route::post('complaint/add', [\App\Http\Controllers\ComplaintController::class, 'add']);
         Route::post('complaint/edit', [\App\Http\Controllers\ComplaintController::class, 'update']);
         Route::post('complaint/seenComplaint', [\App\Http\Controllers\ComplaintController::class, 'seenComplaint']); //set complaint as seen
     });
-    Route::get('complaint/getComplaints', [\App\Http\Controllers\ComplaintController::class, 'get_complaints']);//f
     //events
     Route::group(['middleware' => 'EventsOfficial'], function () {
         Route::post('events/add', [\App\Http\Controllers\eventController::class, 'add']);
