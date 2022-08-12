@@ -15,9 +15,8 @@ class CreateClassSubjectTable extends Migration
     {
         Schema::create('class_subject', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('subject_id');
-            $table->foreignId('class_id');
-
+            $table->foreignId('subject_id')->references('id')->on('subjects');
+            $table->foreignId('class_id')->references('id')->on('classes');
             $table->timestamps();
         });
     }

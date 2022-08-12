@@ -4,3 +4,136 @@ year 2021 has been inserted successfuly to the system
 year 2021 has been inserted successfuly to the system 
 year 2021 has been inserted successfuly to the system 
 year 2021 has been inserted successfuly to the system 
+year 2021 has been inserted successfuly to the system 
+
+   TypeError 
+
+  count(): Argument #1 ($value) must be of type Countable|array, null given
+
+  at C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+    110▕             if ($new_user->role <= 1) {//owner  or normal admin
+    111▕                 $new_admin = new Admin();
+    112▕                 $new_admin->user_id = $new_user->id;
+    113▕                 $new_admin->save();
+  ➜ 114▕                 for($k=0;$k<count($users[$i]->responsibilities);$k++){ //add previous responsibilities
+    115▕                     $admin_res = new Admin_responsibility();
+    116▕                     $admin_res->admin_id = $new_admin->user_id;
+    117▕                     $admin_res->responsibility_id =$users[$i]->responsibilities[$k]->id;
+    118▕                     $admin_res->save();
+
+  1   C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+      count()
+
+  2   C:\Users\VS\Desktop\new ilumi\laravel_project\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\CheckYear::handle()
+
+   TypeError 
+
+  count(): Argument #1 ($value) must be of type Countable|array, null given
+
+  at C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+    110▕             if ($new_user->role <= 1) {//owner  or normal admin
+    111▕                 $new_admin = new Admin();
+    112▕                 $new_admin->user_id = $new_user->id;
+    113▕                 $new_admin->save();
+  ➜ 114▕                 for($k=0;$k<count($users[$i]->responsibilities);$k++){ //add previous responsibilities
+    115▕                     $admin_res = new Admin_responsibility();
+    116▕                     $admin_res->admin_id = $new_admin->user_id;
+    117▕                     $admin_res->responsibility_id =$users[$i]->responsibilities[$k]->id;
+    118▕                     $admin_res->save();
+
+  1   C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+      count()
+
+  2   C:\Users\VS\Desktop\new ilumi\laravel_project\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\CheckYear::handle()
+
+   TypeError 
+
+  count(): Argument #1 ($value) must be of type Countable|array, null given
+
+  at C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+    110▕             if ($new_user->role <= 1) {//owner  or normal admin
+    111▕                 $new_admin = new Admin();
+    112▕                 $new_admin->user_id = $new_user->id;
+    113▕                 $new_admin->save();
+  ➜ 114▕                 for($k=0;$k<count($users[$i]->responsibilities);$k++){ //add previous responsibilities
+    115▕                     $admin_res = new Admin_responsibility();
+    116▕                     $admin_res->admin_id = $new_admin->user_id;
+    117▕                     $admin_res->responsibility_id =$users[$i]->responsibilities[$k]->id;
+    118▕                     $admin_res->save();
+
+  1   C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+      count()
+
+  2   C:\Users\VS\Desktop\new ilumi\laravel_project\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\CheckYear::handle()
+
+   TypeError 
+
+  count(): Argument #1 ($value) must be of type Countable|array, null given
+
+  at C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+    110▕             if ($new_user->role <= 1) {//owner  or normal admin
+    111▕                 $new_admin = new Admin();
+    112▕                 $new_admin->user_id = $new_user->id;
+    113▕                 $new_admin->save();
+  ➜ 114▕                 for($k=0;$k<count($users[$i]->responsibilities);$k++){ //add previous responsibilities
+    115▕                     $admin_res = new Admin_responsibility();
+    116▕                     $admin_res->admin_id = $new_admin->user_id;
+    117▕                     $admin_res->responsibility_id =$users[$i]->responsibilities[$k]->id;
+    118▕                     $admin_res->save();
+
+  1   C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+      count()
+
+  2   C:\Users\VS\Desktop\new ilumi\laravel_project\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\CheckYear::handle()
+
+   TypeError 
+
+  count(): Argument #1 ($value) must be of type Countable|array, null given
+
+  at C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+    110▕             if ($new_user->role <= 1) {//owner  or normal admin
+    111▕                 $new_admin = new Admin();
+    112▕                 $new_admin->user_id = $new_user->id;
+    113▕                 $new_admin->save();
+  ➜ 114▕                 for($k=0;$k<count($users[$i]->responsibilities);$k++){ //add previous responsibilities
+    115▕                     $admin_res = new Admin_responsibility();
+    116▕                     $admin_res->admin_id = $new_admin->user_id;
+    117▕                     $admin_res->responsibility_id =$users[$i]->responsibilities[$k]->id;
+    118▕                     $admin_res->save();
+
+  1   C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+      count()
+
+  2   C:\Users\VS\Desktop\new ilumi\laravel_project\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\CheckYear::handle()
+
+   TypeError 
+
+  count(): Argument #1 ($value) must be of type Countable|array, null given
+
+  at C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+    110▕             if ($new_user->role <= 1) {//owner  or normal admin
+    111▕                 $new_admin = new Admin();
+    112▕                 $new_admin->user_id = $new_user->id;
+    113▕                 $new_admin->save();
+  ➜ 114▕                 for($k=0;$k<count($users[$i]->responsibilities);$k++){ //add previous responsibilities
+    115▕                     $admin_res = new Admin_responsibility();
+    116▕                     $admin_res->admin_id = $new_admin->user_id;
+    117▕                     $admin_res->responsibility_id =$users[$i]->responsibilities[$k]->id;
+    118▕                     $admin_res->save();
+
+  1   C:\Users\VS\Desktop\new ilumi\laravel_project\app\Console\Commands\CheckYear.php:114
+      count()
+
+  2   C:\Users\VS\Desktop\new ilumi\laravel_project\vendor\laravel\framework\src\Illuminate\Container\BoundMethod.php:36
+      App\Console\Commands\CheckYear::handle()
+year 2021 has been inserted successfuly to the system 
+year 2021 has been inserted successfuly to the system 
+year 2021 has been inserted successfuly to the system 
+year 2021 has been inserted successfuly to the system 
+year 2021 has been inserted successfuly to the system 
+year 2021 has been inserted successfuly to the system 

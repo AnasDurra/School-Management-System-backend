@@ -332,7 +332,6 @@ class ClassController extends Controller
             $new_student = new Student();
 
             $new_student->user_id = $user->id;
-            $new_student->classroom_id = $student->classroom_id;
             $new_student->parent_id = $parent->new_id;
             $new_student->class_id = $request->class_id;
             $new_student->bus_id = $request->bus_id;

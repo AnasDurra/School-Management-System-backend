@@ -3,7 +3,9 @@
 namespace App\Console\Commands;
 
 use App\Models\Admin;
+use App\Models\Admin_responsibility;
 use App\Models\Archive_Year;
+use App\Models\Class_Subject;
 use App\Models\Classes;
 use App\Models\Subject;
 use App\Models\Teacher;
@@ -60,18 +62,43 @@ class CheckYear extends Command
         $subjects = Subject::query()->filterYear('created_at')->get();
         $users = User::query()->filterYear('created_at')->get();
 
-
+        ## prev year imported subjects id's
+        $visited_id=[];
+        $visited_new =[];
         //insert new classes
         for ($i = 0; $i < count($classes); $i++) {
             $new_class = new Classes();
             $new_class->name = $classes[$i]->name;
             $new_class->save();
+            for($k=0;$k<count($classes[$i]->subjects);$k++){
+                $f_sub_id=0;
+                if(!in_array($classes[$i]->subjects[$k]->id,$visited_id)) {
+                    $new_subject = new Subject();
+                    $new_subject->name = $classes[$i]->subjects[$k]->name;
+                    $new_subject->save();
+                    $visited_new[]= $new_subject->id;
+                    $f_sub_id=$new_subject->id;
+                    $visited_id[]=$classes[$i]->subjects[$k]->id;
+                }
+                else {
+                    for($l=0;$l<count($visited_id);$l++){
+                        if($visited_id[$l]== $classes[$i]->subjects[$k]->id)   $f_sub_id=$visited_new[$l];
+                    }
+
+                }
+                $class_subject = new Class_Subject();
+                $class_subject->class_id = $new_class->id;
+                $class_subject->subject_id =$f_sub_id;
+                $class_subject->save();
+            }
         }
         //insert new subjects
         for ($i = 0; $i < count($subjects); $i++) {
-            $new_subject = new Subject();
-            $new_subject->name = $subjects[$i]->name;
-            $new_subject->save();
+            if(!in_array($subjects[$i]->id,$visited_id)){
+                $new_subject = new Subject();
+                $new_subject->name = $subjects[$i]->name;
+                $new_subject->save();
+            }
         }
         //insert new users
         for ($i = 0; $i < count($users); $i++) {
@@ -88,6 +115,12 @@ class CheckYear extends Command
                 $new_admin = new Admin();
                 $new_admin->user_id = $new_user->id;
                 $new_admin->save();
+                for($k=0;$k<count($users[$i]->admin->responsibilities);$k++){ //add previous responsibilities
+                    $admin_res = new Admin_responsibility();
+                    $admin_res->admin_id = $new_admin->user_id;
+                    $admin_res->responsibility_id =$users[$i]->admin->responsibilities[$k]->id;
+                    $admin_res->save();
+                }
             }
             if ($new_user->role == 2) { //teacher
                 $new_teacher = new Teacher();
