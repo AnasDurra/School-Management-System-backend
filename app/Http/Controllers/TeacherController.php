@@ -255,11 +255,9 @@ class TeacherController extends Controller
         }
         $classrooms = $teacher->classrooms;
         foreach ($classrooms as $classroom)
-        $a[] = $classroom['class']['name'];
+        $classes[]= $classroom->class;
 
-        $classes = array_unique($a);
-        sort($classes);
-
+       $classes = array_unique($classes);
         return response()->json([
             'data' => $classes
         ]);
