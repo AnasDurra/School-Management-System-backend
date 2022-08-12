@@ -215,25 +215,12 @@ class StudentController extends Controller
     }
 
 
-    //
     //Return all student
     public function all(Request $request)
     {
-//        $validator = Validator::make($request->all(), [
-//            'classroom_id' => 'required'
-//        ]);
-//        if ($validator->fails()) {
-//            $errors = $validator->errors();
-//            return response()->json([
-//                'error' => $errors
-//            ], 400);
-//        }
-        $active_year = Archive_Year::query()->where('active', '=', 1)->first()->year;
 
+        $active_year = Archive_Year::query()->where('active', '=', 1)->first()->year;
         $students = User::query()->where('role', '=', 4)->filterYear('created_at')->with('student')->get();
-//                return response()->json([
-//                'error' => $students
-//            ], 400);
         if ($students)
             for ($i = 0; $i < count($students); $i++) {
                 $class = Classes::query()->where('id', '=', $students[$i]['student']->class_id)->first();
@@ -257,9 +244,6 @@ class StudentController extends Controller
             ], 404);
         }
 
-//        for ($i = 0; $i < count($students); $i++) {
-//            $users[] = ['STUDENT_ID' => $students[$i]->id, User::query()->where('id', '=', $students[$i]->user_id)->first()];
-//        }
         return response()->json(
             $students
         );
