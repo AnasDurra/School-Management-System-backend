@@ -46,6 +46,7 @@ class ClassroomController extends Controller
                         $classroom_teacherSubject_in_classroom[$j]->subject_name = $subject->name;
                     }
                 $classrooms[$i]->teacher_subject = $classroom_teacherSubject_in_classroom;
+                    $classrooms[$i]->class;
             }
         }
         return response()->json(

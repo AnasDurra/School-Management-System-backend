@@ -7,6 +7,7 @@ use App\Http\Controllers\StudentController;
 use App\Models\SchoolClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -88,7 +89,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admins/add', [\App\Http\Controllers\AdminController::class, 'add']);
     Route::post('/admins/update', [\App\Http\Controllers\AdminController::class, 'update']);
     Route::post('/admins/delete', [\App\Http\Controllers\AdminController::class, 'delete']);
-                //get all tags
+    //get all tags
     Route::get('admin/responsibilities/all', [\App\Http\Controllers\ResponsibilityController::class, 'all']);
     //archive
     Route::post('archive/switchActiveYear', [\App\Http\Controllers\ArchiveYearController::class, 'switchActiveYear']);
@@ -145,9 +146,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/classrooms/update', [\App\Http\Controllers\ClassroomController::class, 'update']);
     Route::post('/classrooms/delete', [\App\Http\Controllers\ClassroomController::class, 'delete']);
     Route::post('/classrooms/show_my_class', [\App\Http\Controllers\ClassroomController::class, 'show_my_class']);
-                 //results
+    //results
     Route::post('/classroom/result', [\App\Http\Controllers\PDFgenerator::class, 'index']);
-                // add/delete teachers of classroom
+    // add/delete teachers of classroom
     Route::post('/classroom/teachers/update', [\App\Http\Controllers\teacherClassroomController::class, 'update']);
     //complaint
     Route::post('complaint/add', [\App\Http\Controllers\ComplaintController::class, 'add']);
@@ -171,11 +172,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/marks/update', [\App\Http\Controllers\MarkController::class, 'update']);
     Route::post('/marks/delete', [\App\Http\Controllers\MarkController::class, 'delete']);
     Route::get('/marks/getTypes', [\App\Http\Controllers\MarkController::class, 'getTypes']);
-                  //marks for classroom as schedule
+    //marks for classroom as schedule
     Route::post('/marks/classroom', [\App\Http\Controllers\MarkController::class, 'getClassroomSubjectMarks']);
-                 //marks for student as schedule
+    //marks for student as schedule
     Route::post('/marks/student', [\App\Http\Controllers\MarkController::class, 'getStudentMarks']);
-                 //check if mark is in db
+    //check if mark is in db
     Route::post('/marks/check', [\App\Http\Controllers\MarkController::class, 'check']);
     Route::post('/mark/object', [\App\Http\Controllers\MarkController::class, 'object']);
     //parents
@@ -205,9 +206,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/teachers/all', [\App\Http\Controllers\TeacherController::class, 'all']); //f
     Route::post('/teachers/teacher_subject', [\App\Http\Controllers\TeacherController::class, 'teacherSubjects']);//show teacher subjects
     Route::post('/teachers', [\App\Http\Controllers\TeacherController::class, 'one']); //f
-            //Get Teacher Classrooms
+    //Get Teacher Classrooms
     Route::post('/teacher/classrooms/get', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherClassrooms']);
-            //get teacher obligations
+    //get teacher obligations
     Route::post('/teacher/objections', [\App\Http\Controllers\TeacherClassroomController::class, 'getTeacherObjections']);
     //tutorials
     Route::post('tutorials/add', [\App\Http\Controllers\TutorialController::class, 'add']);

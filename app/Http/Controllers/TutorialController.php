@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Classes;
+use App\Models\Classroom;
 use App\Models\Helper_file;
 use App\Models\Teacher;
 use Illuminate\Support\Facades\File;
@@ -18,7 +19,7 @@ class TutorialController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
-            'class_id' => 'required',
+            'classroom_id' => 'required',
             'subject_id' => 'required',
             'file' => 'required',
             'teacher_id' => 'required',
@@ -34,7 +35,7 @@ class TutorialController extends Controller
         $tutorial = new Tutorial();
         $tutorial->name = $request->name;
         $tutorial->description = $request->description;
-        $tutorial->class_id = $request->class_id;
+        $tutorial->class_id = Classroom::query()->where('id','=',$request->classroom_id)->first()->class->id;
         $tutorial->subject_id = $request->subject_id;
         $tutorial->teacher_id = $request->teacher_id;
 
@@ -61,6 +62,7 @@ class TutorialController extends Controller
         $tutorial->class;
         $tutorial->subject;
         $tutorial->helper_files;
+        $tutorial['classroom']= Classroom::query()->where('id','=',$request->classroom_id)->first();
         return response()->json([
             'data' => $tutorial
         ]);
@@ -72,7 +74,7 @@ class TutorialController extends Controller
             'id' => 'required',
             'name',
             'description',
-            'class_id',
+            'classroom_id',
             'subject_id',
             //helper_files!!
         ]);
@@ -94,8 +96,8 @@ class TutorialController extends Controller
         if ($request->description)
             $tutorial->description = $request->description;
 
-        if ($request->class_id)
-            $tutorial->class_id = $request->class_id;
+        if ($request->classroom_id)
+            $tutorial->class_id =  Classroom::query()->where('id','=',$request->classroom_id)->first()->class->id;
 
         if ($request->subject_id)
             $tutorial->subject_id = $request->subject_id;
@@ -105,7 +107,7 @@ class TutorialController extends Controller
         $tutorial->class;
         $tutorial->subject;
         $tutorial->helper_files;
-
+        $tutorial['classroom']= Classroom::query()->where('id','=',$request->classroom_id)->first();
 
         return response()->json([
             'message' => 'updated',
