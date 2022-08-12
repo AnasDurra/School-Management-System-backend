@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Archive_Year;
+use App\Models\Classes;
+use App\Models\Classroom;
 use App\Models\Subject;
 use App\Models\Teacher;
 
+use App\Models\Teacher_classroom;
 use App\Models\teacher_subject;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -230,6 +233,35 @@ class TeacherController extends Controller
             $teacher_subjects = $teacher->subjects;
         return response()->json([
             'data' => $teacher_subjects
+        ]);
+    }
+
+    public function getTeacherClasses(Request $request){
+        $validator = Validator::make($request->all(), [
+            'teacher_id' => 'required'
+        ]);
+        if ($validator->fails()) {
+            $errors = $validator->errors();
+            return response()->json([
+                'error' => $errors
+            ], 400);
+        }
+
+        $teacher = Teacher::query()->where('user_id', '=', $request->teacher_id)->first();
+        if (!$teacher) {
+            return response()->json([
+                'error' => 'NotFound'
+            ], 404);
+        }
+        $classrooms = $teacher->classrooms;
+        foreach ($classrooms as $classroom)
+        $a[] = $classroom['class']['name'];
+
+        $classes = array_unique($a);
+        sort($classes);
+
+        return response()->json([
+            'data' => $classes
         ]);
     }
 }
